@@ -8,6 +8,7 @@ int main(){
     int baseB;
     unsigned long value = 0;
     enum { MAX_INPUT_SIZE = 256 };
+
     char input[MAX_INPUT_SIZE];
     char output[MAX_INPUT_SIZE];
 
