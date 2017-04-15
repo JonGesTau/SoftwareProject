@@ -1,0 +1,1 @@
+/usr/bin/gcc   -c -fmessage-length=0 -std=c99 -Wall -Wextra -Werror -pedantic-errors -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/HW1.dir/main.c.o  -o HW1 
