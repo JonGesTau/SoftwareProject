@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/SPBufferset.h
+stdio.h
+-
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/main.c
+stdio.h
+-
+SPBufferset.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/SPBufferset.h
+main_aux.c
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/main_aux.c
+sp_nim.c
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.c
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/main_aux.c
+stdio.h
+-
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.c
+stdio.h
+-
+
