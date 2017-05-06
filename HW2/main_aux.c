@@ -63,20 +63,22 @@ void user_turn(int heaps[], int num_heaps,
 	
 	// *** get user input
 	scanf("%d %d", &user_heap, &user_amount);
+    --user_heap;
 	
-	while((user_heap - 1 < 0) || (user_heap - 1 >= num_heaps) ||
-		(user_amount <= 0) || (heaps[user_heap - 1] < user_amount)){
+	while((user_heap < 0) || (user_heap >= num_heaps) ||
+		(user_amount <= 0) || (heaps[user_heap] < user_amount)){
 		// while input is invalid
 		printf("Error: Invalid input.\n");
 		printf("Please enter again the heap index and the number of removed objects.\n");
 		
 		// *** get user input again
 		scanf("%d %d", &user_heap, &user_amount);
+        --user_heap;
 
 	}
 	
 	// if valid
-	printf("You take %d objects from heap %d.\n", user_amount, user_heap);
+	printf("You take %d objects from heap %d.\n", user_amount, user_heap+1);
 	*which_heap = user_heap;
 	*how_many = user_amount;
 }
