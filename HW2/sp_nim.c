@@ -11,7 +11,7 @@ void computer_move(int heaps[], int num_heaps,
 	for(int c = 0; c<num_heaps; c++){
 		nim_sum ^= heaps[c];
 	}
-	printf("nim_sum = %d\n", nim_sum);
+
 	if(nim_sum == 0){
 		for(int c = 0; c<num_heaps; c++){
 			if(heaps[c] > 0){

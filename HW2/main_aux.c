@@ -41,7 +41,7 @@ void heap_stats(int heaps[], int num_heaps, int turn){
 // prints the computer move
 void report_computer(int which_heap, int how_many){
 	printf("Computer takes %d objects from heap %d.\n",
-	  (which_heap+1), how_many);
+	  how_many, (which_heap+1));
 }
 
 // prints winning message
