@@ -1,7 +1,4 @@
-#include <stdio.h>
-
-void computer_move(int[], int, int*, int*);
-int is_over(int[], int);
+#include "sp_nim.h"
 
 void computer_move(int heaps[], int num_heaps,
 		int *which_heap, int *how_many){

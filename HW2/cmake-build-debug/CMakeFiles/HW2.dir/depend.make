@@ -4,5 +4,7 @@
 CMakeFiles/HW2.dir/main.c.o: ../SPBufferset.h
 CMakeFiles/HW2.dir/main.c.o: ../main.c
 CMakeFiles/HW2.dir/main.c.o: ../main_aux.c
+CMakeFiles/HW2.dir/main.c.o: ../main_aux.h
 CMakeFiles/HW2.dir/main.c.o: ../sp_nim.c
+CMakeFiles/HW2.dir/main.c.o: ../sp_nim.h
 

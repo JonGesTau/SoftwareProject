@@ -21,10 +21,20 @@ sp_nim.c
 /Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.c
 
 /Users/jonathangescheit/TAU/SoftwareProject/HW2/main_aux.c
+main_aux.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/main_aux.h
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/main_aux.h
 stdio.h
+-
+stdlib.h
 -
 
 /Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.c
+sp_nim.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.h
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW2/sp_nim.h
 stdio.h
 -
 
