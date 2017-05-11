@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void print_heaps(int[], int);
 void heap_stats(int[], int, int);
@@ -10,7 +11,7 @@ void get_heap_sizes(int[], int);
 
 // prints a visualization of the heaps
 void print_heaps(int heaps[], int num_heaps){
-	int max_size = 0;
+    int max_size = 0;
 	
 	for(int c = 0; c<num_heaps; c++){
 		if(heaps[c] > max_size){
@@ -20,9 +21,12 @@ void print_heaps(int heaps[], int num_heaps){
 	
 	for(int c = max_size; c>0; c--){
 		for(int i = 0; i<num_heaps; i++){
-			if(heaps[i] >= c)
-				printf("*");
-			printf("\t"); // also on the last heap?
+			if (heaps[i] >= c) {
+                printf("*");
+            } else {
+                printf(" ");
+            }
+            if (i < num_heaps - 1) printf("\t"); // also on the last heap?
 		}
 		printf("\n");
 	}
@@ -104,7 +108,8 @@ void get_heap_sizes(int heaps[], int num_heaps){
 	while (i < num_heaps && scanf("%d", &heaps[i]) == 1) {
 		if (heaps[i] <= 0) {
 			// error message if one of the numbers is negative
-			printf("Error: the size of heap %d should be positive.\n", i);
+			printf("Error: the size of heap %d should be positive.\n", i + 1);
+            exit(-1);
 		} else {
 			i++;
 		}

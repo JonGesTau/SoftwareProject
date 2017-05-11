@@ -25,7 +25,7 @@ void computer_move(int heaps[], int num_heaps,
 	for(int c = 0; c<num_heaps; c++){
 		if(heaps[c] > (heaps[c]^nim_sum)){
 			*which_heap = c;
-			*how_many = heaps[c] - heaps[c]^nim_sum;
+			*how_many = heaps[c] - (heaps[c]^nim_sum);
 			return;
 		}
 	}

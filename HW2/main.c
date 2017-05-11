@@ -15,11 +15,11 @@ int main(){
 	int heaps[num_heaps];
 	get_heap_sizes(heaps, num_heaps);
 	
-	print_heaps(heaps, num_heaps);
-	
 	int which_heap = 0;
 	int how_many = 0;
 	int turn = 1;
+
+    if (turn > 1) print_heaps(heaps, num_heaps);
 	
 	while(is_over(heaps, num_heaps) == 0){
 		heap_stats(heaps, num_heaps, turn);
