@@ -1,1 +1,1 @@
-/Library/Developer/CommandLineTools/usr/bin/cc  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/HW2.dir/main.c.o  -o HW2 
+/Library/Developer/CommandLineTools/usr/bin/cc   -c -fmessage-length=0 -std=c99 -Wall -Wextra -Werror -pedantic-errors -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/HW2.dir/main.c.o  -o HW2 

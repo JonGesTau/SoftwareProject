@@ -1,9 +1,7 @@
-// gcc src.c -o output.exe
-
 #include <stdio.h>
 #include "SPBufferset.h"
-#include "main_aux.c"
-#include "sp_nim.c"
+#include "main_aux.h"
+#include "sp_nim.h"
 
 int main(){	
 	SP_BUFF_SET();
