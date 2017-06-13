@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o CMakeFiles/HW3.dir/SPFIARParser.c.o  -o HW3 

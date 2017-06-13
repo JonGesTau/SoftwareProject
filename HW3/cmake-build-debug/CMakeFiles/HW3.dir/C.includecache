@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.c
+ctype.h
+-
+printf.h
+-
+memory.h
+-
+inttypes.h
+-
+SPFIARParser.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+stdbool.h
+-
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c
+unit_test_util.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/unit_test_util.h
+SPFIARParser.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/unit_test_util.h
+stdio.h
+-
+
