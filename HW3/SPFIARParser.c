@@ -1,7 +1,3 @@
-#include <ctype.h>
-#include <printf.h>
-#include <memory.h>
-#include <inttypes.h>
 #include "SPFIARParser.h"
 
 /**

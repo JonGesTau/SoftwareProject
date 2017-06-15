@@ -123,6 +123,60 @@ HW3/fast:
 	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/build
 .PHONY : HW3/fast
 
+SPArrayList.o: SPArrayList.c.o
+
+.PHONY : SPArrayList.o
+
+# target to build an object file
+SPArrayList.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPArrayList.c.o
+.PHONY : SPArrayList.c.o
+
+SPArrayList.i: SPArrayList.c.i
+
+.PHONY : SPArrayList.i
+
+# target to preprocess a source file
+SPArrayList.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPArrayList.c.i
+.PHONY : SPArrayList.c.i
+
+SPArrayList.s: SPArrayList.c.s
+
+.PHONY : SPArrayList.s
+
+# target to generate assembly for a file
+SPArrayList.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPArrayList.c.s
+.PHONY : SPArrayList.c.s
+
+SPFIARGame.o: SPFIARGame.c.o
+
+.PHONY : SPFIARGame.o
+
+# target to build an object file
+SPFIARGame.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARGame.c.o
+.PHONY : SPFIARGame.c.o
+
+SPFIARGame.i: SPFIARGame.c.i
+
+.PHONY : SPFIARGame.i
+
+# target to preprocess a source file
+SPFIARGame.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARGame.c.i
+.PHONY : SPFIARGame.c.i
+
+SPFIARGame.s: SPFIARGame.c.s
+
+.PHONY : SPFIARGame.s
+
+# target to generate assembly for a file
+SPFIARGame.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARGame.c.s
+.PHONY : SPFIARGame.c.s
+
 SPFIARParser.o: SPFIARParser.c.o
 
 .PHONY : SPFIARParser.o
@@ -150,32 +204,86 @@ SPFIARParser.c.s:
 	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParser.c.s
 .PHONY : SPFIARParser.c.s
 
-SPFIARParserUnitTest.o: SPFIARParserUnitTest.c.o
+SPMiniMax.o: SPMiniMax.c.o
 
-.PHONY : SPFIARParserUnitTest.o
+.PHONY : SPMiniMax.o
 
 # target to build an object file
-SPFIARParserUnitTest.c.o:
-	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o
-.PHONY : SPFIARParserUnitTest.c.o
+SPMiniMax.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMax.c.o
+.PHONY : SPMiniMax.c.o
 
-SPFIARParserUnitTest.i: SPFIARParserUnitTest.c.i
+SPMiniMax.i: SPMiniMax.c.i
 
-.PHONY : SPFIARParserUnitTest.i
+.PHONY : SPMiniMax.i
 
 # target to preprocess a source file
-SPFIARParserUnitTest.c.i:
-	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.i
-.PHONY : SPFIARParserUnitTest.c.i
+SPMiniMax.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMax.c.i
+.PHONY : SPMiniMax.c.i
 
-SPFIARParserUnitTest.s: SPFIARParserUnitTest.c.s
+SPMiniMax.s: SPMiniMax.c.s
 
-.PHONY : SPFIARParserUnitTest.s
+.PHONY : SPMiniMax.s
 
 # target to generate assembly for a file
-SPFIARParserUnitTest.c.s:
-	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.s
-.PHONY : SPFIARParserUnitTest.c.s
+SPMiniMax.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMax.c.s
+.PHONY : SPMiniMax.c.s
+
+SPMiniMaxNode.o: SPMiniMaxNode.c.o
+
+.PHONY : SPMiniMaxNode.o
+
+# target to build an object file
+SPMiniMaxNode.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMaxNode.c.o
+.PHONY : SPMiniMaxNode.c.o
+
+SPMiniMaxNode.i: SPMiniMaxNode.c.i
+
+.PHONY : SPMiniMaxNode.i
+
+# target to preprocess a source file
+SPMiniMaxNode.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMaxNode.c.i
+.PHONY : SPMiniMaxNode.c.i
+
+SPMiniMaxNode.s: SPMiniMaxNode.c.s
+
+.PHONY : SPMiniMaxNode.s
+
+# target to generate assembly for a file
+SPMiniMaxNode.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMaxNode.c.s
+.PHONY : SPMiniMaxNode.c.s
+
+main.o: main.c.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/main.c.o
+.PHONY : main.c.o
+
+main.i: main.c.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/main.c.i
+.PHONY : main.c.i
+
+main.s: main.c.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/main.c.s
+.PHONY : main.c.s
 
 # Help Target
 help:
@@ -186,12 +294,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... HW3"
+	@echo "... SPArrayList.o"
+	@echo "... SPArrayList.i"
+	@echo "... SPArrayList.s"
+	@echo "... SPFIARGame.o"
+	@echo "... SPFIARGame.i"
+	@echo "... SPFIARGame.s"
 	@echo "... SPFIARParser.o"
 	@echo "... SPFIARParser.i"
 	@echo "... SPFIARParser.s"
-	@echo "... SPFIARParserUnitTest.o"
-	@echo "... SPFIARParserUnitTest.i"
-	@echo "... SPFIARParserUnitTest.s"
+	@echo "... SPMiniMax.o"
+	@echo "... SPMiniMax.i"
+	@echo "... SPMiniMax.s"
+	@echo "... SPMiniMaxNode.o"
+	@echo "... SPMiniMaxNode.i"
+	@echo "... SPMiniMaxNode.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

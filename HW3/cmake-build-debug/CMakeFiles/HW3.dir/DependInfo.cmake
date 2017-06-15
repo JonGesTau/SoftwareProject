@@ -4,8 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPArrayList.c.o"
+  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPFIARGame.c.o"
   "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPFIARParser.c.o"
-  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o"
+  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPMiniMax.c.o"
+  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/SPMiniMaxNode.c.o"
+  "/Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c" "/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles/HW3.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

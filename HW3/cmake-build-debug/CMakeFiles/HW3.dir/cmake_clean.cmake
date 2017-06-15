@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o"
+  "CMakeFiles/HW3.dir/main.c.o"
+  "CMakeFiles/HW3.dir/SPFIARGame.c.o"
   "CMakeFiles/HW3.dir/SPFIARParser.c.o"
+  "CMakeFiles/HW3.dir/SPArrayList.c.o"
+  "CMakeFiles/HW3.dir/SPMiniMax.c.o"
+  "CMakeFiles/HW3.dir/SPMiniMaxNode.c.o"
   "HW3.pdb"
   "HW3"
 )

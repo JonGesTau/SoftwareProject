@@ -1,14 +1,5 @@
-#ifndef SPMINIMAXNODE_C_
-#define SPMINIMAXNODE_C_
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <limits.h>
 #include "SPMiniMaxNode.h"
-#include "SPFIARGame.h"
-#include "SPFIARGame.c"
 
-#define brd board->gameBoard
 
 //Put all decleartions and constants here
 
@@ -136,5 +127,3 @@ int main(){
 	scoreTest();
 	return 0;
 }*/
-
-#endif

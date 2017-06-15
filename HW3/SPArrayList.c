@@ -1,8 +1,3 @@
-#ifndef SPARRAYLIST_C_
-#define SPARRAYLIST_C_
-#include <stdlib.h>
-#include <stdbool.h>
-
 #include "SPArrayList.h"
 
 /**
@@ -354,5 +349,3 @@ bool spArrayListIsEmpty(SPArrayList* src){
 		return true;
 	return false;
 }
-
-#endif

@@ -57,33 +57,57 @@ include CMakeFiles/HW3.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/HW3.dir/flags.make
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o: CMakeFiles/HW3.dir/flags.make
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o: ../SPFIARParserUnitTest.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o"
-	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c
+CMakeFiles/HW3.dir/main.c.o: CMakeFiles/HW3.dir/flags.make
+CMakeFiles/HW3.dir/main.c.o: ../main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/HW3.dir/main.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/main.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c > CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.i
+CMakeFiles/HW3.dir/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/main.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c > CMakeFiles/HW3.dir/main.c.i
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c -o CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.s
+CMakeFiles/HW3.dir/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/main.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c -o CMakeFiles/HW3.dir/main.c.s
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.requires:
+CMakeFiles/HW3.dir/main.c.o.requires:
 
-.PHONY : CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.requires
+.PHONY : CMakeFiles/HW3.dir/main.c.o.requires
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.provides: CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.requires
-	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.provides.build
-.PHONY : CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.provides
+CMakeFiles/HW3.dir/main.c.o.provides: CMakeFiles/HW3.dir/main.c.o.requires
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/main.c.o.provides.build
+.PHONY : CMakeFiles/HW3.dir/main.c.o.provides
 
-CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.provides.build: CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o
+CMakeFiles/HW3.dir/main.c.o.provides.build: CMakeFiles/HW3.dir/main.c.o
+
+
+CMakeFiles/HW3.dir/SPFIARGame.c.o: CMakeFiles/HW3.dir/flags.make
+CMakeFiles/HW3.dir/SPFIARGame.c.o: ../SPFIARGame.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/HW3.dir/SPFIARGame.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPFIARGame.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.c
+
+CMakeFiles/HW3.dir/SPFIARGame.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/SPFIARGame.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.c > CMakeFiles/HW3.dir/SPFIARGame.c.i
+
+CMakeFiles/HW3.dir/SPFIARGame.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/SPFIARGame.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.c -o CMakeFiles/HW3.dir/SPFIARGame.c.s
+
+CMakeFiles/HW3.dir/SPFIARGame.c.o.requires:
+
+.PHONY : CMakeFiles/HW3.dir/SPFIARGame.c.o.requires
+
+CMakeFiles/HW3.dir/SPFIARGame.c.o.provides: CMakeFiles/HW3.dir/SPFIARGame.c.o.requires
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARGame.c.o.provides.build
+.PHONY : CMakeFiles/HW3.dir/SPFIARGame.c.o.provides
+
+CMakeFiles/HW3.dir/SPFIARGame.c.o.provides.build: CMakeFiles/HW3.dir/SPFIARGame.c.o
 
 
 CMakeFiles/HW3.dir/SPFIARParser.c.o: CMakeFiles/HW3.dir/flags.make
 CMakeFiles/HW3.dir/SPFIARParser.c.o: ../SPFIARParser.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/HW3.dir/SPFIARParser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/HW3.dir/SPFIARParser.c.o"
 	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPFIARParser.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.c
 
 CMakeFiles/HW3.dir/SPFIARParser.c.i: cmake_force
@@ -105,19 +129,99 @@ CMakeFiles/HW3.dir/SPFIARParser.c.o.provides: CMakeFiles/HW3.dir/SPFIARParser.c.
 CMakeFiles/HW3.dir/SPFIARParser.c.o.provides.build: CMakeFiles/HW3.dir/SPFIARParser.c.o
 
 
+CMakeFiles/HW3.dir/SPArrayList.c.o: CMakeFiles/HW3.dir/flags.make
+CMakeFiles/HW3.dir/SPArrayList.c.o: ../SPArrayList.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/HW3.dir/SPArrayList.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPArrayList.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.c
+
+CMakeFiles/HW3.dir/SPArrayList.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/SPArrayList.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.c > CMakeFiles/HW3.dir/SPArrayList.c.i
+
+CMakeFiles/HW3.dir/SPArrayList.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/SPArrayList.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.c -o CMakeFiles/HW3.dir/SPArrayList.c.s
+
+CMakeFiles/HW3.dir/SPArrayList.c.o.requires:
+
+.PHONY : CMakeFiles/HW3.dir/SPArrayList.c.o.requires
+
+CMakeFiles/HW3.dir/SPArrayList.c.o.provides: CMakeFiles/HW3.dir/SPArrayList.c.o.requires
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPArrayList.c.o.provides.build
+.PHONY : CMakeFiles/HW3.dir/SPArrayList.c.o.provides
+
+CMakeFiles/HW3.dir/SPArrayList.c.o.provides.build: CMakeFiles/HW3.dir/SPArrayList.c.o
+
+
+CMakeFiles/HW3.dir/SPMiniMax.c.o: CMakeFiles/HW3.dir/flags.make
+CMakeFiles/HW3.dir/SPMiniMax.c.o: ../SPMiniMax.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/HW3.dir/SPMiniMax.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPMiniMax.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c
+
+CMakeFiles/HW3.dir/SPMiniMax.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/SPMiniMax.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c > CMakeFiles/HW3.dir/SPMiniMax.c.i
+
+CMakeFiles/HW3.dir/SPMiniMax.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/SPMiniMax.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c -o CMakeFiles/HW3.dir/SPMiniMax.c.s
+
+CMakeFiles/HW3.dir/SPMiniMax.c.o.requires:
+
+.PHONY : CMakeFiles/HW3.dir/SPMiniMax.c.o.requires
+
+CMakeFiles/HW3.dir/SPMiniMax.c.o.provides: CMakeFiles/HW3.dir/SPMiniMax.c.o.requires
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMax.c.o.provides.build
+.PHONY : CMakeFiles/HW3.dir/SPMiniMax.c.o.provides
+
+CMakeFiles/HW3.dir/SPMiniMax.c.o.provides.build: CMakeFiles/HW3.dir/SPMiniMax.c.o
+
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.o: CMakeFiles/HW3.dir/flags.make
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.o: ../SPMiniMaxNode.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/HW3.dir/SPMiniMaxNode.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW3.dir/SPMiniMaxNode.c.o   -c /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.c
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW3.dir/SPMiniMaxNode.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.c > CMakeFiles/HW3.dir/SPMiniMaxNode.c.i
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW3.dir/SPMiniMaxNode.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.c -o CMakeFiles/HW3.dir/SPMiniMaxNode.c.s
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.requires:
+
+.PHONY : CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.requires
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.provides: CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.requires
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.provides.build
+.PHONY : CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.provides
+
+CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.provides.build: CMakeFiles/HW3.dir/SPMiniMaxNode.c.o
+
+
 # Object files for target HW3
 HW3_OBJECTS = \
-"CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o" \
-"CMakeFiles/HW3.dir/SPFIARParser.c.o"
+"CMakeFiles/HW3.dir/main.c.o" \
+"CMakeFiles/HW3.dir/SPFIARGame.c.o" \
+"CMakeFiles/HW3.dir/SPFIARParser.c.o" \
+"CMakeFiles/HW3.dir/SPArrayList.c.o" \
+"CMakeFiles/HW3.dir/SPMiniMax.c.o" \
+"CMakeFiles/HW3.dir/SPMiniMaxNode.c.o"
 
 # External object files for target HW3
 HW3_EXTERNAL_OBJECTS =
 
-HW3: CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o
+HW3: CMakeFiles/HW3.dir/main.c.o
+HW3: CMakeFiles/HW3.dir/SPFIARGame.c.o
 HW3: CMakeFiles/HW3.dir/SPFIARParser.c.o
+HW3: CMakeFiles/HW3.dir/SPArrayList.c.o
+HW3: CMakeFiles/HW3.dir/SPMiniMax.c.o
+HW3: CMakeFiles/HW3.dir/SPMiniMaxNode.c.o
 HW3: CMakeFiles/HW3.dir/build.make
 HW3: CMakeFiles/HW3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable HW3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jonathangescheit/TAU/SoftwareProject/HW3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable HW3"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/HW3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -125,8 +229,12 @@ CMakeFiles/HW3.dir/build: HW3
 
 .PHONY : CMakeFiles/HW3.dir/build
 
-CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPFIARParserUnitTest.c.o.requires
+CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/main.c.o.requires
+CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPFIARGame.c.o.requires
 CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPFIARParser.c.o.requires
+CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPArrayList.c.o.requires
+CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPMiniMax.c.o.requires
+CMakeFiles/HW3.dir/requires: CMakeFiles/HW3.dir/SPMiniMaxNode.c.o.requires
 
 .PHONY : CMakeFiles/HW3.dir/requires
 

@@ -1,7 +1,9 @@
 #ifndef SPMINIMAX_H_
 #define SPMINIMAX_H_
 
+#include <stdbool.h>
 #include "SPFIARGame.h"
+#include "SPMiniMaxNode.h"
 
 /**
  * Given a game state, this function evaluates the best move according to

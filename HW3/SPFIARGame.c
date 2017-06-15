@@ -1,8 +1,3 @@
-#ifndef SPFIARGAME_C_
-#define SPFIARGAME_C_
-#include <stdbool.h>
-#include <stdlib.h>
-#include "SPArrayList.c"
 #include "SPFIARGame.h"
 
 /**
@@ -311,5 +306,3 @@ char spFiarCheckWinner(SPFiarGame* src){ // TODO: test this
 		return SP_FIAR_GAME_TIE_SYMBOL;
 	return '\0';
 }
-
-#endif

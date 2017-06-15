@@ -1,6 +1,8 @@
 #ifndef SPARRAYLIST_H_
 #define SPARRAYLIST_H_
+#include <stdlib.h>
 #include <stdbool.h>
+
 
 /**
  * SPArrayList summary:

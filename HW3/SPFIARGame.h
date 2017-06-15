@@ -1,6 +1,8 @@
 #ifndef SPFIARGAME_H_
 #define SPFIARGAME_H_
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "SPArrayList.h"
 
 /**

@@ -1,10 +1,4 @@
-#ifndef SPMINIMAX_H_
-#define SPMINIMAX_H_
-
-#inclue <stdbool.h>
-#include "SPFIARGame.h"
-#include "SPMiniMaxNode.h"
-#include "SPMiniMaxNode.c"
+#include "SPMiniMax.h"
 
 /**
  * Given a game state, this function evaluates the best move according to
@@ -20,10 +14,9 @@
  * which is the best move for the current player.
  */
 
-int spMiniMaxSuggestMove(SPfiarGame* currentGame, unsigned int maxDepth){
+int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
 	if(currentGame == NULL || maxDepth <= 0)
 		return -1;
 	bool isPlayer1 = currentGame -> currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL;
-	return spMiniMaxNodeEvaluate(currentGame, maxDepth, isPlayer1)
+	return spMiniMaxNodeEvaluate(currentGame, maxDepth, maxDepth, isPlayer1);
 }
-#endif

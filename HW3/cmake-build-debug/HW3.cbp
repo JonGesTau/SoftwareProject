@@ -82,13 +82,37 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.c">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.h">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.c">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h">
+			<Option target="HW3"/>
+		</Unit>
 		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.c">
 			<Option target="HW3"/>
 		</Unit>
 		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h">
 			<Option target="HW3"/>
 		</Unit>
-		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParserUnitTest.c">
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.c">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.h">
+			<Option target="HW3"/>
+		</Unit>
+		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c">
 			<Option target="HW3"/>
 		</Unit>
 		<Unit filename="/Users/jonathangescheit/TAU/SoftwareProject/HW3/CMakeLists.txt">
