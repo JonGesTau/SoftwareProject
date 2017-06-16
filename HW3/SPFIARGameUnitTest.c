@@ -1,6 +1,5 @@
 #include "unit_test_util.h"
 #include "SPFIARGame.h"
-#include "SPFIARGame.c"
 #include <stdbool.h>
 
 #define HISTORY_SIZE 20
