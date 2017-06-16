@@ -1,19 +1,8 @@
-#include <stdio.h>
-#include <inttypes.h>
-#include "SPFIARGame.h"
-#include "SPFIARParser.h"
-#include "SPMiniMax.h"
+#include "SPMainAux.h"
 
 int main() {
     const int HISTORY_SIZE = 20;
-    char userInput[1024];
-    int level;
-    int userMove;
-    int computerMove;
     char winner = '\0';
-    SPCommand command;
-    SP_FIAR_GAME_MESSAGE undoState;
-    SPFiarGame* game;
 
     level = getLevel();
 
@@ -103,20 +92,5 @@ int main() {
     return 0;
 }
 
-int getLevel() {
-    char userInput[1024];
-    int level;
 
-    printf("Please enter the difficulty level between [1-7]:\n");
-    gets(userInput);
 
-    if (spParserIsInt(userInput)) {
-        level = strtoumax(userInput, NULL, 10);
-        if (level < 1 || level > 7) {
-            printf("Error: invalid level (should be between 1 to 7\n");
-            getLevel();
-        }
-    }
-
-    return level;
-}

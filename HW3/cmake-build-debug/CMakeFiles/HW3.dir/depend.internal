@@ -11,6 +11,14 @@ CMakeFiles/HW3.dir/SPFIARGame.c.o
 CMakeFiles/HW3.dir/SPFIARParser.c.o
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.c
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+CMakeFiles/HW3.dir/SPMainAux.c.o
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.c
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.h
 CMakeFiles/HW3.dir/SPMiniMax.c.o
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
@@ -26,6 +34,7 @@ CMakeFiles/HW3.dir/main.c.o
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPArrayList.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+ /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMaxNode.h
  /Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c

@@ -11,7 +11,7 @@ bool spParserIsInt(const char* str) {
     // If str is a negative number, remove '-'
     if (str[0] == '-') str++;
 
-    for (int i = 0; i <strlen(str) ; ++i) {
+    for (unsigned int i = 0; i < strlen(str) ; ++i) {
         if (!isdigit(str[i])) {
             return false;
         }

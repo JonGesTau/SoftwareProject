@@ -4,5 +4,5 @@ project(HW3)
 set(CMAKE_C_STANDARD 99)
 #SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -c -fmessage-length=0 -std=c99 -Wall -Wextra -Werror -pedantic-errors")
 
-set(SOURCE_FILES main.c SPFIARGame.c SPFIARParser.c SPArrayList.c SPMiniMax.c SPMiniMaxNode.c)
+set(SOURCE_FILES main.c SPFIARGame.c SPFIARParser.c SPArrayList.c SPMiniMax.c SPMiniMaxNode.c SPMainAux.c)
 add_executable(HW3 ${SOURCE_FILES})

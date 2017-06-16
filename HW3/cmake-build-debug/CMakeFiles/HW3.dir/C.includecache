@@ -44,6 +44,22 @@ memory.h
 inttypes.h
 -
 
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.c
+SPMainAux.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.h
+
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.h
+stdio.h
+-
+inttypes.h
+-
+SPFIARGame.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
+SPFIARParser.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
+SPMiniMax.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h
+
 /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.c
 SPMiniMax.h
 /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h
@@ -71,14 +87,6 @@ SPFIARGame.h
 /Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
 
 /Users/jonathangescheit/TAU/SoftwareProject/HW3/main.c
-stdio.h
--
-inttypes.h
--
-SPFIARGame.h
-/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARGame.h
-SPFIARParser.h
-/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPFIARParser.h
-SPMiniMax.h
-/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMiniMax.h
+SPMainAux.h
+/Users/jonathangescheit/TAU/SoftwareProject/HW3/SPMainAux.h
 

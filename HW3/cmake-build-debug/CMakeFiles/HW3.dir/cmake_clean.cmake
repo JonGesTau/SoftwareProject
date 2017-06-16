@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/HW3.dir/SPArrayList.c.o"
   "CMakeFiles/HW3.dir/SPMiniMax.c.o"
   "CMakeFiles/HW3.dir/SPMiniMaxNode.c.o"
+  "CMakeFiles/HW3.dir/SPMainAux.c.o"
   "HW3.pdb"
   "HW3"
 )

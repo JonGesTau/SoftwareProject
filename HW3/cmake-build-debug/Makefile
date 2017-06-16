@@ -204,6 +204,33 @@ SPFIARParser.c.s:
 	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPFIARParser.c.s
 .PHONY : SPFIARParser.c.s
 
+SPMainAux.o: SPMainAux.c.o
+
+.PHONY : SPMainAux.o
+
+# target to build an object file
+SPMainAux.c.o:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMainAux.c.o
+.PHONY : SPMainAux.c.o
+
+SPMainAux.i: SPMainAux.c.i
+
+.PHONY : SPMainAux.i
+
+# target to preprocess a source file
+SPMainAux.c.i:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMainAux.c.i
+.PHONY : SPMainAux.c.i
+
+SPMainAux.s: SPMainAux.c.s
+
+.PHONY : SPMainAux.s
+
+# target to generate assembly for a file
+SPMainAux.c.s:
+	$(MAKE) -f CMakeFiles/HW3.dir/build.make CMakeFiles/HW3.dir/SPMainAux.c.s
+.PHONY : SPMainAux.c.s
+
 SPMiniMax.o: SPMiniMax.c.o
 
 .PHONY : SPMiniMax.o
@@ -303,6 +330,9 @@ help:
 	@echo "... SPFIARParser.o"
 	@echo "... SPFIARParser.i"
 	@echo "... SPFIARParser.s"
+	@echo "... SPMainAux.o"
+	@echo "... SPMainAux.i"
+	@echo "... SPMainAux.s"
 	@echo "... SPMiniMax.o"
 	@echo "... SPMiniMax.i"
 	@echo "... SPMiniMax.s"

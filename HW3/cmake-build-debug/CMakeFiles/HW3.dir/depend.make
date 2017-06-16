@@ -11,6 +11,14 @@ CMakeFiles/HW3.dir/SPFIARGame.c.o: ../SPFIARGame.h
 CMakeFiles/HW3.dir/SPFIARParser.c.o: ../SPFIARParser.c
 CMakeFiles/HW3.dir/SPFIARParser.c.o: ../SPFIARParser.h
 
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPArrayList.h
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPFIARGame.h
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPFIARParser.h
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPMainAux.c
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPMainAux.h
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPMiniMax.h
+CMakeFiles/HW3.dir/SPMainAux.c.o: ../SPMiniMaxNode.h
+
 CMakeFiles/HW3.dir/SPMiniMax.c.o: ../SPArrayList.h
 CMakeFiles/HW3.dir/SPMiniMax.c.o: ../SPFIARGame.h
 CMakeFiles/HW3.dir/SPMiniMax.c.o: ../SPMiniMax.c
@@ -25,6 +33,7 @@ CMakeFiles/HW3.dir/SPMiniMaxNode.c.o: ../SPMiniMaxNode.h
 CMakeFiles/HW3.dir/main.c.o: ../SPArrayList.h
 CMakeFiles/HW3.dir/main.c.o: ../SPFIARGame.h
 CMakeFiles/HW3.dir/main.c.o: ../SPFIARParser.h
+CMakeFiles/HW3.dir/main.c.o: ../SPMainAux.h
 CMakeFiles/HW3.dir/main.c.o: ../SPMiniMax.h
 CMakeFiles/HW3.dir/main.c.o: ../SPMiniMaxNode.h
 CMakeFiles/HW3.dir/main.c.o: ../main.c
