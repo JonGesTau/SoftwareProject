@@ -66,6 +66,6 @@ SP_COMMAND spGetCommand(char* str) {
     else if (strcmp(str, "add_disc") == 0) return SP_ADD_DISC;
     else if (strcmp(str, "suggest_move") == 0) return SP_SUGGEST_MOVE;
     else if (strcmp(str, "quit") == 0) return SP_QUIT;
-    else if (strcmp(str, "restart") == 0) return SP_RESTART;
+    else if (strcmp(str, "restart_game") == 0) return SP_RESTART;
     else return SP_INVALID_LINE;
 }

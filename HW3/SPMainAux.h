@@ -17,14 +17,16 @@ int numUndos;
 int computerMove;
 bool isRestart;
 bool isUndo;
+bool undoSuccess;
+bool isError;
 SPCommand command;
 SP_FIAR_GAME_MESSAGE undoState;
 SPFiarGame* game;
 
 int getLevel();
-SPCommand getNextMove();
+SPCommand getNextMove(bool noPrompt);
 int getSuggestedMove();
-bool undo(char player);
+void undo(char player);
 char addDisc();
 int quit();
 void invalidCommand();

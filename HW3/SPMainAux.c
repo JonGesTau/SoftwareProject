@@ -4,24 +4,35 @@ int getLevel() {
     char userInput[1024];
     int level = 0;
 
-    printf("Please enter the difficulty level between [1-7]:\n");
-    gets(userInput);
+    while (level < 1 || level > 7) {
+        printf("Please enter the difficulty level between [1-7]:\n");
+        gets(userInput);
+        command = spParserPraseLine(userInput);
 
-    if (spParserIsInt(userInput)) {
-        level = strtoumax(userInput, NULL, 10);
-        if (level < 1 || level > 7) {
-            printf("Error: invalid level (should be between 1 to 7\n");
-            getLevel();
+        if (command.cmd == SP_RESTART) {
+            restart();
+        } else if (command.cmd == SP_QUIT) {
+            quit();
+        } else if (command.cmd == SP_INVALID_LINE) {
+            if (spParserIsInt(userInput)) {
+                level = strtoumax(userInput, NULL, 10);
+                if (level < 1 || level > 7) {
+                    printf("Error: invalid level (should be between 1 to 7)\n");
+                }
+            } else {
+                printf("Error: invalid level (should be between 1 to 7)\n");
+            }
         }
     }
 
     return level;
 }
 
-SPCommand getNextMove() {
-    printf("Please make the next move:\n");
+SPCommand getNextMove(bool noPrompt) {
+    if (!noPrompt) printf("Please make the next move:\n");
     gets(userInput);
     command = spParserPraseLine(userInput);
+    isError = command.cmd == SP_INVALID_LINE;
 
     return command;
 }
@@ -33,17 +44,18 @@ int getSuggestedMove() {
     return suggestedMove;
 }
 
-bool undo(char player) {
+void undo(char player) {
     undoState = (numUndos == HISTORY_SIZE) ? SP_FIAR_GAME_NO_HISTORY : spFiarGameUndoPrevMove(game);
     if (undoState == SP_FIAR_GAME_INVALID_ARGUMENT || undoState == SP_FIAR_GAME_NO_HISTORY) {
         printf("Error: cannot undo previous move!\n");
-        return false;
+        undoSuccess = false;
+        isError = true;
     } else {
         isUndo = true;
         numUndos++;
-        if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) printf("Remove disc: remove user’s disc at column %d\n",userMove + 1);
-        else printf("Remove disc: remove computer’s disc at column %d\n", computerMove + 1);
-        return true;
+        if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) printf("Remove disc: remove user\'s disc at column %d\n",userMove + 1);
+        else printf("Remove disc: remove computer\'s disc at column %d\n", computerMove + 1);
+        undoSuccess = true;
     }
 }
 
@@ -67,12 +79,13 @@ char addDisc() {
 
 int quit() {
     printf("Exiting...\n");
-    spFiarGameDestroy(game);
+    if (game->gameHistory->actualSize != 0) spFiarGameDestroy(game);
     exit(0);
 }
 
 void invalidCommand() {
     printf("Error: invalid command\n");
+    isError = true;
 }
 
 void endGame() {
@@ -93,7 +106,7 @@ void endGame() {
         quit();
     } else if (command.cmd == SP_UNDO_MOVE) {
         resetWinner();
-        bool undoSuccess = undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
+        undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
         spFiarGamePrintBoard(game);
         if (!undoSuccess) endGame();
     } else if (command.cmd == SP_INVALID_LINE) {
@@ -107,6 +120,7 @@ void restart() {
     resetNumUndos();
     isUndo = false;
     isRestart = true;
+    isError = false;
     printf("Game restarted!\n");
 }
 
