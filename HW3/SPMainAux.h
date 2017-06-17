@@ -15,6 +15,7 @@ int level;
 int userMove;
 int computerMove;
 bool isRestart;
+bool isUndo;
 SPCommand command;
 SP_FIAR_GAME_MESSAGE undoState;
 SPFiarGame* game;
@@ -22,11 +23,12 @@ SPFiarGame* game;
 int getLevel();
 SPCommand getNextMove();
 int getSuggestedMove();
-void undo();
+void undo(char player);
 char addDisc();
 int quit();
 void invalidCommand();
 void endGame();
 void restart();
+void resetWinner();
 
 #endif

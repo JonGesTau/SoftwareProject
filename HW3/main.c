@@ -6,10 +6,12 @@ int main() {
     isRestart = false;
 
     do {
-        level = getLevel();
-
-        game = spFiarGameCreate(HISTORY_SIZE);
-        spFiarGamePrintBoard(game);
+        if (!isUndo) {
+            isRestart = false;
+            level = getLevel();
+            game = spFiarGameCreate(HISTORY_SIZE);
+            spFiarGamePrintBoard(game);
+        }
 
         while (winner == '\0') {
             getNextMove();
@@ -17,7 +19,9 @@ int main() {
             if (command.cmd == SP_SUGGEST_MOVE) {
                 getSuggestedMove();
             } else if (command.cmd == SP_UNDO_MOVE) {
-                undo();
+                undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
+                undo(SP_FIAR_GAME_PLAYER_2_SYMBOL);
+                spFiarGamePrintBoard(game);
                 continue;
             } else if (command.cmd == SP_ADD_DISC && command.validArg) {
                 if (command.arg < 1 || command.arg > 7) {
@@ -42,7 +46,7 @@ int main() {
         }
 
         if (!isRestart) endGame();
-    } while (isRestart == true);
+    } while (isRestart || isUndo);
 }
 
 
