@@ -54,10 +54,10 @@ int spMiniMaxNodeScore(SPFiarGame* board){
 	const int SPAN = SP_FIAR_GAME_SPAN;
 	const int COLS = SP_FIAR_GAME_N_COLUMNS;
 	const int ROWS = SP_FIAR_GAME_N_ROWS;
-	const char PLAYER1 = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+//	const char PLAYER1 = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 	const int weights[SP_FIAR_GAME_SPAN-1] = {1, 2, 5}; // TODO #define
 	
-	int scores[SP_FIAR_GAME_SPAN][2] = {0}; // [][0] for negative (plyr2), [][1] for positive
+	int scores[SP_FIAR_GAME_SPAN][2] = {{0}}; // [][0] for negative (plyr2), [][1] for positive
 	// init scores to zeros
 	
 	int val = 0;

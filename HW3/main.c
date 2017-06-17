@@ -1,7 +1,7 @@
 #include "SPMainAux.h"
 
 int main() {
-    HISTORY_SIZE = 2;
+    HISTORY_SIZE = 20;
     numUndos = 0;
     winner = '\0';
     isRestart = false;

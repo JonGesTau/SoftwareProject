@@ -107,6 +107,7 @@ void restart() {
     resetNumUndos();
     isUndo = false;
     isRestart = true;
+    printf("Game restarted!\n");
 }
 
 void resetWinner() {
