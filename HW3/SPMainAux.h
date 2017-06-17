@@ -18,7 +18,7 @@ int computerMove;
 bool isRestart;
 bool isUndo;
 bool undoSuccess;
-bool isError;
+bool dontShowPrompt;
 SPCommand command;
 SP_FIAR_GAME_MESSAGE undoState;
 SPFiarGame* game;

@@ -17,7 +17,7 @@ int main() {
 
         while (winner == '\0') {
 
-            getNextMove(isError);
+            getNextMove(dontShowPrompt);
 
             if (command.cmd == SP_SUGGEST_MOVE) {
                 getSuggestedMove();
@@ -30,13 +30,13 @@ int main() {
                 continue;
             } else if (command.cmd == SP_ADD_DISC && command.validArg) {
                 if (command.arg < 1 || command.arg > 7) {
-                    isError = true;
+                    dontShowPrompt = true;
                     printf("Error: column number must be in range 1-7\n");
                     continue;
                 }
 
                 if (!spFiarGameIsValidMove(game, command.arg - 1)) {
-                    isError = true;
+                    dontShowPrompt = true;
                     printf("Error: column %d is full\n", command.arg);
                     continue;
                 }

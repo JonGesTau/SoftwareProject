@@ -32,7 +32,7 @@ SPCommand getNextMove(bool noPrompt) {
     if (!noPrompt) printf("Please make the next move:\n");
     gets(userInput);
     command = spParserPraseLine(userInput);
-    isError = command.cmd == SP_INVALID_LINE;
+    dontShowPrompt = command.cmd == SP_INVALID_LINE;
 
     return command;
 }
@@ -40,6 +40,7 @@ SPCommand getNextMove(bool noPrompt) {
 int getSuggestedMove() {
     int suggestedMove = spMinimaxSuggestMove(game, level);
     printf("Suggested move: drop a disc to column %d\n", suggestedMove + 1);
+    dontShowPrompt = true;
 
     return suggestedMove;
 }
@@ -49,7 +50,7 @@ void undo(char player) {
     if (undoState == SP_FIAR_GAME_INVALID_ARGUMENT || undoState == SP_FIAR_GAME_NO_HISTORY) {
         printf("Error: cannot undo previous move!\n");
         undoSuccess = false;
-        isError = true;
+        dontShowPrompt = true;
     } else {
         isUndo = true;
         numUndos++;
@@ -85,7 +86,7 @@ int quit() {
 
 void invalidCommand() {
     printf("Error: invalid command\n");
-    isError = true;
+    dontShowPrompt = true;
 }
 
 void endGame() {
@@ -120,7 +121,7 @@ void restart() {
     resetNumUndos();
     isUndo = false;
     isRestart = true;
-    isError = false;
+    dontShowPrompt = false;
     printf("Game restarted!\n");
 }
 
