@@ -33,14 +33,17 @@ int getSuggestedMove() {
     return suggestedMove;
 }
 
-void undo(char player) {
-    undoState = spFiarGameUndoPrevMove(game);
+bool undo(char player) {
+    undoState = (numUndos == HISTORY_SIZE) ? SP_FIAR_GAME_NO_HISTORY : spFiarGameUndoPrevMove(game);
     if (undoState == SP_FIAR_GAME_INVALID_ARGUMENT || undoState == SP_FIAR_GAME_NO_HISTORY) {
         printf("Error: cannot undo previous move!\n");
+        return false;
     } else {
         isUndo = true;
+        numUndos++;
         if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) printf("Remove disc: remove user’s disc at column %d\n",userMove + 1);
         else printf("Remove disc: remove computer’s disc at column %d\n", computerMove + 1);
+        return true;
     }
 }
 
@@ -90,8 +93,9 @@ void endGame() {
         quit();
     } else if (command.cmd == SP_UNDO_MOVE) {
         resetWinner();
-        undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
+        bool undoSuccess = undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
         spFiarGamePrintBoard(game);
+        if (!undoSuccess) endGame();
     } else if (command.cmd == SP_INVALID_LINE) {
         invalidCommand();
     }
@@ -100,10 +104,15 @@ void endGame() {
 void restart() {
     spFiarGameDestroy(game);
     resetWinner();
+    resetNumUndos();
     isUndo = false;
     isRestart = true;
 }
 
 void resetWinner() {
     winner = '\0';
+}
+
+void resetNumUndos() {
+    numUndos = 0;
 }

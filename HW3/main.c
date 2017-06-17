@@ -1,7 +1,8 @@
 #include "SPMainAux.h"
 
 int main() {
-    HISTORY_SIZE = 20;
+    HISTORY_SIZE = 2;
+    numUndos = 0;
     winner = '\0';
     isRestart = false;
 
@@ -19,8 +20,8 @@ int main() {
             if (command.cmd == SP_SUGGEST_MOVE) {
                 getSuggestedMove();
             } else if (command.cmd == SP_UNDO_MOVE) {
-                undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
-                undo(SP_FIAR_GAME_PLAYER_2_SYMBOL);
+                bool undoSuccess = undo(SP_FIAR_GAME_PLAYER_2_SYMBOL);
+                if (undoSuccess) undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
                 spFiarGamePrintBoard(game);
                 continue;
             } else if (command.cmd == SP_ADD_DISC && command.validArg) {

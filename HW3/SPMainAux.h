@@ -13,6 +13,7 @@ char winner;
 char userInput[1024];
 int level;
 int userMove;
+int numUndos;
 int computerMove;
 bool isRestart;
 bool isUndo;
@@ -23,12 +24,13 @@ SPFiarGame* game;
 int getLevel();
 SPCommand getNextMove();
 int getSuggestedMove();
-void undo(char player);
+bool undo(char player);
 char addDisc();
 int quit();
 void invalidCommand();
 void endGame();
 void restart();
 void resetWinner();
+void resetNumUndos();
 
 #endif
