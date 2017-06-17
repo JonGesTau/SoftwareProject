@@ -8,16 +8,25 @@
 #include "SPMiniMax.h"
 
 //put auxiliary functions and constants used by the main function here.
-const int HISTORY_SIZE;
+int HISTORY_SIZE;
 char winner;
 char userInput[1024];
 int level;
 int userMove;
 int computerMove;
+bool isRestart;
 SPCommand command;
 SP_FIAR_GAME_MESSAGE undoState;
 SPFiarGame* game;
 
 int getLevel();
+SPCommand getNextMove();
+int getSuggestedMove();
+void undo();
+char addDisc();
+int quit();
+void invalidCommand();
+void endGame();
+void restart();
 
 #endif
