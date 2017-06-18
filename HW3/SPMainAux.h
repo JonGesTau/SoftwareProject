@@ -34,5 +34,6 @@ void endGame();
 void restart();
 void resetWinner();
 void resetNumUndos();
+void getUserInput();
 
 #endif

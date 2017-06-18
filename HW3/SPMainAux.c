@@ -1,15 +1,11 @@
 #include "SPMainAux.h"
 
 int getLevel() {
-    char userInput[1024];
     int level = 0;
 
     while (level < 1 || level > 7) {
         printf("Please enter the difficulty level between [1-7]:\n");
-        fgets(userInput, 1024, stdin);
-        char *pos;
-        if ((pos=strchr(userInput, '\n')) != NULL)
-            *pos = '\0';
+        getUserInput();
 
         command = spParserPraseLine(userInput);
 
@@ -34,10 +30,7 @@ int getLevel() {
 
 SPCommand getNextMove(bool noPrompt) {
     if (!noPrompt) printf("Please make the next move:\n");
-    fgets(userInput, 1024, stdin);
-    char *pos;
-    if ((pos=strchr(userInput, '\n')) != NULL)
-        *pos = '\0';
+    getUserInput();
     command = spParserPraseLine(userInput);
     dontShowPrompt = command.cmd == SP_INVALID_LINE;
 
@@ -106,10 +99,7 @@ void endGame() {
     }
 
     do {
-        fgets(userInput, 1024, stdin);
-        char *pos;
-        if ((pos=strchr(userInput, '\n')) != NULL)
-            *pos = '\0';
+        getUserInput();
         command = spParserPraseLine(userInput);
 
         if (command.cmd == SP_RESTART) {
@@ -144,4 +134,11 @@ void resetWinner() {
 
 void resetNumUndos() {
     numUndos = 0;
+}
+
+void getUserInput() {
+    fgets(userInput, 1024, stdin);
+    char *pos;
+    if ((pos=strchr(userInput, '\n')) != NULL)
+        *pos = '\0';
 }

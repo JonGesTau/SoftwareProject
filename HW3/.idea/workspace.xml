@@ -29,7 +29,7 @@
       <file leaf-file-name="SPFIARParser.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SPFIARParser.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
+            <state relative-caret-position="960">
               <caret line="64" column="44" lean-forward="false" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
               <folding />
             </state>
@@ -49,8 +49,8 @@
       <file leaf-file-name="SPMainAux.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SPMainAux.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="124" column="42" lean-forward="false" selection-start-line="124" selection-start-column="42" selection-end-line="124" selection-end-column="42" />
+            <state relative-caret-position="129">
+              <caret line="101" column="23" lean-forward="false" selection-start-line="101" selection-start-column="23" selection-end-line="101" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -99,8 +99,8 @@
       <file leaf-file-name="SPMainAux.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SPMainAux.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="19" lean-forward="false" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+            <state relative-caret-position="286">
+              <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
               <folding>
                 <element signature="e#43#61#0" expanded="true" />
               </folding>
@@ -159,9 +159,9 @@
       <find>{0</find>
       <find>player_</find>
       <find>gets</find>
-      <find>fgets</find>
       <find>destroy</find>
       <find>restart</find>
+      <find>fgets</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -178,10 +178,10 @@
         <option value="$PROJECT_DIR$/SPMiniMax.c" />
         <option value="$PROJECT_DIR$/SPFIARGame.c" />
         <option value="$PROJECT_DIR$/SPArrayList.c" />
-        <option value="$PROJECT_DIR$/SPMainAux.h" />
         <option value="$PROJECT_DIR$/main.c" />
         <option value="$PROJECT_DIR$/SPMiniMaxNode.c" />
         <option value="$PROJECT_DIR$/SPFIARParser.c" />
+        <option value="$PROJECT_DIR$/SPMainAux.h" />
         <option value="$PROJECT_DIR$/SPMainAux.c" />
       </list>
     </option>
@@ -431,12 +431,12 @@
       <workItem from="1497529598969" duration="18809000" />
       <workItem from="1497706508126" duration="12531000" />
       <workItem from="1497742402486" duration="820000" />
-      <workItem from="1497809735298" duration="2355000" />
+      <workItem from="1497809735298" duration="2985000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45616000" />
+    <option name="totallyTimeSpent" value="46246000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="728" extended-state="6" />
@@ -481,13 +481,8 @@
           <line>81</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/SPMainAux.c</url>
-          <line>108</line>
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="42" />
+      <option name="time" value="43" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -697,6 +692,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="138">
           <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -773,16 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SPMainAux.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="19" lean-forward="false" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
-          <folding>
-            <element signature="e#43#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SPFIARParser.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -825,16 +811,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SPFIARParser.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="960">
           <caret line="64" column="44" lean-forward="false" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SPMainAux.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding>
+            <element signature="e#43#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SPMainAux.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="124" column="42" lean-forward="false" selection-start-line="124" selection-start-column="42" selection-end-line="124" selection-end-column="42" />
+        <state relative-caret-position="129">
+          <caret line="101" column="23" lean-forward="false" selection-start-line="101" selection-start-column="23" selection-end-line="101" selection-end-column="23" />
           <folding />
         </state>
       </provider>
