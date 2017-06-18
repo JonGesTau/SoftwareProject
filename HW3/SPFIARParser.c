@@ -62,6 +62,8 @@ SPCommand spParserPraseLine(const char* str) {
  * @return the command in type SP_COMMAND
  */
 SP_COMMAND spGetCommand(char* str) {
+    if (str == '\0') return SP_INVALID_LINE;
+
     if (strcmp(str, "undo_move") == 0) return SP_UNDO_MOVE;
     else if (strcmp(str, "add_disc") == 0) return SP_ADD_DISC;
     else if (strcmp(str, "suggest_move") == 0) return SP_SUGGEST_MOVE;

@@ -6,7 +6,11 @@ int getLevel() {
 
     while (level < 1 || level > 7) {
         printf("Please enter the difficulty level between [1-7]:\n");
-        gets(userInput);
+        fgets(userInput, 1024, stdin);
+        char *pos;
+        if ((pos=strchr(userInput, '\n')) != NULL)
+            *pos = '\0';
+
         command = spParserPraseLine(userInput);
 
         if (command.cmd == SP_RESTART) {
@@ -30,7 +34,10 @@ int getLevel() {
 
 SPCommand getNextMove(bool noPrompt) {
     if (!noPrompt) printf("Please make the next move:\n");
-    gets(userInput);
+    fgets(userInput, 1024, stdin);
+    char *pos;
+    if ((pos=strchr(userInput, '\n')) != NULL)
+        *pos = '\0';
     command = spParserPraseLine(userInput);
     dontShowPrompt = command.cmd == SP_INVALID_LINE;
 
@@ -98,25 +105,30 @@ void endGame() {
         printf("Game over: it’s a tie\nPlease enter ‘quit’ to exit or ‘restart’ to start a new game!\n");
     }
 
-    gets(userInput);
-    command = spParserPraseLine(userInput);
+    do {
+        fgets(userInput, 1024, stdin);
+        char *pos;
+        if ((pos=strchr(userInput, '\n')) != NULL)
+            *pos = '\0';
+        command = spParserPraseLine(userInput);
 
-    if (command.cmd == SP_RESTART) {
-        restart();
-    } else if (command.cmd == SP_QUIT) {
-        quit();
-    } else if (command.cmd == SP_UNDO_MOVE) {
-        resetWinner();
-        undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
-        spFiarGamePrintBoard(game);
-        if (!undoSuccess) endGame();
-    } else if (command.cmd == SP_INVALID_LINE) {
-        invalidCommand();
-    }
+        if (command.cmd == SP_RESTART) {
+            restart();
+        } else if (command.cmd == SP_QUIT) {
+            quit();
+        } else if (command.cmd == SP_UNDO_MOVE) {
+            resetWinner();
+            undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
+            spFiarGamePrintBoard(game);
+            if (!undoSuccess) endGame();
+        } else if (command.cmd == SP_INVALID_LINE) {
+            invalidCommand();
+        }
+    } while (command.cmd == SP_INVALID_LINE);
 }
 
 void restart() {
-    spFiarGameDestroy(game);
+    if (game->gameHistory->actualSize != 0) spFiarGameDestroy(game);
     resetWinner();
     resetNumUndos();
     isUndo = false;

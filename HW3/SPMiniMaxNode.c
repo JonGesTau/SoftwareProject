@@ -1,37 +1,34 @@
 #include "SPMiniMaxNode.h"
 
-//Put all decleartions and constants here
-
-
 int spMiniMaxNodeEvaluate(SPFiarGame* board, unsigned int depth, unsigned int maxDepth, bool sign){
 	// sign is True -> return max score (find best move for 1st player)
-	SPFiarGame* boards[SP_FIAR_GAME_N_COLUMNS];
+	SPFiarGame* tempBoard;
 	int choice = 0;
 	int score = 0;
 	int bestScore = sign ? INT_MIN : INT_MAX;
 	//printf("\ndepth: %d\n",depth);
 	//printf("received board:\n");
-	//pFiarGamePrintBoard(board);
+	//spFiarGamePrintBoard(board);
 	for(int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
 		//printf("\ncolumn %d:",(i+1));
 		if(!spFiarGameIsValidMove(board, i)){
 			//printf(" invalid move!\n");
-			boards[i] = NULL;
+			continue;
 		}else{
-			boards[i] = spFiarGameCopy(board);
-			spFiarGameSetMove(boards[i], i);
+			tempBoard = spFiarGameCopy(board);
+			spFiarGameSetMove(tempBoard, i);
 			//printf("\n");
 			//if(i==0)
-			//	spFiarGamePrintBoard(boards[i]);
+			//	spFiarGamePrintBoard(tempBoard);
 			
 			if(depth == 1){
 				// find direct score
-				score = spMiniMaxNodeScore(boards[i]);
+				score = spMiniMaxNodeScore(tempBoard);
 				//printf("score: %d\n", score);
 			}else{
 				// go deeper
 				//printf("-going deeper-\n");
-				score = spMiniMaxNodeEvaluate(boards[i], depth-1, maxDepth, !sign);
+				score = spMiniMaxNodeEvaluate(tempBoard, depth-1, maxDepth, !sign);
 			}
 			
 			if((sign && score > bestScore) || (!sign && score < bestScore)){
@@ -39,13 +36,17 @@ int spMiniMaxNodeEvaluate(SPFiarGame* board, unsigned int depth, unsigned int ma
 				choice = i;
 			}
 			
-			spFiarGameDestroy(boards[i]);
+			spFiarGameDestroy(tempBoard);
 		}
 	}
-	
+	//printf("final scire: %d\n", bestScore);
+	//printf("final choice: %d\n", choice);
+	if(maxDepth == 1){
+		printf("final score: %d\n", bestScore);
+	}
 	if(depth == maxDepth)
 		return choice;
-	return score;
+	return bestScore;
 }
 
 
@@ -146,6 +147,43 @@ void scoreTest2(){
 	spFiarGameDestroy(res);
 }
 
+void scoreTest3(){
+	SPFiarGame* res = spFiarGameCreate(10);
+	
+	spFiarGameSetMove(res, 0);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 0);
+	spFiarGameSetMove(res, 6);
+	spFiarGameSetMove(res, 0);
+	//spFiarGameSetMove(res, 3);
+	//spFiarGameSetMove(res, 0);
+	
+	spFiarGamePrintBoard(res);
+	printf("score: %d \n", spMiniMaxNodeScore(res));
+	spFiarGameDestroy(res);
+}
+
+
+void scoreTest4(){
+	SPFiarGame* res = spFiarGameCreate(10);
+	
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 6);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 0);
+	spFiarGameSetMove(res, 2);
+	//spFiarGameSetMove(res, 3);
+	//spFiarGameSetMove(res, 0);
+	
+	spFiarGamePrintBoard(res);
+	printf("score: %d \n", spMiniMaxNodeScore(res));
+	spFiarGameDestroy(res);
+}
+
 void evalTest1(){
 	SPFiarGame* res = spFiarGameCreate(10);
 	
@@ -155,6 +193,75 @@ void evalTest1(){
 	//spFiarGamePrintBoard(res);
 	//printf("score: %d \n", spMiniMaxNodeScore(res));
 	//spFiarGameDestroy(res);
+}
+
+void evalTest2(){
+	SPFiarGame* res = spFiarGameCreate(10);
+	
+	spFiarGameSetMove(res, 0);
+	spFiarGameSetMove(res, 0);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 0);
+	
+	spFiarGamePrintBoard(res);
+	//int result = spMiniMaxNodeEvaluate(res,2,2,false);
+	int result = spMiniMaxSuggestMove(res, 4);
+	printf("choice for player is: %d \n", result);
+	
+	spFiarGameDestroy(res);
+}
+
+void evalTest3(){
+	SPFiarGame* res = spFiarGameCreate(10);
+	
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 3);
+	spFiarGameSetMove(res, 2);
+	spFiarGameSetMove(res, 1);
+	spFiarGameSetMove(res, 5);
+	spFiarGameSetMove(res, 4);
+	spFiarGameSetMove(res, 4);
+	spFiarGameSetMove(res, 4);
+	spFiarGameSetMove(res, 4);
+	spFiarGameSetMove(res, 5);
+	spFiarGameSetMove(res, 6);
+	spFiarGameSetMove(res, 5);
+	spFiarGameSetMove(res, 2);
+	
+	spFiarGamePrintBoard(res);
+	//int result = spMiniMaxNodeEvaluate(res,2,2,false);
+	int result = spMiniMaxSuggestMove(res, 5);
+	printf("choice for player is: %d \n", result);
+	
+	spFiarGameDestroy(res);
+}
+
+void selfGameTest1(){
+	SPFiarGame* res = spFiarGameCreate(10);
+	
+	for(int i = 0; i<16; i++){
+		spFiarGameSetMove(res, spMiniMaxSuggestMove(res, (i%2==0?2:3)));
+		spFiarGamePrintBoard(res);
+	}
+	
+	//printf("choice for player is: %d \n", result);
+	
+	spFiarGameDestroy(res);
+	
 }
 
 void copyTest(){
@@ -190,9 +297,10 @@ void copyTest(){
 
 int main(){
 	//scoreTest1();
-	//scoreTest2();
-	evalTest1();
+	//scoreTest4();
+	evalTest3();
 	//copyTest();
+	//selfGameTest1();
 	return 0;
 }
 */
