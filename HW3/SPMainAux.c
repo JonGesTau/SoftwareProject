@@ -121,7 +121,8 @@ void endGame() {
             undo(SP_FIAR_GAME_PLAYER_1_SYMBOL);
             spFiarGamePrintBoard(game);
             if (!undoSuccess) endGame();
-        } else if (command.cmd == SP_INVALID_LINE) {
+        } else {
+            command.cmd = SP_INVALID_LINE;
             invalidCommand();
         }
     } while (command.cmd == SP_INVALID_LINE);
