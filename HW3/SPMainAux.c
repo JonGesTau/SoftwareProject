@@ -32,6 +32,8 @@ SPCommand getNextMove(bool noPrompt) {
     if (!noPrompt) printf("Please make the next move:\n");
     getUserInput();
     command = spParserPraseLine(userInput);
+
+    // If there's an invalid command don't show prompt for command
     dontShowPrompt = command.cmd == SP_INVALID_LINE;
 
     return command;
@@ -78,9 +80,9 @@ char addDisc() {
     return winner;
 }
 
-int quit() {
+void quit() {
     printf("Exiting...\n");
-    if (game->gameHistory->actualSize != 0) spFiarGameDestroy(game);
+    if (!spArrayListIsEmpty(game->gameHistory)) spFiarGameDestroy(game);
     exit(0);
 }
 
@@ -119,7 +121,7 @@ void endGame() {
 }
 
 void restart() {
-    if (game->gameHistory->actualSize != 0) spFiarGameDestroy(game);
+    if (!spArrayListIsEmpty(game->gameHistory)) spFiarGameDestroy(game);
     resetWinner();
     resetNumUndos();
     isUndo = false;
@@ -139,6 +141,8 @@ void resetNumUndos() {
 void getUserInput() {
     fgets(userInput, 1024, stdin);
     char *pos;
+
+    // remove line break character
     if ((pos=strchr(userInput, '\n')) != NULL)
         *pos = '\0';
 }

@@ -99,6 +99,7 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 void spFiarGameDestroy(SPFiarGame* src){
 	if(src == NULL)
 		return;
+    spArrayListClear(src->gameHistory);
 	spArrayListDestroy(src -> gameHistory);
 	free(src);
 }

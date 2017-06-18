@@ -41,9 +41,9 @@ int spMiniMaxNodeEvaluate(SPFiarGame* board, unsigned int depth, unsigned int ma
 	}
 	//printf("final scire: %d\n", bestScore);
 	//printf("final choice: %d\n", choice);
-	if(maxDepth == 1){
-		printf("final score: %d\n", bestScore);
-	}
+//	if(maxDepth == 1){
+//		printf("final score: %d\n", bestScore);
+//	}
 	if(depth == maxDepth)
 		return choice;
 	return bestScore;
