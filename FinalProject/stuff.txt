@@ -1,0 +1,12 @@
+
+
+* how do we return the move from minimax? create perhaps move struct with chars y1,x1,y2,x2?
+
+* how do we parse the XML? perhaps use external lib?
+
+* when scanning moves during the minimax, it's kinda shit doing all the loops for possible moves and then each time
+  repeating the recursion code. one possible way is to first scan all possible moves and keep in linked list.
+  we can try to do it together with the bonus feature, but the bonus feature has to include the extra information
+  about the threatened status of the square...
+
+* perhaps we should split isCheck to create: isThreatenedSquare/Piece
