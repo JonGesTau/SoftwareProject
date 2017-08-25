@@ -14,16 +14,16 @@ bool xmlGameSaveGame(GameState* game, char* filename){
 
     fprintf(f, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     fprintf(f, "<game>\n");
-    fprintf(f, "\t<current_turn>%d</current_turn>\n",42);
-    fprintf(f, "\t<game_mode>%d</game_mode>\n", game->mode+1);
+    fprintf(f, "\t<current_turn>%d</current_turn>\n",42); // TODO
+    fprintf(f, "\t<game_mode>%d</game_mode>\n", game->mode+1); // TODO make sure accuracy
     fprintf(f, "\t<difficulty>%d</difficulty>\n", game->difficulty);
-    fprintf(f, "\t<user_color>%d</user_color>\n", game->isPlayerWhite);
+    fprintf(f, "\t<user_color>%d</user_color>\n", game->isPlayerWhite); // TODO make sure bool is converted correctly
     fprintf(f, "\t<board>\n");
 
     for(int y = 7; y > -1; y--){
         fprintf(f, "\t\t<row_%d>", (y+1));
         for(int x = 0; x < 8; x++){
-            fprintf(f, (const char *) consolePieceChar(game->gameBoard->board[y][x]));
+            fprintf(f, "%c", consolePieceChar(game->gameBoard->board[y][x]));
         }
         fprintf(f, "</row_%d>\n", (y+1));
     }

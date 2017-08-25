@@ -37,10 +37,14 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2);
 bool gameBoardIsLegalRookMove(GameBoard *game, char y1, char x1, char y2, char x2);
 bool gameBoardIsLegalBishopMove(GameBoard *game, char y1, char x1, char y2, char x2);
 
+GameBoard* gameBoardCreate();
 void gameBoardSetup(GameBoard *game, bool whiteOnBottom);
 GameBoard* gameBoardCopy(GameBoard* src);
 void gameBoardDestroy(GameBoard* src);
 
+bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2);
+
+bool gameBoardIsThreatened(GameBoard *game, char y1, char x1);
 bool gameBoardIsCheck(GameBoard *game, bool isWhite);
 bool gameBoardIsMate(GameBoard *game, bool isWhite);
 

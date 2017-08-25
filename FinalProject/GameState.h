@@ -21,6 +21,7 @@ typedef struct chess_gamestate{
     // TODO: history
 } GameState;
 
-GameState* GameStateCreate();
+GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode);
+void GameStateDestroy(GameState* game);
 
 #endif //CHESS1_GAMESTATE_H

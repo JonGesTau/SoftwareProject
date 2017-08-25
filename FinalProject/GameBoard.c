@@ -111,6 +111,14 @@ bool gameBoardIsLegalBishopMove(GameBoard *game, char y1, char x1, char y2, char
     return true;
 }
 
+GameBoard* gameBoardCreate(){
+    GameBoard* game = malloc(sizeof(GameBoard));
+    if(game == NULL){
+        //ERROR
+    }
+    return game;
+}
+
 void gameBoardSetup(GameBoard *game, bool whiteOnBottom){
     for(int y = 0; y<8; y++){
         for(int x = 0; x<8; x++){
@@ -120,20 +128,20 @@ void gameBoardSetup(GameBoard *game, bool whiteOnBottom){
 
     game -> whiteTurn = true;
     game ->whiteOnBottom = whiteOnBottom;
-    signed char sign = (signed char) (whiteOnBottom ? 1 : -1);
+    int sign = (whiteOnBottom ? 1 : -1);
 
     for(int x = 0; x<8; x++){
         game -> board[6][x] = (signed char)( -1*sign*CH_PIECE_PAWN); // top side
-        game -> board[1][x] = sign*CH_PIECE_PAWN;
+        game -> board[1][x] = (signed char) (sign*CH_PIECE_PAWN);
     }
 
-    game -> board[7][0] = game -> board[7][7] = -1*sign*CH_PIECE_ROOK;
-    game -> board[7][1] = game -> board[7][6] = -1*sign*CH_PIECE_KNIGHT;
-    game -> board[7][2] = game -> board[7][5] = -1*sign*CH_PIECE_BISHOP;
+    game -> board[7][0] = game -> board[7][7] = (signed char) (-1*sign*CH_PIECE_ROOK);
+    game -> board[7][1] = game -> board[7][6] = (signed char) (-1*sign*CH_PIECE_KNIGHT);
+    game -> board[7][2] = game -> board[7][5] = (signed char) (-1*sign*CH_PIECE_BISHOP);
 
-    game -> board[0][0] = game -> board[0][7] = sign*CH_PIECE_ROOK;
-    game -> board[0][1] = game -> board[0][6] = sign*CH_PIECE_KNIGHT;
-    game -> board[0][2] = game -> board[0][5] = sign*CH_PIECE_BISHOP;
+    game -> board[0][0] = game -> board[0][7] = (signed char) (sign*CH_PIECE_ROOK);
+    game -> board[0][1] = game -> board[0][6] = (signed char) (sign*CH_PIECE_KNIGHT);
+    game -> board[0][2] = game -> board[0][5] = (signed char) (sign*CH_PIECE_BISHOP);
 
     // when w on bottom, queens are on the left
     if(whiteOnBottom){
@@ -147,6 +155,7 @@ void gameBoardSetup(GameBoard *game, bool whiteOnBottom){
         game -> board[7][3] = CH_PIECE_KING;
         game -> board[7][4] = CH_PIECE_QUEEN;
     }
+
 }
 
 GameBoard* gameBoardCopy(GameBoard* src){
@@ -180,10 +189,128 @@ bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2){
     return true;
 }
 
-bool gameBoardIsCheck(GameBoard *game, bool isWhite){
-    // we do this stupidly: we first locate the appropriate king
+bool gameBoardIsThreatened(GameBoard *game, char y1, char x1){
     // then we go on all four sides until blocked, seeing if threatened by rook or queen
     // similarly for bishop or queen; knight; pawn; king
+    // TODO: consider would it be better to keep the location of the kings for time tradeoff
+
+    if(y1 == -1 || x1 == -1) return false; // TODO: big error, but shouldn't happen; atleast print to console
+    if(game->board[y1][x1] == CH_PIECE_EMPTY) return false; // also ERROR
+
+    bool isWhite = isWhite(game->board[y1][x1]);
+
+    int temp_y;
+    int temp_x;
+    signed char enemy = (signed char) (isWhite ? -1 : 1);
+
+    // ----------------------- check for rooks/queens on 4 directions:
+    temp_y = y1;
+    temp_x = x1 + 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_x ++;
+    }
+
+    temp_y = y1;
+    temp_x = x1 - 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_x --;
+    }
+
+    temp_y = y1 + 1;
+    temp_x = x1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y ++;
+    }
+
+    temp_y = y1 - 1;
+    temp_x = x1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y --;
+    }
+
+    // -------------- check for bishops/queens in 4 directions
+    temp_y = y1 + 1;
+    temp_x = x1 + 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y ++;
+        temp_x ++;
+    }
+
+    temp_y = y1 + 1;
+    temp_x = x1 - 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y ++;
+        temp_x --;
+    }
+
+    temp_y = y1 - 1;
+    temp_x = x1 + 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y --;
+        temp_x ++;
+    }
+
+    temp_y = y1 - 1;
+    temp_x = x1 - 1;
+    while(isLegalCoordinate(temp_y,temp_x)){
+        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
+            return true; // in check
+        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
+        temp_y --;
+        temp_x --;
+    }
+
+    // ---------------------- check for knights
+    if(isLegalCoordinate(y1+2, x1+1) && game->board[y1+2][x1+1] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1+2, x1-1) && game->board[y1+2][x1-1] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1-2, x1+1) && game->board[y1-2][x1+1] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1-2, x1-1) && game->board[y1-2][x1-1] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1+1, x1+2) && game->board[y1+1][x1+2] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1+1, x1-2) && game->board[y1+1][x1-2] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1-1, x1+2) && game->board[y1-1][x1+2] == enemy*CH_PIECE_KNIGHT) return true;
+    if(isLegalCoordinate(y1-1, x1-2) && game->board[y1-1][x1-2] == enemy*CH_PIECE_KNIGHT) return true;
+
+    // ----------------- check for threatening pawns
+    if(isWhite && y1 < 6 || !isWhite && y1 > 1) { // first make sure king isn't past pawn row
+        if(x1 > 0 && game->board[y1+(isWhite?1:-1)][x1-1] == enemy*CH_PIECE_PAWN) return true;
+        if(x1 < 7 && game->board[y1+(isWhite?1:-1)][x1+1] == enemy*CH_PIECE_PAWN) return true;
+    }
+
+    // ------------------- check for close king
+    if(isLegalCoordinate(y1+1, x1) && game->board[y1+1][x1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1-1, x1) && game->board[y1-1][x1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1, x1+1) && game->board[y1][x1+1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1, x1-1) && game->board[y1][x1-1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1+1, x1+1) && game->board[y1+1][x1+1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1+1, x1-1) && game->board[y1+1][x1-1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1-1, x1+1) && game->board[y1-1][x1+1] == enemy*CH_PIECE_KING) return true;
+    if(isLegalCoordinate(y1-1, x1-1) && game->board[y1-1][x1-1] == enemy*CH_PIECE_KING) return true;
+
+    return false;
+}
+
+bool gameBoardIsCheck(GameBoard *game, bool isWhite){
     // TODO: consider would it be better to keep the location of the kings for time tradeoff
 
     int king_y = -1;
@@ -201,115 +328,7 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite){
 
     if(king_y == -1) return false; // TODO: big error, but shouldn't happen; atleast print to console
 
-    int temp_y = king_y;
-    int temp_x = king_x;
-    signed char enemy = (signed char) (isWhite ? -1 : 1);
-
-    // ----------------------- check for rooks/queens on 4 directions:
-    temp_y = king_y;
-    temp_x = king_x + 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_x ++;
-    }
-
-    temp_y = king_y;
-    temp_x = king_x - 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_x --;
-    }
-
-    temp_y = king_y + 1;
-    temp_x = king_x;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y ++;
-    }
-
-    temp_y = king_y - 1;
-    temp_x = king_x;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_ROOK || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y --;
-    }
-
-    // -------------- check for bishops/queens in 4 directions
-    temp_y = king_y + 1;
-    temp_x = king_x + 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y ++;
-        temp_x ++;
-    }
-
-    temp_y = king_y + 1;
-    temp_x = king_x - 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y ++;
-        temp_x --;
-    }
-
-    temp_y = king_y - 1;
-    temp_x = king_x + 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y --;
-        temp_x ++;
-    }
-
-    temp_y = king_y - 1;
-    temp_x = king_x - 1;
-    while(isLegalCoordinate(temp_y,temp_x)){
-        if(game->board[temp_y][temp_x] == enemy*CH_PIECE_BISHOP || game->board[temp_y][temp_x] == enemy*CH_PIECE_QUEEN)
-            return true; // in check
-        if(game->board[temp_y][temp_x] != 0) break; // path is blocked
-        temp_y --;
-        temp_x --;
-    }
-
-    // ---------------------- check for knights
-    if(isLegalCoordinate(king_y+2, king_x+1) && game->board[king_y+2][king_x+1] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y+2, king_x-1) && game->board[king_y+2][king_x-1] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y-2, king_x+1) && game->board[king_y-2][king_x+1] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y-2, king_x-1) && game->board[king_y-2][king_x-1] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y+1, king_x+2) && game->board[king_y+1][king_x+2] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y+1, king_x-2) && game->board[king_y+1][king_x-2] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y-1, king_x+2) && game->board[king_y-1][king_x+2] == enemy*CH_PIECE_KNIGHT) return true;
-    if(isLegalCoordinate(king_y-1, king_x-2) && game->board[king_y-1][king_x-2] == enemy*CH_PIECE_KNIGHT) return true;
-
-    // ----------------- check for threatening pawns
-    if(isWhite && king_y < 6 || !isWhite && king_y > 1) { // first make sure king isn't past pawn row
-        if(king_x > 0 && game->board[king_y+(isWhite?1:-1)][king_x-1] == enemy*CH_PIECE_PAWN) return true;
-        if(king_x < 7 && game->board[king_y+(isWhite?1:-1)][king_x+1] == enemy*CH_PIECE_PAWN) return true;
-    }
-
-    // ------------------- check for close king
-    if(isLegalCoordinate(king_y+1, king_x) && game->board[king_y+1][king_x] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y-1, king_x) && game->board[king_y-1][king_x] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y, king_x+1) && game->board[king_y][king_x+1] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y, king_x-1) && game->board[king_y][king_x-1] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y+1, king_x+1) && game->board[king_y+1][king_x+1] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y+1, king_x-1) && game->board[king_y+1][king_x-1] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y-1, king_x+1) && game->board[king_y-1][king_x+1] == enemy*CH_PIECE_KING) return true;
-    if(isLegalCoordinate(king_y-1, king_x-1) && game->board[king_y-1][king_x-1] == enemy*CH_PIECE_KING) return true;
-
-    return false;
+    return gameBoardIsThreatened(game, king_y, king_x);
 }
 
 bool gameBoardIsMate(GameBoard *game, bool isWhite){

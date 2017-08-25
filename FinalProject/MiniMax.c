@@ -46,14 +46,14 @@ int miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool isMax, i
             int y2, x2;
 
             switch(whichPiece){
-                case CH_PIECE_ROOK:
+                /*case CH_PIECE_ROOK:
                     y2 = y+1;
                     x2 = x;
                     while(isLegalCoordinate(y2,x2)){
                         // see if possible
                         if(game->board[])
                         y2 ++;
-                    }
+                    }*/
             }
         }
     }

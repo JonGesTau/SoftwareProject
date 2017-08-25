@@ -7,9 +7,9 @@
 
 #include <stdio.h>
 
-#include "GameBoard.h";
+#include "GameBoard.h"
 
-#define consolePieceChar(p) ("_mbnrqk"[whichPiece(p)] + (isBlack(p)?-32:0))
+#define consolePieceChar(p) (("_mbnrqk"[whichPiece(p)]) + (isBlack(p)?-32:0))
 
 
 

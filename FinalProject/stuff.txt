@@ -1,4 +1,13 @@
+XML UNIT:
+- saving tested successfully, need to address TODOs though
 
+Console unit:
+- print board was tested
+
+Game board:
+- legal move tested for: all pieces
+- isThreatened also works
+- next: make sure check works
 
 * how do we return the move from minimax? create perhaps move struct with chars y1,x1,y2,x2?
 
