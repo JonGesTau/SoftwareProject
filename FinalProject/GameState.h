@@ -15,6 +15,7 @@
 
 typedef struct chess_gamestate{
     GameBoard* gameBoard;
+    int current_move; // TODO: newly added, make sure we deal with this everywhere
     char difficulty; // 1-5
     bool isPlayerWhite;
     bool mode; // false is 1

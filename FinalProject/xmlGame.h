@@ -14,7 +14,13 @@
 #include "GameState.h"
 #include "consoleUI.h" // TODO: not ideal but we need it for consolePieceChar
 
+#define XML_GAME_MAX_LINE_LENGTH 256
+
 bool xmlGameSaveGame(GameState* game, char* filename);
+
+
+bool xmlGameNextRow(FILE* f, char* line, int* start_pos);
+
 GameState* xmlGameLoadGame(char* filename);
 
 bool xmlGameParseRow(GameBoard* game, char rowNumber, char* row);

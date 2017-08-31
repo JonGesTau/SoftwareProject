@@ -1,5 +1,6 @@
 XML UNIT:
 - saving tested successfully, need to address TODOs though
+- loading also tested
 
 Console unit:
 - print board was tested
@@ -9,9 +10,19 @@ Game board:
 - isThreatened also works
 - next: make sure check works
 
-* how do we return the move from minimax? create perhaps move struct with chars y1,x1,y2,x2?
+Status:
+* xMl unit:
+    - only TODOs to clean
+* console unit:
+    - only print board works
+* logic unit:
+    - do mate check
+    - chain possible moves for min/max
+    - test these
 
-* how do we parse the XML? perhaps use external lib?
+* consider avoiding boolean parameters in gameState, doesn't really mean anything anyway
+
+* how do we return the move from minimax? create perhaps move struct with chars y1,x1,y2,x2?
 
 * when scanning moves during the minimax, it's kinda shit doing all the loops for possible moves and then each time
   repeating the recursion code. one possible way is to first scan all possible moves and keep in linked list.

@@ -36,14 +36,127 @@ bool xmlGameSaveGame(GameState* game, char* filename){
     return true;
 }
 
+bool xmlGameNextRow(FILE *f, char *line, int *start_pos) {
+    // advances pointers and buffers to the start of the next
+    // non-empty line, and also skips leading whitespace
+    (*start_pos) = 0;
+    do{
+        if(!fgets(line, XML_GAME_MAX_LINE_LENGTH, f)){
+            return false;
+        } // file over or something else
+    }while(strlen(line) == 0);
+    while(*start_pos < sizeof(line) && isspace(line[*start_pos])){ (*start_pos) ++; }
+
+    if(*start_pos >= sizeof(line)) return false; // if the line is only whitespaces
+
+    return true;
+}
 
 GameState* xmlGameLoadGame(char* filename){
-    //TODO: parse XML....
+    //TODO: throw errors to console
+    // this works like a state machine
+    FILE* f = fopen(filename, "r");
+
+    if(f == NULL){
+        // ERROR
+    }
+    char line[XML_GAME_MAX_LINE_LENGTH];
+    int start_pos = 0;
+
+    int current_turn = 0;
+    char game_mode = 2; // TODO: clean here
+    char difficulty = 2;
+    char user_color = 1; // player is white by default
+
+    // stage <? .... ?>
+    if(!xmlGameNextRow(f, line, &start_pos)) return NULL; // ERRORS TODO: first close file and clear Gameboard etc.
+
+    if((start_pos > sizeof(line) - 2) || line[start_pos] != '<' || line[start_pos+1]!='?'){
+        return NULL; //first non-empty line must start "<?", can have leading whitespace
+    }
+
+    // stage <game>
+    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+    if(strncmp(line+start_pos, "<game", 5) != 0) return NULL;
+
+    // <current_turn>
+    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+    if(strncmp(line+start_pos, "<current_turn>", 14) != 0) return NULL;
+
+    while(line[start_pos+14] >= '0' && line[start_pos+14] <= '9'){
+        current_turn = current_turn*10 + (line[start_pos+14] - '0');
+        start_pos ++;
+    } // parsing variable-size integer
+
+    // <game_mode>
+    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+    if(strncmp(line+start_pos, "<game_mode>", 11) != 0) return NULL;
+    game_mode = line[start_pos+11];
+    if(game_mode != '1' && game_mode != '2') return NULL; // illegal game_mode
+    game_mode -= '0';
+
+    if(game_mode != 1 && game_mode != 2) return NULL; // ERROR: illegal game_mode
+
+    if(game_mode == 1){
+        // <difficulty>
+        if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+        if(strncmp(line+start_pos, "<difficulty>", 12) != 0) return NULL;
+        // 49 = '1', 50 = '2'
+        difficulty = line[start_pos+12];
+        if(difficulty < '1' || difficulty > '5') return NULL; // illegal difficulty; assumes expert is possible
+        difficulty -= '0';
+
+        // <user_color>
+        if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+        if(strncmp(line+start_pos, "<user_color>", 12) != 0) return NULL;
+
+        user_color = line[start_pos+12];
+        if(user_color != '1' && user_color != '2') return NULL; // illegal user_color
+        user_color -= '0';
+
+        if(!xmlGameNextRow(f, line, &start_pos)) return NULL; // now should be board
+        if(strncmp(line+start_pos, "<board>", 7) != 0) return NULL;
+    } else {
+        do{
+            if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+        }while((strncmp(line+start_pos, "<board>", 7) != 0));
+    }
+
+    // <rows>
+    GameBoard* board = gameBoardCreate();
+
+    for(char row = 7; row > -1; row--){
+        if(!xmlGameNextRow(f, line, &start_pos)){
+            gameBoardDestroy(board);
+            return NULL;
+        }
+        if(!xmlGameParseRow(board, row, line+start_pos+7)){
+            gameBoardDestroy(board);
+            return NULL; // can unite into one if
+        }
+    }
+
+ //  In "2 players" mode, the tags <difficulty> and <user_color> should not contain any value and
+ // can also be discarded from the file. MODE ==2
+ // the order is exactly the sam.e there will be no superfluous empty lines.
+
+    consoleUIPrintBoard(board); // TODO: delete this eventually
+    //gameBoardDestroy(board);
+
+    GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode==1);
+    // TODO: make sure game mode condition is not the reverse
+    state->gameBoard = board;
+    state->current_move = current_turn;
+
+    printf("difficulty is %d\n", difficulty);
+    fclose(f);
+    return state;
 }
 
 bool xmlGameParseRow(GameBoard* game, char rowNumber, char* row){
     // parses a single row string into the GameBoard object
-    if(strlen(row) != 8) return false;
+
+    if(strlen(row) < 8) return false;
     if(rowNumber < 0 || rowNumber > 7) return false;
     if(game == NULL) return false;
 
@@ -52,9 +165,11 @@ bool xmlGameParseRow(GameBoard* game, char rowNumber, char* row){
     bool isBlack = false;
 
     for(int x = 0; x<8; x++){
-        piece = strcspn(pieces, (char *)tolower(row[x]));
-        if(piece >= strlen(pieces)) return false; // illegal char
-        isBlack = row[x] < 0;
+        char* found = strchr(pieces, (char)tolower(row[x]));
+        if(found == NULL) return false;
+
+        piece = (int) (found - pieces);
+        isBlack = tolower(row[x]) != row[x];
         game -> board[rowNumber][x] = (signed char) (piece * (isBlack ? -1 : 1));
     }
     return true;
