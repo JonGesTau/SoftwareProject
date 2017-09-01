@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <printf.h>
 #include "ChessParser.h"
+#include "Moves.h"
 
 bool isInt(const char* str) {
     // If str is a negative number, remove '-'
@@ -108,4 +109,31 @@ COMMAND getCommand(char* str) {
     else if (strcmp(str, "undo") == 0) return UNDO;
     else if (strcmp(str, "reset") == 0) return RESET;
     else return INVALID_LINE;
+}
+
+Move* parseMove(char* str) {
+    Move* move;
+    char strCopy[128];
+    char y1[2];
+    char y2[2];
+    char x1[2];
+    char x2[2];
+
+    strcpy(strCopy, str);
+    copyCharByIndex(&y1, strCopy, 1);
+    copyCharByIndex(&x1, strCopy, 3);
+    copyCharByIndex(&y2, strCopy, 10);
+    copyCharByIndex(&x2, strCopy, 12);
+
+    move->x1 = *x1;
+    move->x2 = *x2;
+    move->y1 = *y1;
+    move->y2 = *y2;
+
+    return move;
+}
+
+void copyCharByIndex(char* dest, char* src, int index) {
+    strncpy(dest, src+index, 1);
+    dest[1] = '\0';
 }

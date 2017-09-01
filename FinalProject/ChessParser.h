@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <inttypes.h>
+#include "Moves.h"
 
 //a type used to represent a command
 typedef enum {
@@ -66,5 +67,8 @@ Command parseLine(const char* str);
  * @return the command in type SP_COMMAND
  */
 COMMAND getCommand(char* str);
+
+Move* parseMove(char* str);
+void copyCharByIndex(char* dest, char* src, int index);
 
 #endif //FINALPROJECT_CHESSPARSER_H

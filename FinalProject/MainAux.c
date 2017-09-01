@@ -34,7 +34,8 @@ void startConsoleMode() {
         }
     } while (userCmd.cmd != START);
 
-    GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
+    // Start game
+    startGame(settings);
 }
 
 void startGUIMode() {
@@ -55,4 +56,22 @@ Command getUserCommand() {
     userCommand = parseLine(userInput);
 
     return userCommand;
+}
+
+void startGame(GameSettings* settings) {
+    Command userCmd;
+    Move* userMove;
+
+    game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
+    consoleUIPrintBoard(game->gameBoard);
+    promptUserMove();
+    userCmd = getUserCommand();
+    userMove = parseMove(userCmd.arg);
+    gameBoardPerformMove(game, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
+    consoleUIPrintBoard(game->gameBoard);
+}
+
+void promptUserMove() {
+    char* color = game->gameBoard->whiteTurn ? "White" : "Black";
+    printf("%s player - enter your move:\n", color);
 }
