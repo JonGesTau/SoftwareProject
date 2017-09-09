@@ -15,6 +15,7 @@
 #include "consoleUI.h"
 #include "GameBoard.h"
 #include "Moves.h"
+#include "SDL.h"
 
 Command getUserCommand();
 int arg;

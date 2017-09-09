@@ -69,8 +69,8 @@ Command parseLine(const char* str) {
     token = strtok(NULL, delimiter);
 
     if (command.numArgs > 0) {
-        char arg[50] = "";
-        char buffer[50] = "";
+        char arg[50];
+        char buffer[50];
 
         while (token != NULL) {
             strcpy(buffer, token);
@@ -120,10 +120,10 @@ Move* parseMove(char* str) {
     char x2[2];
 
     strcpy(strCopy, str);
-    copyCharByIndex(&y1, strCopy, 1);
-    copyCharByIndex(&x1, strCopy, 3);
-    copyCharByIndex(&y2, strCopy, 10);
-    copyCharByIndex(&x2, strCopy, 12);
+    copyCharByIndex(&x1, strCopy, 4);
+    copyCharByIndex(&y1, strCopy, 2);
+    copyCharByIndex(&x2, strCopy, 13);
+    copyCharByIndex(&y2, strCopy, 11);
 
     move->x1 = *x1;
     move->x2 = *x2;

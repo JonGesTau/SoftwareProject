@@ -67,7 +67,7 @@ void startGame(GameSettings* settings) {
     promptUserMove();
     userCmd = getUserCommand();
     userMove = parseMove(userCmd.arg);
-    gameBoardPerformMove(game, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
+    gameBoardPerformMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
     consoleUIPrintBoard(game->gameBoard);
 }
 
