@@ -16,6 +16,8 @@
 #include "GameBoard.h"
 #include "Moves.h"
 #include "SDL.h"
+#include "xmlGame.h"
+#include "MiniMax.h"
 
 Command getUserCommand();
 int arg;
@@ -25,6 +27,7 @@ void startConsoleMode();
 void startGUIMode();
 void startGame(GameSettings* settings);
 void promptUserMove();
+bool handleUserMove(GameBoard* gameBoard, Move* userMove);
 
 
 #endif //CHESS1_MAINAUX_H

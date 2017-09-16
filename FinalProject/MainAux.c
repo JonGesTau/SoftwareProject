@@ -61,17 +61,54 @@ Command getUserCommand() {
 void startGame(GameSettings* settings) {
     Command userCmd;
     Move* userMove;
+    bool isLegalMove = false;
 
     game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
-    consoleUIPrintBoard(game->gameBoard);
-    promptUserMove();
-    userCmd = getUserCommand();
-    userMove = parseMove(userCmd.arg);
-    gameBoardPerformMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
-    consoleUIPrintBoard(game->gameBoard);
+    char* color = game->gameBoard->whiteTurn ? "White" : "Black";
+
+    int winner = '\0';
+
+    while (winner == '\0') {
+        consoleUIPrintBoard(game->gameBoard);
+        promptUserMove();
+        userCmd = getUserCommand();
+
+        if (userCmd.cmd == MOVE) {
+            bool isMoveSuccessful = false;
+            userMove = parseMove(userCmd.arg);
+            isMoveSuccessful = handleUserMove(game->gameBoard, userMove);
+            if (isMoveSuccessful) {
+                if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
+                    printf("Checkmate! %s player wins the game\n", color);
+                    winner = game->isPlayerWhite;
+                } else {
+                    if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) printf("Check: %s King is threatend!\n", color);
+                    game->gameBoard->whiteTurn = !game->gameBoard->whiteTurn;
+                }
+            }
+        } else if (userCmd.cmd == SAVE) {
+            xmlGameSaveGame(game, userCmd.arg);
+        } else if (userCmd.cmd == LOAD) {
+            xmlGameLoadGame(userCmd.arg);
+        }
+    }
 }
 
 void promptUserMove() {
     char* color = game->gameBoard->whiteTurn ? "White" : "Black";
     printf("%s player - enter your move:\n", color);
+}
+
+bool handleUserMove(GameBoard* gameBoard, Move* userMove) {
+    bool isLegalMove;
+    isLegalMove = gameBoardIsLegalMove(gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
+
+    if (isLegalMove) {
+        gameBoardPerformMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
+        return true;
+    } else {
+        // TODO: Handle all kinds of errors here
+        printf("Illegal move\n");
+        return false;
+    }
 }

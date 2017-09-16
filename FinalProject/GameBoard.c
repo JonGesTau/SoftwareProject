@@ -333,6 +333,6 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite){
 
 bool gameBoardIsMate(GameBoard *game, bool isWhite){
     // TODO
-    return true;
+    return false;
 }
 

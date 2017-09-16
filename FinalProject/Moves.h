@@ -31,7 +31,7 @@ typedef struct scored_move{
 } ScoredMove;
 
 typedef struct move{
-    char y1,x1,y2,x2;
+    int y1,x1,y2,x2;
 } Move;
 
 ////

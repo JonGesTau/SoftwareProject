@@ -49,13 +49,13 @@ Command parseLine(const char* str) {
         case QUIT:
         case START:
         case UNDO:
-        case SAVE:
         case RESET:
             command.numArgs = 0;
             break;
         case GAME_MODE:
         case DIFFICULTY:
         case USER_COLOR:
+        case SAVE:
         case LOAD:
         case GET_MOVES:
             command.numArgs = 1;
@@ -69,8 +69,8 @@ Command parseLine(const char* str) {
     token = strtok(NULL, delimiter);
 
     if (command.numArgs > 0) {
-        char arg[50];
-        char buffer[50];
+        char arg[50] = {'\0'};
+        char buffer[50] = {'\0'};
 
         while (token != NULL) {
             strcpy(buffer, token);
@@ -120,15 +120,17 @@ Move* parseMove(char* str) {
     char x2[2];
 
     strcpy(strCopy, str);
-    copyCharByIndex(&x1, strCopy, 4);
-    copyCharByIndex(&y1, strCopy, 2);
-    copyCharByIndex(&x2, strCopy, 13);
-    copyCharByIndex(&y2, strCopy, 11);
+    copyCharByIndex(&x1, strCopy, 3);
+    copyCharByIndex(&y1, strCopy, 1);
+    copyCharByIndex(&x2, strCopy, 12);
+    copyCharByIndex(&y2, strCopy, 10);
 
-    move->x1 = *x1;
-    move->x2 = *x2;
-    move->y1 = *y1;
-    move->y2 = *y2;
+
+
+    move->x1 = *x1 - '0' - 17;
+    move->x2 = *x2 - '0' - 17;
+    move->y1 = *y1 - '0' - 1;
+    move->y2 = *y2 - '0' - 1;
 
     return move;
 }
