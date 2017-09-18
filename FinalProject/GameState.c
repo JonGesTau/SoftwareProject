@@ -13,7 +13,7 @@ GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode){
     game ->mode = mode;
     game->difficulty = difficulty;
     game ->gameBoard = gameBoardCreate();
-    gameBoardSetup(game -> gameBoard, true);
+    gameBoardSetup(game -> gameBoard);
     return game;
 }
 

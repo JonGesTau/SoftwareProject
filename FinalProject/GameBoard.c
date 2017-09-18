@@ -4,7 +4,6 @@
 
 #include "GameBoard.h"
 
-// TODO: said in forum that white pieces are always at the bottom!
 bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
     /*
      * ? make sure legal board?
@@ -44,8 +43,8 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
         case CH_PIECE_PAWN:
             if(abs(x1-x2) > 1 || abs(y1-y2) > 2 || abs(y1-y2) < 1) return false;
             // make sure dest is within 3*5 rectangle
-            if(isWhitePiece && (game->whiteOnBottom != y2>y1)) return false;
-            if(!isWhitePiece && (game->whiteOnBottom != y2<y1)) return false;
+            if(isWhitePiece && (y2<y1)) return false;
+            if(!isWhitePiece && (y2>y1)) return false;
             /// making sure they're going the right way
 
             if(x1 != x2){ // capturing move
@@ -55,8 +54,8 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
             } else if(abs(y1-y2) == 1){ // normal forward move
                 if(game -> board[y2][x2] != 0) return false; // dest must be empty
             } else{ // two space move
-                if(isWhitePiece && y1 != (game->whiteOnBottom?1:6)) return false;
-                if(!isWhitePiece && y1 != (game->whiteOnBottom?6:1)) return false;
+                if(isWhitePiece && y1 != 1) return false;
+                if(!isWhitePiece && y1 != 6) return false;
                 // making sure pawn hasn't moved yet
 
                 int y_mid = y1 + (y2>y1 ? 1 : -1);
@@ -119,43 +118,32 @@ GameBoard* gameBoardCreate(){
     return game;
 }
 
-void gameBoardSetup(GameBoard *game, bool whiteOnBottom){
+void gameBoardSetup(GameBoard *game){
     for(int y = 0; y<8; y++){
         for(int x = 0; x<8; x++){
-            game -> board[y][x] = 0;
+            game -> board[y][x] = CH_PIECE_EMPTY;
         }
     }
 
     game -> whiteTurn = true;
-    game ->whiteOnBottom = whiteOnBottom;
-    int sign = (whiteOnBottom ? 1 : -1);
 
     for(int x = 0; x<8; x++){
-        game -> board[6][x] = (signed char)( -1*sign*CH_PIECE_PAWN); // top side
-        game -> board[1][x] = (signed char) (sign*CH_PIECE_PAWN);
+        game -> board[6][x] = -1*CH_PIECE_PAWN; // top side
+        game -> board[1][x] = CH_PIECE_PAWN;
     }
 
-    game -> board[7][0] = game -> board[7][7] = (signed char) (-1*sign*CH_PIECE_ROOK);
-    game -> board[7][1] = game -> board[7][6] = (signed char) (-1*sign*CH_PIECE_KNIGHT);
-    game -> board[7][2] = game -> board[7][5] = (signed char) (-1*sign*CH_PIECE_BISHOP);
+    game -> board[7][0] = game -> board[7][7] = -1*CH_PIECE_ROOK;
+    game -> board[7][1] = game -> board[7][6] = -1*CH_PIECE_KNIGHT;
+    game -> board[7][2] = game -> board[7][5] = -1*CH_PIECE_BISHOP;
 
-    game -> board[0][0] = game -> board[0][7] = (signed char) (sign*CH_PIECE_ROOK);
-    game -> board[0][1] = game -> board[0][6] = (signed char) (sign*CH_PIECE_KNIGHT);
-    game -> board[0][2] = game -> board[0][5] = (signed char) (sign*CH_PIECE_BISHOP);
+    game -> board[0][0] = game -> board[0][7] = CH_PIECE_ROOK;
+    game -> board[0][1] = game -> board[0][6] = CH_PIECE_KNIGHT;
+    game -> board[0][2] = game -> board[0][5] = CH_PIECE_BISHOP;
 
-    // when w on bottom, queens are on the left
-    if(whiteOnBottom){
-        game -> board[0][3] = CH_PIECE_QUEEN;
-        game -> board[0][4] = CH_PIECE_KING;
-        game -> board[7][3] = -CH_PIECE_QUEEN;
-        game -> board[7][4] = -CH_PIECE_KING;
-    } else {
-        game -> board[0][3] = -CH_PIECE_KING;
-        game -> board[0][4] = -CH_PIECE_QUEEN;
-        game -> board[7][3] = CH_PIECE_KING;
-        game -> board[7][4] = CH_PIECE_QUEEN;
-    }
-
+    game -> board[0][3] = CH_PIECE_QUEEN;
+    game -> board[0][4] = CH_PIECE_KING;
+    game -> board[7][3] = -CH_PIECE_QUEEN;
+    game -> board[7][4] = -CH_PIECE_KING;
 }
 
 GameBoard* gameBoardCopy(GameBoard* src){
@@ -166,7 +154,6 @@ GameBoard* gameBoardCopy(GameBoard* src){
         return NULL;
 
     game2 -> whiteTurn = src->whiteTurn;
-    game2 -> whiteOnBottom = src->whiteOnBottom;
 
     for(int y = 0; y<8; y++){
         for(int x = 0; x<8; x++){

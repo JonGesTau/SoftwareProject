@@ -1,7 +1,7 @@
 #include <memory.h>
 #include <ctype.h>
 #include <assert.h>
-#include <printf.h>
+#include <stdio.h>
 #include "ChessParser.h"
 #include "Moves.h"
 
