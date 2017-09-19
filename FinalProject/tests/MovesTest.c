@@ -4,7 +4,18 @@
 
 #include "MovesTest.h"
 
+void MovesTestPrintMoves(MoveList* list){
+    LinkedMove* lmove = MovePop(list);
+    if(lmove == NULL) return;
+    Move* move;
 
+    while(lmove != NULL){
+        move = lmove->move;
+        printf("next move is: (%d, %d) -> (%d, %d)\n", move->y1, move->x1, move->y2, move->x2);
+        LinkedMoveDestroy(lmove);
+        lmove = MovePop(list);
+    }
+}
 
 int MovesTestLinked(){
     MoveList* list = MoveListCreate();
@@ -17,15 +28,7 @@ int MovesTestLinked(){
     MovePush(list, 3, 5, 2, 5);
     MovePush(list, 2, 5, 2, 3);
 
-    Move* move = MovePop(list);
-
-    while(move != NULL){
-        printf("next move is: (%d, %d) -> (%d, %d)\n", move->y1, move->x1, move->y2, move->x2);
-        MoveDestroy(move);
-        move = MovePop(list);
-    }
-
-    MoveListDestroy(list);
+    MovesTestPrintMoves(list);
     return 1;
 }
 

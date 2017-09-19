@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "Moves.h"
+
 #define CH_PIECE_EMPTY 0
 #define CH_PIECE_PAWN 1
 #define CH_PIECE_BISHOP 2
@@ -21,6 +23,8 @@
 #define whichPiece(p) (abs(p))
 #define isWhite(p) (p > 0)
 #define isBlack(p) (p < 0)
+#define isEmpty(p) (p == CH_PIECE_EMPTY)
+#define sign(p) (p>0 ? 1 : (p==0 ? 0 : -1))
 #define chPieceScore(p) (((int[]){0,1,3,3,5,9,100})[whichPiece(p)])*(isBlack(p)?-1:1)
 #define isLegalCoordinate(y, x) (y>-1 && y<8 && x>-1 && x<8)
 
@@ -59,6 +63,14 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite);
 // TODO: not yet implemented
 bool gameBoardIsMate(GameBoard *game, bool isWhite);
 
+
 // all possible moves feature
+MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite);
+
+void gameBoardMovesPawn(GameBoard* game, MoveList* moves, char y, char x);
+void gameBoardMovesBishop(GameBoard* game, MoveList* moves, char y, char x);
+void gameBoardMovesKnight(GameBoard* game, MoveList* moves, char y, char x);
+void gameBoardMovesRook(GameBoard* game, MoveList* moves, char y, char x);
+void gameBoardMovesKing(GameBoard* game, MoveList* moves, char y, char x);
 
 #endif //CHESS1_GAMEBOARD_H

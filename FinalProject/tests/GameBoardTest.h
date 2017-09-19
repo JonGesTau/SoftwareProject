@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "../consoleUI.h"
+#include "MovesTest.h"
 
 int tryMove(GameBoard* game, char y1, char x1, char y2, char x2);
 int isLegalTest1();
@@ -14,5 +15,7 @@ int isLegalTest2();
 int isLegalTest3();
 int isThreatenedTest1();
 int gameBoardTest();
+int GameBoardAllMovesTest();
+int GameBoardMateTest();
 
 #endif //CHESS1_GAMEBOARDTEST_H

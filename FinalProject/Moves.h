@@ -48,7 +48,7 @@ MoveList* MoveListCreate();
 
 void MovePush(MoveList* list, char y1, char x1, char y2, char x2);
 
-Move* MovePop(MoveList* list);
+LinkedMove* MovePop(MoveList* list);
 
 void MoveListDestroy(MoveList* list);
 

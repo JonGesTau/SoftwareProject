@@ -8,6 +8,7 @@
 #ifndef CHESS1_MOVESTEST_H
 #define CHESS1_MOVESTEST_H
 
+void MovesTestPrintMoves(MoveList* list);
 int MovesTestLinked();
 int MovesTestScore();
 
