@@ -30,7 +30,7 @@ LinkedMove* LinkedMoveCreate(char y1, char x1, char y2, char x2){
     }
     lmove -> move = MoveCreate(y1, x1, y2, x2);
     if(lmove -> move == NULL){
-        LinkedMoveDestroy(lmove);
+        free(lmove);
         return NULL;
         // ERROR
     }
@@ -55,22 +55,12 @@ MoveList* MoveListCreate(){
 }
 
 void MovePush(MoveList* list, char y1, char x1, char y2, char x2){
-    LinkedMove* lmove = LinkedMoveCreate();
+    LinkedMove* lmove = LinkedMoveCreate(y1, x1, y2, x2);
     if(lmove == NULL){
         // ERROR
         return;
     }
-    Move* move = MoveCreate(y1, x1 ,y2, x2);
-    if(move == NULL){
-        // ERROR
-        return;
-    }
-    move -> y1 = y1;
-    move -> x1 = x1;
-    move -> y2 = y2;
-    move -> x2 = x2;
 
-    lmove -> move = move;
     lmove -> next = list -> first;
     list -> first = lmove;
 }
@@ -88,8 +78,7 @@ void MoveListDestroy(MoveList* list){
     LinkedMove* temp = list -> first;
     while(temp != NULL){
         list -> first = temp -> next;
-        Li
-        free(temp);
+        LinkedMoveDestroy(temp);
         temp = list -> first;
     }
 }

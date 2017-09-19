@@ -6,7 +6,8 @@
 
 void startConsoleMode() {
     Command userCmd;
-    GameSettings* settings = getDefaultSettings();
+    GameSettings* settings = getDefaultSettings(); // TODO: this is never freed.
+    // also never checked for memory errors - are we supposed to anyway?
 
     promptSelectSetting(); // Prompt user to enter settings or start the game.
 
@@ -26,7 +27,7 @@ void startConsoleMode() {
         } else if (userCmd.cmd == LOAD) {
             // Load game
         } else if (userCmd.cmd == DEFAULT) {
-            settings = getDefaultSettings();
+            settings = getDefaultSettings(); // TODO: This is never freed
         } else if (userCmd.cmd == PRINT_SETTING) {
             printSettings(settings);
         } else if (userCmd.cmd == QUIT) {
