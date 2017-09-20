@@ -4,7 +4,6 @@
 
 #include "GameBoard.h"
 
-// TODO: said in forum that white pieces are always at the bottom!
 bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
     /*
      * ? make sure legal board?
@@ -44,8 +43,8 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
         case CH_PIECE_PAWN:
             if(abs(x1-x2) > 1 || abs(y1-y2) > 2 || abs(y1-y2) < 1) return false;
             // make sure dest is within 3*5 rectangle
-            if(isWhitePiece && (game->whiteOnBottom != y2>y1)) return false;
-            if(!isWhitePiece && (game->whiteOnBottom != y2<y1)) return false;
+            if(isWhitePiece && (y2<y1)) return false;
+            if(!isWhitePiece && (y2>y1)) return false;
             /// making sure they're going the right way
 
             if(x1 != x2){ // capturing move
@@ -55,8 +54,8 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
             } else if(abs(y1-y2) == 1){ // normal forward move
                 if(game -> board[y2][x2] != 0) return false; // dest must be empty
             } else{ // two space move
-                if(isWhitePiece && y1 != (game->whiteOnBottom?1:6)) return false;
-                if(!isWhitePiece && y1 != (game->whiteOnBottom?6:1)) return false;
+                if(isWhitePiece && y1 != 1) return false;
+                if(!isWhitePiece && y1 != 6) return false;
                 // making sure pawn hasn't moved yet
 
                 int y_mid = y1 + (y2>y1 ? 1 : -1);
@@ -115,47 +114,43 @@ GameBoard* gameBoardCreate(){
     GameBoard* game = malloc(sizeof(GameBoard));
     if(game == NULL){
         //ERROR
+        return NULL;
+    }
+
+    for(int y = 0; y<8; y++){
+        for(int x = 0; x<8; x++){
+            game->board[y][x] = CH_PIECE_EMPTY;
+        }
     }
     return game;
 }
 
-void gameBoardSetup(GameBoard *game, bool whiteOnBottom){
+void gameBoardSetup(GameBoard *game){
     for(int y = 0; y<8; y++){
         for(int x = 0; x<8; x++){
-            game -> board[y][x] = 0;
+            game -> board[y][x] = CH_PIECE_EMPTY;
         }
     }
 
     game -> whiteTurn = true;
-    game ->whiteOnBottom = whiteOnBottom;
-    int sign = (whiteOnBottom ? 1 : -1);
 
     for(int x = 0; x<8; x++){
-        game -> board[6][x] = (signed char)( -1*sign*CH_PIECE_PAWN); // top side
-        game -> board[1][x] = (signed char) (sign*CH_PIECE_PAWN);
+        game -> board[6][x] = -1*CH_PIECE_PAWN; // top side
+        game -> board[1][x] = CH_PIECE_PAWN;
     }
 
-    game -> board[7][0] = game -> board[7][7] = (signed char) (-1*sign*CH_PIECE_ROOK);
-    game -> board[7][1] = game -> board[7][6] = (signed char) (-1*sign*CH_PIECE_KNIGHT);
-    game -> board[7][2] = game -> board[7][5] = (signed char) (-1*sign*CH_PIECE_BISHOP);
+    game -> board[7][0] = game -> board[7][7] = -1*CH_PIECE_ROOK;
+    game -> board[7][1] = game -> board[7][6] = -1*CH_PIECE_KNIGHT;
+    game -> board[7][2] = game -> board[7][5] = -1*CH_PIECE_BISHOP;
 
-    game -> board[0][0] = game -> board[0][7] = (signed char) (sign*CH_PIECE_ROOK);
-    game -> board[0][1] = game -> board[0][6] = (signed char) (sign*CH_PIECE_KNIGHT);
-    game -> board[0][2] = game -> board[0][5] = (signed char) (sign*CH_PIECE_BISHOP);
+    game -> board[0][0] = game -> board[0][7] = CH_PIECE_ROOK;
+    game -> board[0][1] = game -> board[0][6] = CH_PIECE_KNIGHT;
+    game -> board[0][2] = game -> board[0][5] = CH_PIECE_BISHOP;
 
-    // when w on bottom, queens are on the left
-    if(whiteOnBottom){
-        game -> board[0][3] = CH_PIECE_QUEEN;
-        game -> board[0][4] = CH_PIECE_KING;
-        game -> board[7][3] = -CH_PIECE_QUEEN;
-        game -> board[7][4] = -CH_PIECE_KING;
-    } else {
-        game -> board[0][3] = -CH_PIECE_KING;
-        game -> board[0][4] = -CH_PIECE_QUEEN;
-        game -> board[7][3] = CH_PIECE_KING;
-        game -> board[7][4] = CH_PIECE_QUEEN;
-    }
-
+    game -> board[0][3] = CH_PIECE_QUEEN;
+    game -> board[0][4] = CH_PIECE_KING;
+    game -> board[7][3] = -CH_PIECE_QUEEN;
+    game -> board[7][4] = -CH_PIECE_KING;
 }
 
 GameBoard* gameBoardCopy(GameBoard* src){
@@ -166,7 +161,6 @@ GameBoard* gameBoardCopy(GameBoard* src){
         return NULL;
 
     game2 -> whiteTurn = src->whiteTurn;
-    game2 -> whiteOnBottom = src->whiteOnBottom;
 
     for(int y = 0; y<8; y++){
         for(int x = 0; x<8; x++){
@@ -332,7 +326,322 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite){
 }
 
 bool gameBoardIsMate(GameBoard *game, bool isWhite){
-    // TODO
-    return false;
+    // 1. make sure king is in check
+    // 2. find all possible moves
+    // 3. play each on a temporary board
+    // 4. make sure it also results in check
+    if(!gameBoardIsCheck(game, isWhite))
+        return false; // must be check
+
+    MoveList* moves = gameBoardAllMoves(game, isWhite);
+
+    LinkedMove* lmove = MovePop(moves);
+    if(lmove == NULL) return true; // no possible moves
+
+    GameBoard* temp = gameBoardCopy(game);
+    Move* move;
+
+    while(lmove != NULL){
+        move = lmove->move;
+        gameBoardPerformMove(temp, move->y1, move->x1, move->y2, move->x2);
+        if(!gameBoardIsCheck(temp, isWhite))
+            return false;
+        gameBoardDestroy(temp);
+        temp = gameBoardCopy(game);
+
+        LinkedMoveDestroy(lmove);
+        lmove = MovePop(moves);
+    }
+
+
+    return true;
 }
 
+
+MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
+    MoveList* moveList = MoveListCreate();
+    int piece;
+
+    for (int y = 0; y < 8; ++y) {
+        for (int x = 0; x < 8; ++x) {
+            if(game->board[y][x] == CH_PIECE_EMPTY || isWhite(game->board[y][x]) != isWhite){
+                continue;
+            }
+
+            piece = whichPiece(game->board[y][x]);
+
+            if(piece == CH_PIECE_PAWN){
+                gameBoardMovesPawn(game, moveList, y, x);
+            } else if(piece == CH_PIECE_BISHOP){
+                gameBoardMovesBishop(game, moveList, y, x);
+            } else if(piece == CH_PIECE_KNIGHT){
+                gameBoardMovesKnight(game, moveList, y, x);
+            } else if(piece == CH_PIECE_ROOK){
+                gameBoardMovesRook(game, moveList, y, x);
+            } else if(piece == CH_PIECE_QUEEN){
+                gameBoardMovesBishop(game, moveList, y, x);
+                gameBoardMovesRook(game, moveList, y, x);
+            } else if(piece == CH_PIECE_KING){
+                gameBoardMovesKing(game, moveList, y, x);
+            }
+        }
+    }
+    return moveList;
+}
+
+// given a board, move list and coords of a pawn, pushes to move list all possible moves for that pawn
+void gameBoardMovesPawn(GameBoard* game, MoveList* moves, char y, char x){
+    bool isWhite = isWhite(game->board[y][x]);
+    int sign = sign(game->board[y][x]);
+
+    if(isLegalCoordinate(y+sign, x-1) && !isEmpty(game->board[y+sign][x-1]) &&
+            sign(game->board[y+sign][x-1]) != sign){ // capture left
+        MovePush(moves, y, x, (char)(y+sign), x-1);
+    }
+
+    if(isLegalCoordinate(y+sign, x+1) && !isEmpty(game->board[y+sign][x+1]) &&
+            sign(game->board[y+sign][x+1]) != sign){ // capture right
+        MovePush(moves, y, x, (char)(y+sign), x+1);
+    }
+
+    if(isLegalCoordinate(y+sign,x) && isEmpty(game->board[y+sign][x])){
+        MovePush(moves, y, x, (char)(y+sign), x); // one step forward
+    } else {
+        return; // no need to check 2 steps forward
+    }
+
+    if(y == (isWhite?1:6) && isEmpty(game->board[y+2*sign][x])){
+        MovePush(moves, y, x, (char)(y+2*sign), x); // two steps forward
+    }
+}
+
+void gameBoardMovesKnight(GameBoard* game, MoveList* moves, char y, char x){
+    bool isWhite = isWhite(game->board[y][x]);
+    int sign = (isWhite ? 1 : -1);
+
+    if(isLegalCoordinate(y+2, x+1) && sign(game->board[y+2][x+1]) != sign){
+        MovePush(moves, y, x, y+2, x+1);
+    }
+
+    if(isLegalCoordinate(y+2, x-1) && sign(game->board[y+2][x-1]) != sign){
+        MovePush(moves, y, x, y+2, x-1);
+    }
+
+    if(isLegalCoordinate(y-2, x+1) && sign(game->board[y-2][x+1]) != sign){
+        MovePush(moves, y, x, y-2, x+1);
+    }
+
+    if(isLegalCoordinate(y-2, x-1) && sign(game->board[y-2][x-1]) != sign){
+        MovePush(moves, y, x, y-2, x-1);
+    }
+
+    //
+    if(isLegalCoordinate(y+1, x+2) && sign(game->board[y+1][x+2]) != sign){
+        MovePush(moves, y, x, y+1, x+2);
+    }
+
+    if(isLegalCoordinate(y+1, x-2) && sign(game->board[y+1][x-2]) != sign){
+        MovePush(moves, y, x, y+1, x-2);
+    }
+
+    if(isLegalCoordinate(y-1, x+2) && sign(game->board[y-1][x+2]) != sign){
+        MovePush(moves, y, x, y-1, x+2);
+    }
+
+    if(isLegalCoordinate(y-1, x-2) && sign(game->board[y-1][x-2]) != sign){
+        MovePush(moves, y, x, y-1, x-2);
+    }
+}
+
+
+// adds to list possible moves for king at (y,x)
+void gameBoardMovesKing(GameBoard* game, MoveList* moves, char y, char x){
+    bool isWhite = isWhite(game->board[y][x]);
+    int sign = (isWhite ? 1 : -1);
+
+    if(isLegalCoordinate(y+1, x) && sign(game->board[y+1][x]) != sign){
+        MovePush(moves, y, x, y+1, x);
+    }
+    if(isLegalCoordinate(y-1, x) && sign(game->board[y-1][x]) != sign){
+        MovePush(moves, y, x, y-1, x);
+    }
+    if(isLegalCoordinate(y, x+1) && sign(game->board[y][x+1]) != sign){
+        MovePush(moves, y, x, y, x+1);
+    }
+    if(isLegalCoordinate(y, x-1) && sign(game->board[y][x-1]) != sign){
+        MovePush(moves, y, x, y, x-1);
+    }
+    // diagonals
+    if(isLegalCoordinate(y+1, x+1) && sign(game->board[y+1][x+1]) != sign){
+        MovePush(moves, y, x, y+1, x+1);
+    }
+    if(isLegalCoordinate(y+1, x-1) && sign(game->board[y+1][x-1]) != sign){
+        MovePush(moves, y, x, y+1, x-1);
+    }
+    if(isLegalCoordinate(y-1, x+1) && sign(game->board[y-1][x+1]) != sign){
+        MovePush(moves, y, x, y-1, x+1);
+    }
+    if(isLegalCoordinate(y-1, x-1) && sign(game->board[y-1][x-1]) != sign){
+        MovePush(moves, y, x, y-1, x-1);
+    }
+}
+
+
+// adds to list possible moves for rook at (y,x)
+void gameBoardMovesRook(GameBoard* game, MoveList* moves, char y, char x){
+    bool isWhite = isWhite(game->board[y][x]);
+    int sign = (isWhite ? 1 : -1);
+
+    char tempY = y + 1;
+    char tempX = x;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move up
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY ++; // as long as it's empty, keep adding moves
+            continue;
+        }
+
+        // if there is my/enemy piece, stop loop
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+    tempY = y - 1;
+    tempX = x;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move down
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY --; // as long as it's empty, keep adding moves
+            continue;
+        }
+
+        // if there is my/enemy piece, stop loop
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+    tempY = y;
+    tempX = x + 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempX ++; // as long as it's empty, keep adding moves
+            continue;
+        }
+
+        // if there is my/enemy piece, stop loop
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+
+    tempY = y;
+    tempX = x - 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempX --; // as long as it's empty, keep adding moves
+            continue;
+        }
+
+        // if there is my/enemy piece, stop loop
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+}
+
+
+// adds to list possible moves for bishop at (y,x)
+void gameBoardMovesBishop(GameBoard* game, MoveList* moves, char y, char x){
+    bool isWhite = isWhite(game->board[y][x]);
+    int sign = (isWhite ? 1 : -1);
+
+    char tempY = y + 1;
+    char tempX = x + 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move up-right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY ++;
+            tempX ++;
+            continue;
+        }
+
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+
+    tempY = y + 1;
+    tempX = x - 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move up-right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY ++;
+            tempX --;
+            continue;
+        }
+
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+    tempY = y - 1;
+    tempX = x + 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move up-right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY --;
+            tempX ++;
+            continue;
+        }
+
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+
+    tempY = y - 1;
+    tempX = x - 1;
+
+    while(isLegalCoordinate(tempY, tempX)){ // move up-right
+        if(isEmpty(game->board[tempY][tempX])){
+            MovePush(moves, y, x, tempY, tempX);
+            tempY --;
+            tempX --;
+            continue;
+        }
+
+        if(sign(game->board[tempY][tempX]) != sign){
+            MovePush(moves, y, x, tempY, tempX);
+        }
+
+        break;
+    }
+}

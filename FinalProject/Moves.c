@@ -6,36 +6,71 @@
 
 
 
+Move* MoveCreate(char y1, char x1, char y2, char x2){
+    Move* move = malloc(sizeof(Move));
+    if(move == NULL)
+        return NULL;
+    move -> y1 = y1;
+    move -> x1 = x1;
+    move -> y2 = y2;
+    move -> x2 = x2;
+    return move;
+}
+
+void MoveDestroy(Move* move){
+    free(move);
+}
+
+
+LinkedMove* LinkedMoveCreate(char y1, char x1, char y2, char x2){
+    LinkedMove* lmove = malloc(sizeof(LinkedMove));
+    if(lmove == NULL){
+        // ERROR
+        return NULL;
+    }
+    lmove -> move = MoveCreate(y1, x1, y2, x2);
+    if(lmove -> move == NULL){
+        free(lmove);
+        return NULL;
+        // ERROR
+    }
+    return lmove;
+}
+void LinkedMoveDestroy(LinkedMove* lmove){
+    if(lmove -> move != NULL){
+        MoveDestroy(lmove -> move);
+    }
+    free(lmove);
+}
+
 
 MoveList* MoveListCreate(){
     MoveList* list = malloc(sizeof(MoveList));
     if(list == NULL){
         // ERROR
+        return NULL;
     }
     list -> first = NULL;
     return list;
 }
 
 void MovePush(MoveList* list, char y1, char x1, char y2, char x2){
-    LinkedMove* move = malloc(sizeof(LinkedMove));
-    if(move == NULL){
+    LinkedMove* lmove = LinkedMoveCreate(y1, x1, y2, x2);
+    if(lmove == NULL){
         // ERROR
+        return;
     }
 
-    move -> y1 = y1;
-    move -> x1 = x1;
-    move -> y2 = y2;
-    move -> x2 = x2;
-    move -> next = list -> first;
-    list -> first = move;
+    lmove -> next = list -> first;
+    list -> first = lmove;
 }
 
 LinkedMove* MovePop(MoveList* list){
-    LinkedMove* move = list -> first;
-    if(move != NULL){
-        list -> first = move -> next;
+    LinkedMove* lmove = list -> first;
+    if(lmove != NULL){
+        list -> first = lmove -> next;
     }
-    return move;
+    return lmove;
 }
 
 void MoveListDestroy(MoveList* list){
@@ -43,7 +78,7 @@ void MoveListDestroy(MoveList* list){
     LinkedMove* temp = list -> first;
     while(temp != NULL){
         list -> first = temp -> next;
-        free(temp);
+        LinkedMoveDestroy(temp);
         temp = list -> first;
     }
 }
@@ -54,18 +89,26 @@ void MoveListDestroy(MoveList* list){
 
 
 ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score){
-    ScoredMove* move = malloc(sizeof(ScoredMove));
-    if(move == NULL){
+    ScoredMove* smove = malloc(sizeof(ScoredMove));
+    if(smove == NULL){
         /// ERROR
+        return NULL;
     }
-    move -> y1 = y1;
-    move -> x1 = x1;
-    move -> y2 = y2;
-    move -> x2 = x2;
-    move -> score = score;
-    return move;
+
+    Move* move = MoveCreate(y1, x1, y2, x2);
+    if(move == NULL){
+        // ERROR
+        free(smove);
+        return NULL;
+    }
+
+    smove -> score = score;
+    return smove;
 }
 
-void ScoredMoveDestroy(ScoredMove* move){
-    free(move);
+void ScoredMoveDestroy(ScoredMove* smove){
+    if(smove != NULL){
+        MoveDestroy(smove -> move);
+    }
+    free(smove);
 }

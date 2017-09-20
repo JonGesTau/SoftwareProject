@@ -13,6 +13,7 @@
 
 #include "GameBoard.h"
 
+// contains everything about a game, including board, game settings and history
 typedef struct chess_gamestate{
     GameBoard* gameBoard;
     int current_move; // TODO: newly added, make sure we deal with this everywhere

@@ -17,7 +17,7 @@ int tryMove(GameBoard* game, char y1, char x1, char y2, char x2){
 
 int isLegalTest1(){
     GameBoard* game = gameBoardCreate();
-    gameBoardSetup(game, true);
+    gameBoardSetup(game);
 
     consoleUIPrintBoard(game);
 
@@ -47,7 +47,7 @@ int isLegalTest1(){
 int isLegalTest2(){
     // knights and kings
     GameBoard* game = gameBoardCreate();
-    gameBoardSetup(game, true);
+    gameBoardSetup(game);
 
     consoleUIPrintBoard(game);
 
@@ -77,7 +77,7 @@ int isLegalTest2(){
 int isLegalTest3(){
     // bishop & queen
     GameBoard* game = gameBoardCreate();
-    gameBoardSetup(game, true);
+    gameBoardSetup(game);
 
     consoleUIPrintBoard(game);
 
@@ -109,7 +109,7 @@ int isLegalTest3(){
 
 int isThreatenedTest1(){
     GameBoard* game = gameBoardCreate();
-    gameBoardSetup(game, true);
+    gameBoardSetup(game);
 
     consoleUIPrintBoard(game);
 
@@ -125,6 +125,87 @@ int isThreatenedTest1(){
 
     gameBoardDestroy(game);
     return 0;
+}
+
+int GameBoardAllMovesTest(){
+    GameBoard* game = gameBoardCreate();
+    game->board[1][0] = CH_PIECE_PAWN;
+    game->board[5][2] = CH_PIECE_PAWN;
+    game->board[6][4] = -CH_PIECE_PAWN;
+    game->board[5][3] = CH_PIECE_KING;
+    game->board[5][5] = CH_PIECE_KING;
+
+    consoleUIPrintBoard(game);
+
+    MoveList* list = gameBoardAllMoves(game, false);
+
+    MovesTestPrintMoves(list);
+
+    MoveListDestroy(list);
+
+    ///
+    game->board[3][4] = - CH_PIECE_QUEEN;
+    consoleUIPrintBoard(game);
+
+    list = gameBoardAllMoves(game, false);
+
+    MovesTestPrintMoves(list);
+
+
+    gameBoardDestroy(game);
+}
+
+int GameBoardMateTest() {
+    GameBoard *game = gameBoardCreate();
+
+    // no mate no check
+    game->board[0][3] = CH_PIECE_KING;
+    game->board[1][7] = -CH_PIECE_ROOK;
+
+    consoleUIPrintBoard(game);
+
+    if(gameBoardIsMate(game, true)){
+        printf("White is mated\n");
+    }
+
+    ///////// no moves but no check
+    game->board[2][3] = -CH_PIECE_KNIGHT;
+
+    consoleUIPrintBoard(game);
+
+    if(gameBoardIsMate(game, true)){
+        printf("White is mated\n");
+    }
+
+    ///////// proper mate
+    game->board[3][0] = -CH_PIECE_BISHOP;
+
+    consoleUIPrintBoard(game);
+
+    if(gameBoardIsMate(game, true)){
+        printf("White is mated\n");
+    }
+
+    //// check can be blocked!!!
+    game->board[0][2] = CH_PIECE_ROOK;
+
+    consoleUIPrintBoard(game);
+
+    if(gameBoardIsMate(game, true)){
+        printf("White is mated\n");
+    }
+
+    /////// King can move
+    game->board[0][2] = CH_PIECE_EMPTY;
+    gameBoardPerformMove(game, 2, 3, 2, 1);
+
+    consoleUIPrintBoard(game);
+
+    if(gameBoardIsMate(game, true)){
+        printf("White is mated\n");
+    }
+
+    gameBoardDestroy(game);
 }
 
 int gameBoardTest(){

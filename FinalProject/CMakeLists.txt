@@ -3,7 +3,7 @@ project(Chess1)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h)
+set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h tests/MovesTest.c tests/MovesTest.h tests/MiniMaxTest.c tests/MiniMaxTest.h tests/GameBoardTest.c tests/GameBoardTest.h)
 add_executable(Chess1 ${SOURCE_FILES})
 
 cmake_minimum_required(VERSION 2.8)

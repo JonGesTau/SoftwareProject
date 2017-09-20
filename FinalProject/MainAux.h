@@ -5,7 +5,7 @@
 #ifndef CHESS1_MAINAUX_H
 #define CHESS1_MAINAUX_H
 
-#include <printf.h>
+#include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
 
