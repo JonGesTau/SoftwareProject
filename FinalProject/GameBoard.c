@@ -364,7 +364,7 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
 
     for (int y = 0; y < 8; ++y) {
         for (int x = 0; x < 8; ++x) {
-            if(game->board[y][x] == CH_PIECE_EMPTY || isWhite(game->board[y][x]) != isWhite){
+            if(game->board[y][x] == CH_PIECE_EMPTY || (isWhite(game->board[y][x]) != isWhite)){
                 continue;
             }
 

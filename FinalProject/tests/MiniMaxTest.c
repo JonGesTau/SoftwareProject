@@ -3,7 +3,67 @@
 //
 
 #include "MiniMaxTest.h"
+#include "MovesTest.h"
 
+int MiniMaxTestDepth1(){
+    GameBoard* board = gameBoardCreate();
+    ScoredMove* best;
+    //
+    board->board[1][3] = CH_PIECE_ROOK;
+    board->board[6][3] = -CH_PIECE_QUEEN;
+
+    consoleUIPrintBoard(board);
+    best = miniMaxGetBestMove(board, 1, 1, true, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+    best = miniMaxGetBestMove(board, 1, 1, false, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+
+    //
+    board->board[1][6] = -CH_PIECE_ROOK;
+    board->board[6][3] = -CH_PIECE_BISHOP;
+
+    consoleUIPrintBoard(board);
+    best = miniMaxGetBestMove(board, 1, 1, true, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+    best = miniMaxGetBestMove(board, 1, 1, false, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+
+    //
+    board->board[5][1] = CH_PIECE_QUEEN;
+    board->board[6][3] = -CH_PIECE_KNIGHT;
+
+    consoleUIPrintBoard(board);
+    best = miniMaxGetBestMove(board, 1, 1, true, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+    best = miniMaxGetBestMove(board, 1, 1, false, 0);
+    printf("Best move for B is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+
+    gameBoardDestroy(board);
+    ScoredMoveDestroy(best);
+}
+
+int MiniMaxTestDeep(){
+    GameBoard* board = gameBoardCreate();
+    ScoredMove* best;
+    //
+    board->board[1][3] = CH_PIECE_ROOK;
+    board->board[2][3] = -CH_PIECE_BISHOP;
+    board->board[1][6] = -CH_PIECE_PAWN;
+    board->board[0][7] = CH_PIECE_ROOK; // (0,6)<->(0,7) and see what happens
+    board->board[6][6] = -CH_PIECE_PAWN; // need this to avoid tie when capturing bishop
+
+    consoleUIPrintBoard(board);
+    best = miniMaxGetBestMove(board, 1, 1, true, 0);
+    printf("Best move for W (1) is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+    best = miniMaxGetBestMove(board, 2, 2, true, 0);
+    printf("Best move for W (2) is: (%d, %d) -> (%d, %d)\n", best->move->y1,best->move->x1,best->move->y2,best->move->x2);
+
+    //MoveList* moves = gameBoardAllMoves(board, true);
+    //MovesTestPrintMoves(moves);
+
+    gameBoardDestroy(board);
+    ScoredMoveDestroy(best);
+}
 
 int MiniMaxTestScore(){
     GameBoard* board = gameBoardCreate();

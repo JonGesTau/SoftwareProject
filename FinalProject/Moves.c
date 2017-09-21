@@ -101,7 +101,7 @@ ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score){
         free(smove);
         return NULL;
     }
-
+    smove -> move = move;
     smove -> score = score;
     return smove;
 }
