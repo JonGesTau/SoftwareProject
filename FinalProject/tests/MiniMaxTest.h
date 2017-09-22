@@ -7,7 +7,10 @@
 
 #include <stdio.h>
 #include "..\MiniMax.h"
+#include "..\consoleUI.h"
 
 int MiniMaxTestScore();
+int MiniMaxTestDepth1();
+int MiniMaxTestDeep();
 
 #endif //CHESS1_MINIMAXTEST_H

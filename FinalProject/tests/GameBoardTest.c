@@ -143,14 +143,13 @@ int GameBoardAllMovesTest(){
 
     MoveListDestroy(list);
 
-    ///
+    //
     game->board[3][4] = - CH_PIECE_QUEEN;
     consoleUIPrintBoard(game);
 
     list = gameBoardAllMoves(game, false);
 
     MovesTestPrintMoves(list);
-
 
     gameBoardDestroy(game);
 }
