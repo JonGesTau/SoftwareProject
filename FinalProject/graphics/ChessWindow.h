@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
+#include "../MainAux.h"
 
 typedef struct chess_window ChessWindow;
 struct chess_window {

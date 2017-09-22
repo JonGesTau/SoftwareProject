@@ -31,8 +31,7 @@ ChessWindow* createSettingsWindow() {
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     ChessButton** buttons = createSettingsWindowChessButtons(renderer);
-    if (res == NULL || data == NULL || window == NULL || renderer == NULL
-        || buttons == NULL ) {
+    if (res == NULL || data == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
         free(res);
         free(data);
         free(buttons);
@@ -45,6 +44,7 @@ ChessWindow* createSettingsWindow() {
     data->numOfButtons = 1;
     data->window = window;
     data->windowRenderer = renderer;
+    data->settings = getDefaultSettings();
     res->data = (void*) data;
     res->destroyWindow = destroySettingsWindow;
     res->drawWindow = drawSettingsWindow;
@@ -91,7 +91,8 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* even
         ChessButton* button = data->buttons[i];
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
         if (clickEvent == CHESS_CLICKED_1PLAYER) {
-            printf("SET 1 PLAYER ");
+            // Change player mode
+            printf("Mode is %s\n", data->settings->gameMode);
             toggleChessButton(button);
         }
     }

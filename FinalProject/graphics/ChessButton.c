@@ -60,13 +60,10 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
         if (SDL_PointInRect(&point, src->location)) {
             if (src->type == CHESS_BUTTON_NEW_GAME) {
                 return CHESS_CLICKED_NEW_GAME;
-//                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title", "New Game", NULL );
             } else if (src->type == CHESS_BUTTON_LOAD) {
                 return CHESS_CLICKED_LOAD;
-//                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title", "Load", NULL );
             } else if (src->type == CHESS_BUTTON_QUIT) {
                 return CHESS_CLICKED_QUIT;
-//                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title", "Quit", NULL );
             } else if (src->type == CHESS_BUTTON_1PLAYER) {
                 return CHESS_CLICKED_1PLAYER;
             } else {

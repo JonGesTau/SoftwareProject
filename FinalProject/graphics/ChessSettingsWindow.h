@@ -18,6 +18,7 @@ struct chess_settings_window {
     SDL_Renderer* windowRenderer;
     ChessButton** buttons;
     int numOfButtons;
+    GameSettings* settings;
 };
 
 ChessWindow* createSettingsWindow();
