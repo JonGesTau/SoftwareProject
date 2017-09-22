@@ -5,7 +5,7 @@
 #include "ChessMainWindow.h"
 
 //Helper function to create buttons in the simple window;
-ChessButton ** createMainWindowChessButtons(SDL_Renderer *renderer) {
+ChessButton** createMainWindowChessButtons(SDL_Renderer *renderer) {
     if (renderer == NULL ) {
         return NULL ;
     }
@@ -18,9 +18,9 @@ ChessButton ** createMainWindowChessButtons(SDL_Renderer *renderer) {
     SDL_Rect loadR = { .x = 387, .y = 250, .h = 100, .w = 250 };
     SDL_Rect quitR = { .x = 387, .y = 600, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &newGameR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/NewGame.bmp", CHESS_BUTTON_NEW_GAME);
-    buttons[1] = createChessButton(renderer, &loadR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/load.bmp", CHESS_BUTTON_LOAD);
-    buttons[2] = createChessButton(renderer, &quitR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/quit.bmp", CHESS_BUTTON_QUIT);
+    buttons[0] = createChessButton(renderer, &newGameR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/NewGame.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/NewGame.bmp", CHESS_BUTTON_NEW_GAME, true);
+    buttons[1] = createChessButton(renderer, &loadR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/load.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/load.bmp", CHESS_BUTTON_LOAD, true);
+    buttons[2] = createChessButton(renderer, &quitR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/quit.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/quit.bmp", CHESS_BUTTON_QUIT, true);
 
     if (buttons[0] == NULL || buttons[1] == NULL || buttons[2] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE

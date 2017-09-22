@@ -7,13 +7,14 @@
 
 #include <stdbool.h>
 #include <SDL.h>
+#include <SDL_video.h>
 
 typedef enum {
-    CHESS_BUTTON_NEW_GAME, CHESS_BUTTON_LOAD, CHESS_BUTTON_QUIT
+    CHESS_BUTTON_NEW_GAME, CHESS_BUTTON_LOAD, CHESS_BUTTON_QUIT, CHESS_BUTTON_1PLAYER
 } ButtonType;
 
 typedef enum {
-    CHESS_CLICKED_NEW_GAME, CHESS_CLICKED_LOAD, CHESS_CLICKED_QUIT, CHESS_CLICKED_NONE
+    CHESS_CLICKED_NEW_GAME, CHESS_CLICKED_LOAD, CHESS_CLICKED_QUIT, CHESS_CLICKED_NONE, CHESS_CLICKED_1PLAYER
 } BUTTON_CLICK_EVENT;
 
 typedef struct chess_button{
@@ -26,7 +27,7 @@ typedef struct chess_button{
 } ChessButton;
 
 //You need a create function:
-ChessButton* createChessButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* image, ButtonType type);
+ChessButton* createChessButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* activeImage, const char* inactiveImage, ButtonType type, bool isActive);
 
 //You need this function in order to destroy all data Associate with a button:
 void destroyChessButton(ChessButton*);
@@ -34,5 +35,6 @@ void destroyChessButton(ChessButton*);
 BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event);
 
 void drawChessButton(ChessButton* src);
+void toggleChessButton(ChessButton* src);
 
 #endif //CHESS1_CHESSBUTTON_H

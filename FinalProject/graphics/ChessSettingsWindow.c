@@ -16,7 +16,7 @@ ChessButton ** createSettingsWindowChessButtons(SDL_Renderer *renderer) {
 
     SDL_Rect newGameR = { .x = 387, .y = 100, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &newGameR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/NewGame.bmp", CHESS_BUTTON_NEW_GAME);
+    buttons[0] = createChessButton(renderer, &newGameR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
 
     if (buttons[0] == NULL || buttons[1] == NULL || buttons[2] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE
@@ -90,12 +90,9 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* even
     for(;i<data->numOfButtons;i++){
         ChessButton* button = data->buttons[i];
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
-        if (clickEvent == CHESS_CLICKED_NEW_GAME) {
-            printf("NEW GAME ");
-        } else if (clickEvent == CHESS_CLICKED_LOAD) {
-            printf("LOAD ");
-        } else if (clickEvent == CHESS_CLICKED_QUIT) {
-            printf("QUIT ");
+        if (clickEvent == CHESS_CLICKED_1PLAYER) {
+            printf("SET 1 PLAYER ");
+            toggleChessButton(button);
         }
     }
 
