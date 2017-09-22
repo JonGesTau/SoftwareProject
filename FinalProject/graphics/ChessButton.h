@@ -17,7 +17,8 @@ typedef enum {
 } BUTTON_CLICK_EVENT;
 
 typedef struct chess_button{
-    SDL_Texture* buttonTexture;
+    SDL_Texture* activeTexture;
+    SDL_Texture* inactiveTexture;
     SDL_Renderer* windowRenderer;
     SDL_Rect* location;
     bool isActive;

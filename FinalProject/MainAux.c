@@ -55,12 +55,12 @@ int startGUIMode() {
     SDL_Event event;
     while (1) {
         SDL_WaitEvent(&event);
-        if (ChessManagerHandleEvent(manager, &event) == CHESS_MANAGER_QUTT) {
+        if (chessManagerHandleEvent(manager, &event) == CHESS_MANAGER_QUTT) {
             break;
         }
-        ChessManagerDraw(manager);
+        chessManagerDraw(manager);
     }
-    ChessManagerDestroy(manager);
+    chessManagerDestroy(manager);
     SDL_Quit();
     return 0;
 }

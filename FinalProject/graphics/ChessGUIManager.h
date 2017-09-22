@@ -7,10 +7,12 @@
 
 #include <SDL_events.h>
 #include "ChessMainWindow.h"
+#include "ChessSettingsWindow.h"
 
 typedef enum{
     CHESS_MAIN_WINDOW_ACTIVE,
-    CHESS_GAME_WINDOW_ACTIVE
+    CHESS_GAME_WINDOW_ACTIVE,
+    CHESS_SETTINGS_WINDOW_ACTIVE
 }ACTIVE_WINDOW;
 
 typedef enum{
@@ -20,16 +22,17 @@ typedef enum{
 
 typedef struct {
 //    ChessGameWindow* gameWin;
+    ChessSettingsWindow* settingsWin;
     ChessMainWindow* mainWin;
     ACTIVE_WINDOW activeWin;
 } ChessGuiManager;
 
 ChessGuiManager* ChessManagerCreate();
 
-void ChessManagerDestroy(ChessGuiManager* src);
+void chessManagerDestroy(ChessGuiManager *src);
 
-void ChessManagerDraw(ChessGuiManager* src);
+void chessManagerDraw(ChessGuiManager *src);
 
-CHESS_MANAGER_EVENT ChessManagerHandleEvent(ChessGuiManager* src, SDL_Event* event) ;
+CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *event) ;
 
 #endif //CHESS1_CHESSGUIMANAGER_H
