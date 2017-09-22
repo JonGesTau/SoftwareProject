@@ -3,8 +3,9 @@
 //
 
 #include "MainAux.h"
-#include "ChessWindow.h"
-#include "ChessMainWindow.h"
+#include "graphics/ChessWindow.h"
+#include "graphics/ChessMainWindow.h"
+#include "graphics/ChessGUIManager.h"
 
 void startConsoleMode() {
     Command userCmd;
@@ -46,23 +47,20 @@ int startGUIMode() {
         printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
         return 1;
     }
-    ChessWindow* window = createMainWindow();
-    if (window == NULL ) {
+    ChessGuiManager* manager = ChessManagerCreate();
+    if (manager == NULL ) {
         SDL_Quit();
         return 0;
     }
-
-    window->drawWindow(window);
-
     SDL_Event event;
     while (1) {
         SDL_WaitEvent(&event);
-        if(event.type == SDL_QUIT){
+        if (ChessManagerHandleEvent(manager, &event) == CHESS_MANAGER_QUTT) {
             break;
         }
-        window->handleEventWindow(window,&event);
+        ChessManagerDraw(manager);
     }
-    destroyWindow(window);
+    ChessManagerDestroy(manager);
     SDL_Quit();
     return 0;
 }

@@ -12,7 +12,7 @@ typedef struct chess_window ChessWindow;
 struct chess_window {
     void* data;
     void (*drawWindow)(ChessWindow* );
-    void (*handleEventWindow)(ChessWindow* , SDL_Event* );
+    int (*handleEventWindow)(ChessWindow* , SDL_Event* );
     void (*destroyWindow)(ChessWindow* );
     // Add exit and hide
 };

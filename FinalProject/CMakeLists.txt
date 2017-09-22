@@ -3,7 +3,7 @@ project(Chess1)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h ChessWindow.c ChessWindow.h ChessMainWindow.c ChessMainWindow.h ChessWidget.c ChessWidget.h ChessNewGameButton.c ChessNewGameButton.h ChessGUICommon.c ChessGUICommon.h ChessLoadButton.c ChessLoadButton.h ChessQuitButton.c ChessQuitButton.h)
+set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h graphics/ChessWindow.c graphics/ChessWindow.h graphics/ChessMainWindow.c graphics/ChessMainWindow.h graphics/ChessGUICommon.c graphics/ChessGUICommon.h graphics/ChessGUIManager.c graphics/ChessGUIManager.h graphics/ChessButton.c graphics/ChessButton.h)
 add_executable(Chess1 ${SOURCE_FILES})
 
 cmake_minimum_required(VERSION 2.8)
