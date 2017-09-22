@@ -24,7 +24,7 @@ int arg;
 GameState* game;
 
 void startConsoleMode();
-void startGUIMode();
+int startGUIMode();
 void startGame(GameSettings* settings);
 void promptUserMove();
 bool handleUserMove(GameBoard* gameBoard, Move* userMove);
