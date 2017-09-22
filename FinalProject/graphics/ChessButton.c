@@ -66,6 +66,8 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
                 return CHESS_CLICKED_QUIT;
             } else if (src->type == CHESS_BUTTON_1PLAYER) {
                 return CHESS_CLICKED_1PLAYER;
+            } else if (src->type == CHESS_BUTTON_2PLAYER) {
+                return CHESS_CLICKED_2PLAYER;
             } else {
                 return CHESS_CLICKED_NONE;
             }

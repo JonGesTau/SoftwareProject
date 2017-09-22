@@ -14,12 +14,15 @@ ChessButton ** createSettingsWindowChessButtons(SDL_Renderer *renderer) {
         return NULL ;
     }
 
-    SDL_Rect newGameR = { .x = 387, .y = 100, .h = 100, .w = 250 };
+    SDL_Rect onePlayer = { .x = 200, .y = 100, .h = 100, .w = 250 };
+    SDL_Rect twoPlayer = { .x = 600, .y = 100, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &newGameR, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
+    buttons[0] = createChessButton(renderer, &onePlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, true);
+    buttons[1] = createChessButton(renderer, &twoPlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
 
-    if (buttons[0] == NULL || buttons[1] == NULL || buttons[2] == NULL) {
+    if (buttons[0] == NULL || buttons[1] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE
+        destroyChessButton(buttons[1]); //NULL SAFE
         free(buttons);
         return NULL ;
     }
@@ -41,7 +44,7 @@ ChessWindow* createSettingsWindow() {
         return NULL ;
     }
     data->buttons = buttons;
-    data->numOfButtons = 1;
+    data->numOfButtons = 2;
     data->window = window;
     data->windowRenderer = renderer;
     data->settings = getDefaultSettings();
@@ -91,9 +94,19 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* even
         ChessButton* button = data->buttons[i];
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
         if (clickEvent == CHESS_CLICKED_1PLAYER) {
-            // Change player mode
-            printf("Mode is %s\n", data->settings->gameMode);
-            toggleChessButton(button);
+            if (data->settings->gameMode != 1) {
+                data->settings->gameMode = 1;
+                printf("Mode is %d\n", data->settings->gameMode);
+                toggleChessButton(data->buttons[0]);
+                toggleChessButton(data->buttons[1]);
+            }
+        } else if (clickEvent == CHESS_CLICKED_2PLAYER) {
+            if (data->settings->gameMode != 2) {
+                data->settings->gameMode = 2;
+                printf("Mode is %d\n", data->settings->gameMode);
+                toggleChessButton(data->buttons[0]);
+                toggleChessButton(data->buttons[1]);
+            }
         }
     }
 
