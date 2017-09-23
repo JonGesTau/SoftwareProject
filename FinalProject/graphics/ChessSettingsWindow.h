@@ -9,7 +9,7 @@
 #include "ChessWindow.h"
 
 typedef enum {
-    CHESS_SETTINGS_DONE, CHESS_SETTINGS_BACK
+    CHESS_SETTINGS_DONE, CHESS_SETTINGS_BACK, CHESS_SETTINGS_EXIT
 } CHESS_SETTINGS_EVENT;
 
 typedef struct chess_settings_window ChessSettingsWindow;
@@ -27,5 +27,6 @@ void drawSettingsWindow(ChessWindow* src);
 void hideSettingsWindow(ChessSettingsWindow* src);
 void showSettingsWindow(ChessSettingsWindow* src);
 CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event);
+ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings);
 
 #endif //CHESS1_CHESSSETTINGSWINDOW_H

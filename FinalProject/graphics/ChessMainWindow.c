@@ -101,9 +101,11 @@ CHESS_MAIN_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event){
         } else if (clickEvent == CHESS_CLICKED_LOAD) {
             printf("LOAD ");
         } else if (clickEvent == CHESS_CLICKED_QUIT) {
-            printf("QUIT ");
+            return CHESS_MAIN_EXIT;
         }
     }
+
+    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_MAIN_EXIT;
 
     return CHESS_MAIN_NONE;
 }

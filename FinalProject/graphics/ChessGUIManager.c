@@ -80,7 +80,7 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
 //        }
 //        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
-    if (event == CHESS_MAIN_EXIT) {
+    if (event == CHESS_SETTINGS_EXIT) {
         return CHESS_MANAGER_QUTT;
     }
     return CHESS_MANAGER_NONE;
@@ -120,7 +120,7 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
 //        return handleManagerDueToGameEvent(src, gameEvent);
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         CHESS_SETTINGS_EVENT settingsEvent = handleEventSettingsWindow(src->settingsWin, event);
-        chessManagerDraw(src);
+//        chessManagerDraw(src);
         return handleManagerDueToSettingsEvent(src, event);
     }
     return CHESS_MANAGER_NONE;

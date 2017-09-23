@@ -58,18 +58,33 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
         point.x = event->button.x;
         point.y = event->button.y;
         if (SDL_PointInRect(&point, src->location)) {
-            if (src->type == CHESS_BUTTON_NEW_GAME) {
-                return CHESS_CLICKED_NEW_GAME;
-            } else if (src->type == CHESS_BUTTON_LOAD) {
-                return CHESS_CLICKED_LOAD;
-            } else if (src->type == CHESS_BUTTON_QUIT) {
-                return CHESS_CLICKED_QUIT;
-            } else if (src->type == CHESS_BUTTON_1PLAYER) {
-                return CHESS_CLICKED_1PLAYER;
-            } else if (src->type == CHESS_BUTTON_2PLAYER) {
-                return CHESS_CLICKED_2PLAYER;
-            } else {
-                return CHESS_CLICKED_NONE;
+            switch (src->type) {
+                case CHESS_BUTTON_NEW_GAME:
+                    return CHESS_CLICKED_NEW_GAME;
+                case CHESS_BUTTON_LOAD:
+                    return CHESS_CLICKED_LOAD;
+                case CHESS_BUTTON_QUIT:
+                    return CHESS_CLICKED_QUIT;
+                case CHESS_BUTTON_1PLAYER:
+                    return CHESS_CLICKED_1PLAYER;
+                case CHESS_BUTTON_2PLAYER:
+                    return CHESS_CLICKED_2PLAYER;
+                case CHESS_BUTTON_NOOB:
+                    return CHESS_CLICKED_NOOB;
+                case CHESS_BUTTON_EASY:
+                    return CHESS_CLICKED_EASY;
+                case CHESS_BUTTON_MODERATE:
+                    return CHESS_CLICKED_MODERATE;
+                case CHESS_BUTTON_HARD:
+                    return CHESS_CLICKED_HARD;
+                case CHESS_BUTTON_EXPERT:
+                    return CHESS_CLICKED_EXPERT;
+                case CHESS_BUTTON_WHITE:
+                    return CHESS_CLICKED_WHITE;
+                case CHESS_BUTTON_BLACK:
+                    return CHESS_CLICKED_BLACK;
+                default:
+                    return CHESS_CLICKED_NONE;
             }
         } else {
             return CHESS_CLICKED_NONE;
