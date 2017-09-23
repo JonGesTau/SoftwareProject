@@ -51,7 +51,7 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
         return CHESS_MANAGER_NONE;
     }
     if (event == CHESS_MAIN_START) {
-        showMainWindow(src->mainWin);
+        hideMainWindow(src->mainWin);
         src->settingsWin = createSettingsWindow();
         src->activeWin = CHESS_SETTINGS_WINDOW_ACTIVE;
 //        src->gameWin = spGameWindowCreate();
@@ -121,7 +121,7 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         CHESS_SETTINGS_EVENT settingsEvent = handleEventSettingsWindow(src->settingsWin, event);
 //        chessManagerDraw(src);
-        return handleManagerDueToSettingsEvent(src, event);
+        return handleManagerDueToSettingsEvent(src, settingsEvent);
     }
     return CHESS_MANAGER_NONE;
 }

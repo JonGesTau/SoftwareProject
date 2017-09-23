@@ -6,7 +6,7 @@
 #define CHESS1_CHESSSETTINGSWINDOW_H
 
 #include "ChessButton.h"
-#include "ChessWindow.h"
+#include "../GameSettings.h"
 
 typedef enum {
     CHESS_SETTINGS_DONE, CHESS_SETTINGS_BACK, CHESS_SETTINGS_EXIT
@@ -21,12 +21,12 @@ struct chess_settings_window {
     GameSettings* settings;
 };
 
-ChessWindow* createSettingsWindow();
-void destroySettingsWindow(ChessWindow* src);
-void drawSettingsWindow(ChessWindow* src);
+ChessSettingsWindow* createSettingsWindow();
+void destroySettingsWindow(ChessSettingsWindow *src);
+void drawSettingsWindow(ChessSettingsWindow *src);
 void hideSettingsWindow(ChessSettingsWindow* src);
 void showSettingsWindow(ChessSettingsWindow* src);
-CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event);
+CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Event *event);
 ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings);
 
 #endif //CHESS1_CHESSSETTINGSWINDOW_H

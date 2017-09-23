@@ -5,7 +5,6 @@
 #ifndef CHESS1_CHESSMAINWINDOW_H
 #define CHESS1_CHESSMAINWINDOW_H
 
-#include "ChessWindow.h"
 #include "ChessButton.h"
 
 typedef enum {
@@ -20,11 +19,11 @@ struct chess_main_window {
     int numOfButtons;
 };
 
-ChessWindow* createMainWindow();
-void destroyMainWindow(ChessWindow* src);
-void drawMainWindow(ChessWindow* src);
+ChessMainWindow * createMainWindow();
+void destroyMainWindow(ChessMainWindow *src);
+void drawMainWindow(ChessMainWindow *src);
 void hideMainWindow(ChessMainWindow* src);
 void showMainWindow(ChessMainWindow* src);
-CHESS_MAIN_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event);
+CHESS_MAIN_EVENT handleEventMainWindow(ChessMainWindow *src, SDL_Event *event);
 
 #endif //CHESS1_CHESSMAINWINDOW_H

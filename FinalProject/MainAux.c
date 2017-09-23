@@ -3,8 +3,6 @@
 //
 
 #include "MainAux.h"
-#include "graphics/ChessWindow.h"
-#include "graphics/ChessMainWindow.h"
 #include "graphics/ChessGUIManager.h"
 
 void startConsoleMode() {

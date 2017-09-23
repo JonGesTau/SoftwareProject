@@ -31,70 +31,65 @@ ChessButton** createMainWindowChessButtons(SDL_Renderer *renderer) {
     }
     return buttons;
 }
-ChessWindow* createMainWindow() {
-    ChessWindow* res = malloc(sizeof(ChessWindow));
-    ChessMainWindow* data = malloc(sizeof(ChessMainWindow));
+ChessMainWindow * createMainWindow() {
+    ChessMainWindow* res = malloc(sizeof(ChessMainWindow));
+//    ChessMainWindow* data = malloc(sizeof(ChessMainWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     ChessButton** buttons = createMainWindowChessButtons(renderer);
-    if (res == NULL || data == NULL || window == NULL || renderer == NULL
+    if (res == NULL || window == NULL || renderer == NULL
         || buttons == NULL ) {
         free(res);
-        free(data);
         free(buttons);
         //We first destroy the renderer
         SDL_DestroyRenderer(renderer); //NULL safe
         SDL_DestroyWindow(window); //NULL safe
         return NULL ;
     }
-    data->buttons = buttons;
-    data->numOfButtons = 3;
-    data->window = window;
-    data->windowRenderer = renderer;
-    res->data = (void*) data;
-    res->destroyWindow = destroyMainWindow;
-    res->drawWindow = drawMainWindow;
-    res->handleEventWindow = handleEventMainWindow;
+    res->buttons = buttons;
+    res->numOfButtons = 3;
+    res->window = window;
+    res->windowRenderer = renderer;
+
     return res;
 }
-void destroyMainWindow(ChessWindow* src) {
+void destroyMainWindow(ChessMainWindow *src) {
     if (src == NULL ) {
         return;
     }
-    ChessMainWindow* data = (ChessMainWindow*) src->data;
+
     int i = 0;
     for (; i < 2; i++) {
-        destroyChessButton(data->buttons[i]);//
+        destroyChessButton(src->buttons[i]);//
     }
-    free(data->buttons);
-    SDL_DestroyRenderer(data->windowRenderer);
-    SDL_DestroyWindow(data->window);
-    free(data);
+    free(src->buttons);
+    SDL_DestroyRenderer(src->windowRenderer);
+    SDL_DestroyWindow(src->window);
     free(src);
 }
-void drawMainWindow(ChessWindow* src) {
+void drawMainWindow(ChessMainWindow *src) {
     if (src == NULL ) {
         return;
     }
-    ChessMainWindow* data = (ChessMainWindow*) src->data;
+
     //Draw window
-    SDL_SetRenderDrawColor(data->windowRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(data->windowRenderer);
+    SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(src->windowRenderer);
     int i = 0;
-    for (; i < data->numOfButtons; i++) {
-        drawChessButton(data->buttons[i]);
+    for (; i < src->numOfButtons; i++) {
+        drawChessButton(src->buttons[i]);
     }
-    SDL_RenderPresent(data->windowRenderer);
+    SDL_RenderPresent(src->windowRenderer);
 }
 
-CHESS_MAIN_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event){
+CHESS_MAIN_EVENT handleEventMainWindow(ChessMainWindow *src, SDL_Event *event){
     if(src == NULL || event==NULL){
         return CHESS_MAIN_INVALID_ARGUMENT;
     }
-    ChessMainWindow* data = (ChessMainWindow*)src->data;
+
     int i =0;
-    for(;i<data->numOfButtons;i++){
-        ChessButton* button = data->buttons[i];
+    for(;i<src->numOfButtons;i++){
+        ChessButton* button = src->buttons[i];
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
         if (clickEvent == CHESS_CLICKED_NEW_GAME) {
             return CHESS_MAIN_START;
