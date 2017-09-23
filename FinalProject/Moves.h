@@ -15,6 +15,7 @@
 #define CHESS1_MOVES_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct move{
     char y1,x1,y2,x2;
@@ -51,6 +52,8 @@ void MovePush(MoveList* list, char y1, char x1, char y2, char x2);
 LinkedMove* MovePop(MoveList* list);
 
 void MoveListDestroy(MoveList* list);
+
+bool isMoveListEmpty(MoveList* list);
 
 /// for minimax algorihm, we use this data sructure to return a certain move with a score
 ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score);

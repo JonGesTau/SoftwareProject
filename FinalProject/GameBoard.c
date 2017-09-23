@@ -358,6 +358,16 @@ bool gameBoardIsMate(GameBoard *game, bool isWhite){
 }
 
 
+// returns true if the game is a stalemate given whose turn it is to play
+// will return true IFF not in check and no moves to play
+bool gameBoardIsStalemate(GameBoard* game, bool isWhite){
+    if(gameBoardIsCheck(game, isWhite)) return false;
+    MoveList* moves = gameBoardAllMoves(game, isWhite);
+    bool ret = isMoveListEmpty(moves);
+    MoveListDestroy(moves);
+    return ret;
+}
+
 MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
     MoveList* moveList = MoveListCreate();
     int piece;

@@ -60,8 +60,9 @@ bool gameBoardIsThreatened(GameBoard *game, char y1, char x1);
 // finds white/black king and returns true if threatened, uses the above function
 bool gameBoardIsCheck(GameBoard *game, bool isWhite);
 
-// TODO: not yet implemented
 bool gameBoardIsMate(GameBoard *game, bool isWhite);
+
+bool gameBoardIsStalemate(GameBoard *game, bool isWhite);
 
 
 // all possible moves feature

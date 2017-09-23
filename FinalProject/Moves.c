@@ -84,6 +84,10 @@ void MoveListDestroy(MoveList* list){
 }
 
 
+bool isMoveListEmpty(MoveList* list){
+    if(list == NULL){ return true; } // maybe should be false?
+    return list->first == NULL;
+}
 
 ////////
 
