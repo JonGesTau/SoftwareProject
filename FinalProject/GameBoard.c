@@ -70,6 +70,8 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
     gameBoardPerformMove(after, y1, x1, y2, x2);
     if(gameBoardIsCheck(after, isWhite(game->board[y1][x1]))) return false;
 
+    gameBoardDestroy(after);
+    gameBoardDestroy(game->board);
     return true;
 }
 
