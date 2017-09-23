@@ -26,6 +26,9 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     SDL_Rect white = { .x = 200, .y = 500, .h = 100, .w = 250 };
     SDL_Rect black = { .x = 600, .y = 500, .h = 100, .w = 250 };
 
+    SDL_Rect start = { .x = 200, .y = 650, .h = 100, .w = 250 };
+    SDL_Rect back = { .x = 600, .y = 650, .h = 100, .w = 250 };
+
     buttons[0] = createChessButton(renderer, &onePlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
     buttons[1] = createChessButton(renderer, &twoPlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
     buttons[2] = createChessButton(renderer, &noob, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/noob_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/noob_inactive.bmp", CHESS_BUTTON_NOOB, false);
@@ -35,6 +38,8 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     buttons[6] = createChessButton(renderer, &expert, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/expert_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
     buttons[7] = createChessButton(renderer, &white, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/white_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/white_inactive.bmp", CHESS_BUTTON_WHITE, false);
     buttons[8] = createChessButton(renderer, &black, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/black_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/black_inactive.bmp", CHESS_BUTTON_BLACK, false);
+    buttons[9] = createChessButton(renderer, &start, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/start_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/start_active.bmp", CHESS_BUTTON_START, true);
+    buttons[10] = createChessButton(renderer, &back, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/back_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/back_active.bmp", CHESS_BUTTON_BACK, true);
 
     if (buttons[0] == NULL || buttons[1] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE
@@ -84,7 +89,7 @@ ChessSettingsWindow* createSettingsWindow() {
         return NULL ;
     }
     res->buttons = buttons;
-    res->numOfButtons = 9;
+    res->numOfButtons = 11;
     res->window = window;
     res->windowRenderer = renderer;
     res->settings = getDefaultSettings();
@@ -220,6 +225,11 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                     toggleChessButton(src->buttons[8]);
                 }
                 break;
+            case CHESS_CLICKED_START:
+                return CHESS_SETTINGS_START;
+                break;
+            case CHESS_CLICKED_BACK:
+                return CHESS_SETTINGS_BACK;
         }
     }
 

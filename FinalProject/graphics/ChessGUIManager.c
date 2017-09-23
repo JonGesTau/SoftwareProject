@@ -51,8 +51,18 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
         return CHESS_MANAGER_NONE;
     }
     if (event == CHESS_MAIN_START) {
-        hideMainWindow(src->mainWin);
-        src->settingsWin = createSettingsWindow();
+        if (src->mainWin != NULL) {
+            hideMainWindow(src->mainWin);
+        } else {
+            printf("No Main Window To Hide");
+        }
+
+        if (src->settingsWin != NULL) {
+            hideSettingsWindow(src->settingsWin);
+        } else {
+            src->settingsWin = createSettingsWindow();
+        }
+
         src->activeWin = CHESS_SETTINGS_WINDOW_ACTIVE;
 //        src->gameWin = spGameWindowCreate();
 //        if (src->gameWin == NULL ) {
@@ -72,7 +82,11 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
         return CHESS_MANAGER_NONE;
     }
     if (event == CHESS_MAIN_START) {
-        showMainWindow(src->mainWin);
+        if (src->mainWin != NULL) {
+            showMainWindow(src->mainWin);
+        } else {
+            printf("No Main Window To Show");
+        }
 //        src->gameWin = spGameWindowCreate();
 //        if (src->gameWin == NULL ) {
 //            printf("Couldn't create game window\n");
@@ -80,6 +94,21 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
 //        }
 //        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
+    if (event == CHESS_SETTINGS_BACK) {
+        if (src->settingsWin != NULL) {
+            hideSettingsWindow(src->settingsWin);
+        } else {
+            printf("No Settings Win To Hide");
+        }
+
+        if (src->mainWin != NULL) {
+            showMainWindow(src->mainWin);
+        } else {
+            printf("No Main Window To Show");
+        }
+        src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+    }
+
     if (event == CHESS_SETTINGS_EXIT) {
         return CHESS_MANAGER_QUTT;
     }

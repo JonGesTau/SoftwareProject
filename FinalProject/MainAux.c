@@ -110,7 +110,7 @@ void startGame(GameSettings* settings) {
         } else if (userCmd.cmd == SAVE) {
             xmlGameSaveGame(game, userCmd.arg);
         } else if (userCmd.cmd == LOAD) {
-            xmlGameLoadGame(userCmd.arg);
+//            xmlGameLoadGame(userCmd.arg);
         }
     }
 }

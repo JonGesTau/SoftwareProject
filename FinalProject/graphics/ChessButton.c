@@ -83,6 +83,10 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
                     return CHESS_CLICKED_WHITE;
                 case CHESS_BUTTON_BLACK:
                     return CHESS_CLICKED_BLACK;
+                case CHESS_BUTTON_BACK:
+                    return CHESS_CLICKED_BACK;
+                case CHESS_BUTTON_START:
+                    return CHESS_CLICKED_START;
                 default:
                     return CHESS_CLICKED_NONE;
             }
