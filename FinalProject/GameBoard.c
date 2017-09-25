@@ -172,8 +172,6 @@ GameBoard* gameBoardCopy(GameBoard* src){
 }
 
 void gameBoardDestroy(GameBoard* src){
-    if(src == NULL)
-        return;
     free(src);
 }
 
@@ -181,6 +179,14 @@ bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2){
     if(game == NULL) return false;
     game->board[y2][x2] = game->board[y1][x1];
     game->board[y1][x1] = CH_PIECE_EMPTY;
+    return true;
+}
+
+// TODO: remember to destory history move after using, possibly in the calling function
+bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
+    Move* mv = hist->move;
+    game->board[mv->y1][mv->x1] = game->board[mv->y2][mv->x2];
+    game->board[mv->y2][mv->x2] = hist->original;
     return true;
 }
 

@@ -11,7 +11,10 @@
 #ifndef CHESS1_GAMESTATE_H
 #define CHESS1_GAMESTATE_H
 
+#define MAX_UNDO 3
+
 #include "GameBoard.h"
+#include "Moves.h"
 
 // contains everything about a game, including board, game settings and history
 typedef struct chess_gamestate{
@@ -20,10 +23,15 @@ typedef struct chess_gamestate{
     char difficulty; // 1-5
     bool isPlayerWhite;
     bool mode; // false is 1
-    // TODO: history
+    HistoryMove* history[MAX_UNDO*2]; // each undo also undoes opponent
+    // TODO: do i need to allocate the above explicitly?
 } GameState;
 
 GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode);
 void GameStateDestroy(GameState* game);
+
+bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2);
+
+bool GameStateUndoMove(GameState* game);
 
 #endif //CHESS1_GAMESTATE_H

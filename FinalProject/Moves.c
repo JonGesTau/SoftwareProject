@@ -116,3 +116,27 @@ void ScoredMoveDestroy(ScoredMove* smove){
     }
     free(smove);
 }
+
+
+/////////////////////
+
+HistoryMove* HistoryMoveCreate(char y1, char x1, char y2, char x2, char original){
+    HistoryMove* hist = malloc(sizeof(HistoryMove));
+    if(hist == NULL){
+        // ERROR
+        return NULL;
+    }
+    hist->move = MoveCreate(y1, x1, y2, x2);
+    if(hist -> move == NULL){
+        free(hist);
+        return NULL;
+        // error
+    }
+    hist->original = original;
+    return hist;
+}
+
+void HistoryMoveDestroy(HistoryMove* hist){
+    if(hist != NULL) free(hist->move);
+    free(hist);
+}

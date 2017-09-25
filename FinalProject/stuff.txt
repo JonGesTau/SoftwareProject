@@ -1,3 +1,13 @@
+stuff left to do:
+- TODO s
+- make sure tie is dealt with during minimax
+- stop checking ptr!=NULL before freeing
+- error handling:
+  - remember to deal with SDL
+  - print error if there is
+  - clear all memory if something messes up!
+
+
 XML UNIT:
 - saving tested successfully, need to address TODOs though
 - loading also tested
@@ -9,7 +19,7 @@ Game board:
 - legal move tested for: all pieces
 - isThreatened also works
 - allmoves seems good too
-- next: make sure check works
+- tested for check and mate
 
 minimax:
 - tested scoring function

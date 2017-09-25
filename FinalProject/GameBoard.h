@@ -54,6 +54,9 @@ bool gameBoardIsLegalBishopMove(GameBoard *game, char y1, char x1, char y2, char
 // moves piece from (y1,x1) to (y2,x2), assumes move is legal
 bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2);
 
+// don't call this directly, use GameStateUndo instead
+bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist);
+
 // returns true if piece at (y1,x1) is threatened
 bool gameBoardIsThreatened(GameBoard *game, char y1, char x1);
 
@@ -62,6 +65,7 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite);
 
 bool gameBoardIsMate(GameBoard *game, bool isWhite);
 
+// checks whether there is a tie given isWhite's turn to play
 bool gameBoardIsStalemate(GameBoard *game, bool isWhite);
 
 

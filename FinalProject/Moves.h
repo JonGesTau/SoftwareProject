@@ -17,25 +17,35 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+// Basic data structure to represent move from <y1, x1> to <y2, x2>
 typedef struct move{
     char y1,x1,y2,x2;
 } Move;
 
+// a node containing a move for MoveList
 typedef struct linked_move{
     Move* move;
     struct linked_move* next;
 } LinkedMove;
 
+// a linked list of moves
 typedef struct move_list{
     LinkedMove* first;
 } MoveList;
 
+// representation of data
 typedef struct scored_move{
     Move* move;
     int score;
 } ScoredMove;
 
-//
+// saves past move for undoing
+typedef struct history_move{
+    Move* move; // the original move
+    char original; // the original value of the destination square
+} HistoryMove;
+
+//////
 Move* MoveCreate(char y1, char x1, char y2, char x2);
 void MoveDestroy(Move* move);
 
@@ -59,6 +69,9 @@ bool isMoveListEmpty(MoveList* list);
 ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score);
 void ScoredMoveDestroy(ScoredMove* move);
 
+////
+HistoryMove* HistoryMoveCreate(char y1, char x1, char y2, char x2, char original);
+void HistoryMoveDestroy(HistoryMove* hist);
 
 
 #endif //CHESS1_MOVES_H
