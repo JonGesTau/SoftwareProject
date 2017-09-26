@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include "GameBoard.h"
 #include "Moves.h"
-#include "tests/MovesTest.h"
 
 /*
  * Use this function to select a move:

@@ -3,7 +3,6 @@
 //
 
 #include "MainAux.h"
-#include "graphics/ChessGUIManager.h"
 
 void startConsoleMode() {
     Command userCmd;

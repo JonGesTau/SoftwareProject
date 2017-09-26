@@ -3,9 +3,6 @@
 //
 
 #include "ChessButton.h"
-#include "ChessGUICommon.h"
-#include "../MainAux.h"
-#include "ChessMainWindow.h"
 
 //You need a create function:
 ChessButton* createChessButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* activeImage, const char* inactiveImage, ButtonType type, bool isActive) {

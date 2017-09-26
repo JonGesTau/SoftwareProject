@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <SDL.h>
 #include <SDL_video.h>
+#include "ChessGUICommon.h"
 
 typedef enum {
     CHESS_BUTTON_NEW_GAME, CHESS_BUTTON_LOAD, CHESS_BUTTON_QUIT,

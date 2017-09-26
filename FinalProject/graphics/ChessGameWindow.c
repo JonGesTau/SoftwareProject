@@ -1,11 +1,10 @@
 //
-// Created by Jonathan Gescheit on 9/22/17.
+// Created by Jonathan Gescheit on 9/24/17.
 //
 
-#include "ChessSettingsWindow.h"
-
+#include "ChessGameWindow.h"
 //Helper function to create buttons in the simple window;
-ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings) {
+ChessButton** createGameWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings) {
     if (renderer == NULL ) {
         return NULL ;
     }
@@ -29,17 +28,17 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     SDL_Rect start = { .x = 200, .y = 650, .h = 100, .w = 250 };
     SDL_Rect back = { .x = 600, .y = 650, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &onePlayer, "./oneplayer_active.bmp", "./oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
-    buttons[1] = createChessButton(renderer, &twoPlayer, "./twoplayer_active.bmp", "./twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
-    buttons[2] = createChessButton(renderer, &noob, "./noob_active.bmp", "./noob_inactive.bmp", CHESS_BUTTON_NOOB, false);
-    buttons[3] = createChessButton(renderer, &easy, "./easy_active.bmp", "./easy_inactive.bmp", CHESS_BUTTON_EASY, false);
-    buttons[4] = createChessButton(renderer, &moderate, "./moderate_active.bmp", "./moderate_inactive.bmp", CHESS_BUTTON_MODERATE, false);
-    buttons[5] = createChessButton(renderer, &hard, "./hard_active.bmp", "./hard_inactive.bmp", CHESS_BUTTON_HARD, false);
-    buttons[6] = createChessButton(renderer, &expert, "./expert_active.bmp", "./expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
-    buttons[7] = createChessButton(renderer, &white, "./white_active.bmp", "./white_inactive.bmp", CHESS_BUTTON_WHITE, false);
-    buttons[8] = createChessButton(renderer, &black, "./black_active.bmp", "./black_inactive.bmp", CHESS_BUTTON_BLACK, false);
-    buttons[9] = createChessButton(renderer, &start, "./start_active.bmp", "./start_active.bmp", CHESS_BUTTON_START, true);
-    buttons[10] = createChessButton(renderer, &back, "./back_active.bmp", "./back_active.bmp", CHESS_BUTTON_BACK, true);
+    buttons[0] = createChessButton(renderer, &onePlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
+    buttons[1] = createChessButton(renderer, &twoPlayer, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
+    buttons[2] = createChessButton(renderer, &noob, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/noob_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/noob_inactive.bmp", CHESS_BUTTON_NOOB, false);
+    buttons[3] = createChessButton(renderer, &easy, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/easy_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/easy_inactive.bmp", CHESS_BUTTON_EASY, false);
+    buttons[4] = createChessButton(renderer, &moderate, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/moderate_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/moderate_inactive.bmp", CHESS_BUTTON_MODERATE, false);
+    buttons[5] = createChessButton(renderer, &hard, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/hard_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/hard_inactive.bmp", CHESS_BUTTON_HARD, false);
+    buttons[6] = createChessButton(renderer, &expert, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/expert_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
+    buttons[7] = createChessButton(renderer, &white, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/white_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/white_inactive.bmp", CHESS_BUTTON_WHITE, false);
+    buttons[8] = createChessButton(renderer, &black, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/black_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/black_inactive.bmp", CHESS_BUTTON_BLACK, false);
+    buttons[9] = createChessButton(renderer, &start, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/start_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/start_active.bmp", CHESS_BUTTON_START, true);
+    buttons[10] = createChessButton(renderer, &back, "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/back_active.bmp", "/Users/jonathangescheit/TAU/SoftwareProject/FinalProject/back_active.bmp", CHESS_BUTTON_BACK, true);
 
     if (buttons[0] == NULL || buttons[1] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE
@@ -74,29 +73,29 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
 
     return buttons;
 }
-ChessSettingsWindow* createSettingsWindow() {
-    ChessSettingsWindow* res = malloc(sizeof(ChessSettingsWindow));
-//    ChessSettingsWindow* data = malloc(sizeof(ChessSettingsWindow));
+ChessGameWindow* createGameWindow() {
+    ChessGameWindow* res = malloc(sizeof(ChessGameWindow));
+//    ChessGameWindow* data = malloc(sizeof(ChessGameWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    ChessButton** buttons = createSettingsWindowChessButtons(renderer, getDefaultSettings());
-    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
-        free(res);
-        free(buttons);
-        //We first destroy the renderer
-        SDL_DestroyRenderer(renderer); //NULL safe
-        SDL_DestroyWindow(window); //NULL safe
-        return NULL ;
-    }
-    res->buttons = buttons;
-    res->numOfButtons = 11;
+//    ChessButton** buttons = createGameWindowChessButtons(renderer, getDefaultSettings());
+//    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
+//        free(res);
+//        free(buttons);
+//        //We first destroy the renderer
+//        SDL_DestroyRenderer(renderer); //NULL safe
+//        SDL_DestroyWindow(window); //NULL safe
+//        return NULL ;
+//    }
+    res->buttons = NULL;
+    res->numOfButtons = 0;
     res->window = window;
     res->windowRenderer = renderer;
     res->settings = getDefaultSettings();
 
     return res;
 }
-void destroySettingsWindow(ChessSettingsWindow *src) {
+void destroyGameWindow(ChessGameWindow *src) {
     if (src == NULL ) {
         return;
     }
@@ -112,7 +111,7 @@ void destroySettingsWindow(ChessSettingsWindow *src) {
 
     free(src);
 }
-void drawSettingsWindow(ChessSettingsWindow *src) {
+void drawGameWindow(ChessGameWindow *src) {
     if (src == NULL ) {
         return;
     }
@@ -120,16 +119,17 @@ void drawSettingsWindow(ChessSettingsWindow *src) {
     //Draw window
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
-    int i = 0;
-    for (; i < src->numOfButtons; i++) {
-        drawChessButton(src->buttons[i]);
-    }
+    DrawChessBoard(src->windowRenderer);
+//    int i = 0;
+//    for (; i < src->numOfButtons; i++) {
+//        drawChessButton(src->buttons[i]);
+//    }
     SDL_RenderPresent(src->windowRenderer);
 }
 
-CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Event *event){
+CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     if(src == NULL || event==NULL){
-        return CHESS_SETTINGS_EXIT;
+        return CHESS_GAME_EXIT;
     }
 
     int i =0;
@@ -226,22 +226,47 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 }
                 break;
             case CHESS_CLICKED_START:
-                return CHESS_SETTINGS_START;
+                return CHESS_GAME_START;
                 break;
             case CHESS_CLICKED_BACK:
-                return CHESS_SETTINGS_BACK;
+                return CHESS_GAME_BACK;
         }
     }
 
-    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_SETTINGS_EXIT;
+    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_GAME_EXIT;
 
     return CHESS_CLICKED_NONE;
 }
 
-void hideSettingsWindow(ChessSettingsWindow* src) {
+void hideGameWindow(ChessGameWindow* src) {
     SDL_HideWindow(src->window);
 }
 
-void showSettingsWindow(ChessSettingsWindow* src) {
+void showGameWindow(ChessGameWindow* src) {
     SDL_ShowWindow(src->window);
 }
+
+void DrawChessBoard(SDL_Renderer * renderer) {
+    int row = 0,column = 0,x = 0;
+    SDL_Rect rect, darea;
+
+    /* Get the Size of drawing surface */
+    SDL_RenderGetViewport(renderer, &darea);
+
+    for( ; row < 8; row++) {
+        column = row%2;
+        x = column;
+        for( ; column < 4+(row%2); column++) {
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
+            rect.w = darea.w/8;
+            rect.h = darea.h/8;
+            rect.x = x * rect.w;
+            rect.y = row * rect.h;
+            x = x + 2;
+            SDL_RenderFillRect(renderer, &rect);
+        }
+    }
+}
+
+

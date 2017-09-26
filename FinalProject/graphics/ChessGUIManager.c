@@ -3,8 +3,6 @@
 //
 
 #include "ChessGUIManager.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 ChessGuiManager* ChessManagerCreate() {
     ChessGuiManager* res = (ChessGuiManager*) malloc(sizeof(ChessGuiManager));
@@ -16,7 +14,7 @@ ChessGuiManager* ChessManagerCreate() {
         free(res);
         return NULL ;
     }
-//    res->gameWin = NULL;
+    res->gameWin = NULL;
     res->settingsWin = NULL;
     res->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
     return res;
@@ -25,9 +23,9 @@ void chessManagerDestroy(ChessGuiManager *src) {
     if (!src) {
         return;
     }
-//    if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-//        spGameWindowDestroy(src->gameWin);
-//    }
+    if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
+        destroyGameWindow(src->gameWin);
+    }
     if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         destroySettingsWindow(src->settingsWin);
     }
@@ -41,7 +39,7 @@ void chessManagerDraw(ChessGuiManager *src) {
     if (src->activeWin == CHESS_MAIN_WINDOW_ACTIVE) {
         drawMainWindow(src->mainWin);
     } else if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-//        spGameWindowDraw(src->gameWin);
+        drawGameWindow(src->gameWin);
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         drawSettingsWindow(src->settingsWin);
     }
@@ -107,6 +105,21 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
             printf("No Main Window To Show");
         }
         src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+    }
+
+    if (event == CHESS_SETTINGS_START) {
+        if (src->settingsWin != NULL) {
+            hideSettingsWindow(src->settingsWin);
+        } else {
+            printf("No Settings Win To Hide");
+        }
+
+        if (src->gameWin!= NULL) {
+            hideSettingsWindow(src->settingsWin);
+        } else {
+            src->gameWin = createGameWindow();
+        }
+        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
 
     if (event == CHESS_SETTINGS_EXIT) {

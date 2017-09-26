@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <memory.h>
-#include "ChessParser.h"
 #include "MainAux.h"
 
 int main(int argc, char *argv[]) {

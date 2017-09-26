@@ -15,9 +15,10 @@
 #include "consoleUI.h"
 #include "GameBoard.h"
 #include "Moves.h"
-#include "SDL.h"
+#include <SDL.h>
 #include "xmlGame.h"
 #include "MiniMax.h"
+#include "graphics/ChessGUIManager.h"
 
 Command getUserCommand();
 int arg;

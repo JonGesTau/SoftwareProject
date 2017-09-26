@@ -8,6 +8,7 @@
 #include <SDL_events.h>
 #include "ChessMainWindow.h"
 #include "ChessSettingsWindow.h"
+#include "ChessGameWindow.h"
 
 typedef enum{
     CHESS_MAIN_WINDOW_ACTIVE,
@@ -24,6 +25,7 @@ typedef struct {
 //    ChessGameWindow* gameWin;
     ChessSettingsWindow* settingsWin;
     ChessMainWindow* mainWin;
+    ChessGameWindow* gameWin;
     ACTIVE_WINDOW activeWin;
 } ChessGuiManager;
 

@@ -1,9 +1,7 @@
 #include <memory.h>
 #include <ctype.h>
-#include <assert.h>
-#include <stdio.h>
+#include <stdbool.h>
 #include "ChessParser.h"
-#include "Moves.h"
 
 bool isInt(const char* str) {
     // If str is a negative number, remove '-'
