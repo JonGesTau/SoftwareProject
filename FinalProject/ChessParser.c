@@ -122,13 +122,12 @@ Move* parseMove(char* str) {
     copyCharByIndex(&y1, strCopy, 1);
     copyCharByIndex(&x2, strCopy, 12);
     copyCharByIndex(&y2, strCopy, 10);
+    
 
-
-
-    move->x1 = *x1 - '0' - 17;
-    move->x2 = *x2 - '0' - 17;
-    move->y1 = *y1 - '0' - 1;
-    move->y2 = *y2 - '0' - 1;
+    move->x1 = (char) (*x1 - '0' - 17);
+    move->x2 = (char) (*x2 - '0' - 17);
+    move->y1 = (char) (*y1 - '0' - 1);
+    move->y2 = (char) (*y2 - '0' - 1);
 
     return move;
 }

@@ -120,11 +120,14 @@ void promptUserMove() {
 }
 
 bool handleUserMove(GameBoard* gameBoard, Move* userMove) {
+    //TODO:change argument to GameState* and use GameStatePerformMove instead, which also tests for legality
+
     bool isLegalMove;
     isLegalMove = gameBoardIsLegalMove(gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
 
     if (isLegalMove) {
         gameBoardPerformMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
+        //TODO: gescheit, change the function so that we use GameStatePerformMove instead!
         return true;
     } else {
         // TODO: Handle all kinds of errors here

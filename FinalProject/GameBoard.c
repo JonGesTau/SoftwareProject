@@ -70,6 +70,7 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
     gameBoardPerformMove(after, y1, x1, y2, x2);
     if(gameBoardIsCheck(after, isWhite(game->board[y1][x1]))) return false;
 
+    gameBoardDestroy(after);
     return true;
 }
 
@@ -171,8 +172,6 @@ GameBoard* gameBoardCopy(GameBoard* src){
 }
 
 void gameBoardDestroy(GameBoard* src){
-    if(src == NULL)
-        return;
     free(src);
 }
 
@@ -180,6 +179,14 @@ bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2){
     if(game == NULL) return false;
     game->board[y2][x2] = game->board[y1][x1];
     game->board[y1][x1] = CH_PIECE_EMPTY;
+    return true;
+}
+
+// TODO: remember to destory history move after using, possibly in the calling function
+bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
+    Move* mv = hist->move;
+    game->board[mv->y1][mv->x1] = game->board[mv->y2][mv->x2];
+    game->board[mv->y2][mv->x2] = hist->original;
     return true;
 }
 
@@ -357,6 +364,16 @@ bool gameBoardIsMate(GameBoard *game, bool isWhite){
     return true;
 }
 
+
+// returns true if the game is a stalemate given whose turn it is to play
+// will return true IFF not in check and no moves to play
+bool gameBoardIsStalemate(GameBoard* game, bool isWhite){
+    if(gameBoardIsCheck(game, isWhite)) return false;
+    MoveList* moves = gameBoardAllMoves(game, isWhite);
+    bool ret = isMoveListEmpty(moves);
+    MoveListDestroy(moves);
+    return ret;
+}
 
 MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
     MoveList* moveList = MoveListCreate();
