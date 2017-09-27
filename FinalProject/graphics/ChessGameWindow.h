@@ -8,6 +8,8 @@
 #include <SDL_video.h>
 #include "ChessButton.h"
 #include "../GameSettings.h"
+#include "../GameState.h"
+#include "../consoleUI.h"
 
 typedef enum {
     CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT
@@ -20,6 +22,7 @@ struct chess_game_window {
     ChessButton** buttons;
     int numOfButtons;
     GameSettings* settings;
+    GameState* game;
 };
 
 ChessGameWindow* createGameWindow();
@@ -28,6 +31,7 @@ void drawGameWindow(ChessGameWindow *src);
 void hideGameWindow(ChessGameWindow* src);
 void showGameWindow(ChessGameWindow* src);
 CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event);
-void DrawChessBoard(SDL_Renderer * renderer);
+void drawChessBoard(SDL_Renderer *renderer);
+void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer);
 
 #endif //CHESS1_CHESSGAMEWINDOW_H

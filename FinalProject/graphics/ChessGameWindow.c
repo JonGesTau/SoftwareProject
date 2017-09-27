@@ -3,6 +3,7 @@
 //
 
 #include "ChessGameWindow.h"
+
 //Helper function to create buttons in the simple window;
 ChessButton** createGameWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings) {
     if (renderer == NULL ) {
@@ -92,6 +93,7 @@ ChessGameWindow* createGameWindow() {
     res->window = window;
     res->windowRenderer = renderer;
     res->settings = getDefaultSettings();
+    res->game = GameStateCreate(res->settings->difficulty, res->settings->userColor, res->settings->gameMode);
 
     return res;
 }
@@ -119,7 +121,8 @@ void drawGameWindow(ChessGameWindow *src) {
     //Draw window
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
-    DrawChessBoard(src->windowRenderer);
+    drawChessBoard(src->windowRenderer);
+    drawPieces(src->window, src->windowRenderer);
 //    int i = 0;
 //    for (; i < src->numOfButtons; i++) {
 //        drawChessButton(src->buttons[i]);
@@ -234,8 +237,6 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     }
 
     if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_GAME_EXIT;
-
-    return CHESS_CLICKED_NONE;
 }
 
 void hideGameWindow(ChessGameWindow* src) {
@@ -246,25 +247,51 @@ void showGameWindow(ChessGameWindow* src) {
     SDL_ShowWindow(src->window);
 }
 
-void DrawChessBoard(SDL_Renderer * renderer) {
+void drawChessBoard(SDL_Renderer *renderer) {
     int row = 0,column = 0,x = 0;
     SDL_Rect rect, darea;
 
     /* Get the Size of drawing surface */
     SDL_RenderGetViewport(renderer, &darea);
+    darea.w = 0.7 * darea.w;
+    darea.h = 0.7 * darea.h;
 
     for( ; row < 8; row++) {
-        column = row%2;
+        column = row % 2;
         x = column;
-        for( ; column < 4+(row%2); column++) {
+        for(; column < 4 + (row % 2); column++) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
 
             rect.w = darea.w/8;
             rect.h = darea.h/8;
-            rect.x = x * rect.w;
-            rect.y = row * rect.h;
+            rect.x = x * rect.w + darea.w * 0.4;
+            rect.y = row * rect.h + darea.w * 0.15;
             x = x + 2;
             SDL_RenderFillRect(renderer, &rect);
+        }
+    }
+}
+
+void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer) {
+    int row = 0,column = 0,x = 0;
+    SDL_Rect rect, darea;
+
+    /* Get the Size of drawing surface */
+    SDL_RenderGetViewport(renderer, &darea);
+    darea.w = 0.7 * darea.w;
+    darea.h = 0.7 * darea.h;
+
+    for( ; row < 8; row++) {
+        x = column;
+        for(; column < 8; column++) {
+            printf("%c ", consolePieceChar(src->game->gameBoard->board[column][row]));
+//            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
+//            rect.w = darea.w/8;
+//            rect.h = darea.h/8;
+//            rect.x = x * rect.w + darea.w * 0.4;
+//            rect.y = row * rect.h + darea.w * 0.15;
+//            SDL_RenderFillRect(renderer, &rect);
         }
     }
 }

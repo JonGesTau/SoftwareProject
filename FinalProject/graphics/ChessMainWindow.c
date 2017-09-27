@@ -18,9 +18,9 @@ ChessButton** createMainWindowChessButtons(SDL_Renderer *renderer) {
     SDL_Rect loadR = { .x = 387, .y = 250, .h = 100, .w = 250 };
     SDL_Rect quitR = { .x = 387, .y = 600, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &newGameR, "./NewGame.bmp", "./NewGame.bmp", CHESS_BUTTON_NEW_GAME, true);
-    buttons[1] = createChessButton(renderer, &loadR, "./load.bmp", "./load.bmp", CHESS_BUTTON_LOAD, true);
-    buttons[2] = createChessButton(renderer, &quitR, "./quit.bmp", "./quit.bmp", CHESS_BUTTON_QUIT, true);
+    buttons[0] = createChessButton(renderer, &newGameR, "./assets/NewGame.bmp", "./assets/NewGame.bmp", CHESS_BUTTON_NEW_GAME, true);
+    buttons[1] = createChessButton(renderer, &loadR, "./assets/load.bmp", "./assets/load.bmp", CHESS_BUTTON_LOAD, true);
+    buttons[2] = createChessButton(renderer, &quitR, "./assets/quit.bmp", "./assets/quit.bmp", CHESS_BUTTON_QUIT, true);
 
     if (buttons[0] == NULL || buttons[1] == NULL || buttons[2] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE

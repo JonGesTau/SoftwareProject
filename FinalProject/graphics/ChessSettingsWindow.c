@@ -29,17 +29,17 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     SDL_Rect start = { .x = 200, .y = 650, .h = 100, .w = 250 };
     SDL_Rect back = { .x = 600, .y = 650, .h = 100, .w = 250 };
 
-    buttons[0] = createChessButton(renderer, &onePlayer, "./oneplayer_active.bmp", "./oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
-    buttons[1] = createChessButton(renderer, &twoPlayer, "./twoplayer_active.bmp", "./twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
-    buttons[2] = createChessButton(renderer, &noob, "./noob_active.bmp", "./noob_inactive.bmp", CHESS_BUTTON_NOOB, false);
-    buttons[3] = createChessButton(renderer, &easy, "./easy_active.bmp", "./easy_inactive.bmp", CHESS_BUTTON_EASY, false);
-    buttons[4] = createChessButton(renderer, &moderate, "./moderate_active.bmp", "./moderate_inactive.bmp", CHESS_BUTTON_MODERATE, false);
-    buttons[5] = createChessButton(renderer, &hard, "./hard_active.bmp", "./hard_inactive.bmp", CHESS_BUTTON_HARD, false);
-    buttons[6] = createChessButton(renderer, &expert, "./expert_active.bmp", "./expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
-    buttons[7] = createChessButton(renderer, &white, "./white_active.bmp", "./white_inactive.bmp", CHESS_BUTTON_WHITE, false);
-    buttons[8] = createChessButton(renderer, &black, "./black_active.bmp", "./black_inactive.bmp", CHESS_BUTTON_BLACK, false);
-    buttons[9] = createChessButton(renderer, &start, "./start_active.bmp", "./start_active.bmp", CHESS_BUTTON_START, true);
-    buttons[10] = createChessButton(renderer, &back, "./back_active.bmp", "./back_active.bmp", CHESS_BUTTON_BACK, true);
+    buttons[0] = createChessButton(renderer, &onePlayer, "./assets/oneplayer_active.bmp", "./assets/oneplayer_inactive.bmp", CHESS_BUTTON_1PLAYER, false);
+    buttons[1] = createChessButton(renderer, &twoPlayer, "./assets/twoplayer_active.bmp", "./assets/twoplayer_inactive.bmp", CHESS_BUTTON_2PLAYER, false);
+    buttons[2] = createChessButton(renderer, &noob, "./assets/noob_active.bmp", "./assets/noob_inactive.bmp", CHESS_BUTTON_NOOB, false);
+    buttons[3] = createChessButton(renderer, &easy, "./assets/easy_active.bmp", "./assets/easy_inactive.bmp", CHESS_BUTTON_EASY, false);
+    buttons[4] = createChessButton(renderer, &moderate, "./assets/moderate_active.bmp", "./assets/moderate_inactive.bmp", CHESS_BUTTON_MODERATE, false);
+    buttons[5] = createChessButton(renderer, &hard, "./assets/hard_active.bmp", "./assets/hard_inactive.bmp", CHESS_BUTTON_HARD, false);
+    buttons[6] = createChessButton(renderer, &expert, "./assets/expert_active.bmp", "./assets/expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
+    buttons[7] = createChessButton(renderer, &white, "./assets/white_active.bmp", "./assets/white_inactive.bmp", CHESS_BUTTON_WHITE, false);
+    buttons[8] = createChessButton(renderer, &black, "./assets/black_active.bmp", "./assets/black_inactive.bmp", CHESS_BUTTON_BLACK, false);
+    buttons[9] = createChessButton(renderer, &start, "./assets/start_active.bmp", "./assets/start_active.bmp", CHESS_BUTTON_START, true);
+    buttons[10] = createChessButton(renderer, &back, "./assets/back_active.bmp", "./assets/back_active.bmp", CHESS_BUTTON_BACK, true);
 
     if (buttons[0] == NULL || buttons[1] == NULL) {
         destroyChessButton(buttons[0]); //NULL SAFE
