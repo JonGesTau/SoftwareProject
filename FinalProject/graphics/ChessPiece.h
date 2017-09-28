@@ -36,7 +36,6 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event);
 
 void drawChessPiece(ChessPiece* src);
 void toggleChessPiece(ChessPiece* src);
-void toggleDifficultyButton(ChessPiece* src, int difficulty);
 
 
 #endif //CHESS1_CHESSPIECE_H

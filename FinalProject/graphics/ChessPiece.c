@@ -10,7 +10,7 @@ ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, Pie
     }
     //Allocate data
     ChessPiece* res = (ChessPiece*) malloc(sizeof(ChessPiece));
-    const char* activeImage = "./assets/black_pawn";
+    const char* activeImage = "./assets/white_king.bmp";
     SDL_Surface* loadingSurface = SDL_LoadBMP(activeImage);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(windowRender, loadingSurface);
     if (res == NULL || loadingSurface == NULL || texture == NULL) {

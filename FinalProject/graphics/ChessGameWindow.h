@@ -10,6 +10,7 @@
 #include "../GameSettings.h"
 #include "../GameState.h"
 #include "../consoleUI.h"
+#include "ChessPiece.h"
 
 typedef enum {
     CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT
@@ -20,7 +21,9 @@ struct chess_game_window {
     SDL_Window* window;
     SDL_Renderer* windowRenderer;
     ChessButton** buttons;
+    ChessPiece** pieces;
     int numOfButtons;
+    int numOfPieces;
     GameSettings* settings;
     GameState* game;
 };
@@ -31,7 +34,7 @@ void drawGameWindow(ChessGameWindow *src);
 void hideGameWindow(ChessGameWindow* src);
 void showGameWindow(ChessGameWindow* src);
 CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event);
-void drawChessBoard(SDL_Renderer *renderer);
+void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src);
 void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer);
 
 #endif //CHESS1_CHESSGAMEWINDOW_H
