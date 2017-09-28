@@ -8,7 +8,7 @@
  *     this is good for min/max and also for the possible moves feature
  * 2. ScoredMove - also for min/max, we return the best move along with the assocated score
  *
- * Todo: quite possibly we only need y2,x2 for LinkedMove, since it is easy to remember y1,x1
+ *
  */
 
 #ifndef CHESS1_MOVES_H
