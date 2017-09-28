@@ -251,7 +251,7 @@ void showGameWindow(ChessGameWindow* src) {
 
 void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
     SDL_Rect rect, darea;
-    SDL_Rect* rectp;
+    SDL_Rect *rectp;
     char piece;
 
     /* Get the Size of drawing surface */
@@ -259,14 +259,14 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
     darea.w = 0.7 * darea.w;
     darea.h = 0.7 * darea.h;
 
-    for(int y = 7; y>-1; y--){
-        for(int x = 0; x<8; x++){
+    for (int y = 7; y > -1; y--) {
+        for (int x = 0; x < 8; x++) {
             piece = consolePieceChar(src->game->gameBoard->board[y][x]);
-            ChessPiece* piecep;
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+            ChessPiece *piecep;
+            SDL_SetRenderDrawColor(renderer, 128, 128, 128, 0xFF);
 
-            rect.w = darea.w/8;
-            rect.h = darea.h/8;
+            rect.w = darea.w / 8;
+            rect.h = darea.h / 8;
             rect.x = x * rect.w + darea.w * 0.4;
             rect.y = y * rect.h + darea.w * 0.15;
             rectp = &rect;
@@ -281,63 +281,47 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
                 }
             }
 
-            if (piece == 'M') {
-                piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN);
-                drawChessPiece(piecep);
+            switch (piece) {
+                case 'M':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'B':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'R':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'N':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'Q':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'K':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
+                    break;
+                case 'm':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_WHITE);
+                    break;
+                case 'b':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_WHITE);
+                    break;
+                case 'r':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_WHITE);
+                    break;
+                case 'n':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_WHITE);
+                    break;
+                case 'q':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_QUEEN, CHESS_PIECE_COLOR_WHITE);
+                    break;
+                case 'k':
+                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KING, CHESS_PIECE_COLOR_WHITE);
+                    break;
             }
+            drawChessPiece(piecep);
         }
     }
-
-//    for( ; row < 8; row++) {
-//        column = row % 2;
-//        x = column;
-//        for(; column < 4 + (row % 2); column++) {
-//            piece = consolePieceChar(src->game->gameBoard->board[column][row]);
-//            ChessPiece* piecep;
-//            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
-//
-//            rect.w = darea.w/8;
-//            rect.h = darea.h/8;
-//            rect.x = x * rect.w + darea.w * 0.4;
-//            rect.y = row * rect.h + darea.w * 0.15;
-//            x = x + 2;
-//            rectp = &rect;
-//            SDL_RenderFillRect(renderer, &rect);
-//
-//            if (piece == 'r') {
-//                piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN);
-//                drawChessPiece(piecep);
-//            }
-//        }
-//    }
 }
-
-//void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer) {
-//    int row = 0,column = 0,x = 0;
-//    SDL_Rect rect, darea;
-//    char piece;
-//
-//    /* Get the Size of drawing surface */
-//    SDL_RenderGetViewport(renderer, &darea);
-//    darea.w = 0.7 * darea.w;
-//    darea.h = 0.7 * darea.h;
-//
-//    for( ; row < 8; row++) {
-//        x = column;
-//        for(; column < 8; column++) {
-//            piece = consolePieceChar(src->game->gameBoard->board[column][row]);
-//            if (piece == 'm') {
-//                createChessPiece(src->windowRenderer, rect, CHESS_PIECE_PAWN);
-//            }
-////            SDL_SetRenderrDrawColor(renderer, 0, 0, 0, 0xFF);
-//
-////            rect.w = darea.w/8;
-////            rect.h = darea.h/8;
-////            rect.x = x * rect.w + darea.w * 0.4;
-////            rect.y = row * rect.h + darea.w * 0.15;
-////            SDL_RenderFillRect(renderer, &rect);
-//        }
-//    }
-//}
 
 

@@ -4,13 +4,13 @@
 
 #include "ChessPiece.h"
 //You need a create function:
-ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, PieceType type) {
+ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, PieceType type, PieceColor color) {
     if (windowRender == NULL || location == NULL) {
         return NULL ;
     }
     //Allocate data
     ChessPiece* res = (ChessPiece*) malloc(sizeof(ChessPiece));
-    const char* activeImage = "./assets/white_king.bmp";
+    const char* activeImage = getPieceImg(type, color);
     SDL_Surface* loadingSurface = SDL_LoadBMP(activeImage);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(windowRender, loadingSurface);
     if (res == NULL || loadingSurface == NULL || texture == NULL) {
@@ -102,4 +102,38 @@ void toggleChessPiece(ChessPiece* src) {
 
     src->isActive = !src->isActive;
     drawChessPiece(src);
+}
+
+char* getPieceImg(PieceType type, PieceColor color) {
+    if (color == CHESS_PIECE_COLOR_WHITE) {
+        switch (type) {
+            case CHESS_PIECE_ROOK:
+                return whiteRookImg;
+            case CHESS_PIECE_KING:
+                return whiteKingImg;
+            case CHESS_PIECE_QUEEN:
+                return whiteQueenImg;
+            case CHESS_PIECE_BISHOP:
+                return whiteBishopImg;
+            case CHESS_PIECE_KNIGHT:
+                return whiteKnightImg;
+            case CHESS_PIECE_PAWN:
+                return whitePawnImg;
+        }
+    } else {
+        switch (type) {
+            case CHESS_PIECE_ROOK:
+                return blackRookImg;
+            case CHESS_PIECE_KING:
+                return blackKingImg;
+            case CHESS_PIECE_QUEEN:
+                return blackQueenImg;
+            case CHESS_PIECE_BISHOP:
+                return blackBishopImg;
+            case CHESS_PIECE_KNIGHT:
+                return blackKnightImg;
+            case CHESS_PIECE_PAWN:
+                return blackPawnImg;
+        }
+    }
 }
