@@ -148,7 +148,6 @@ GameState* xmlGameLoadGame(char* filename){
     state->gameBoard = board;
     state->current_move = current_turn;
 
-    printf("difficulty is %d\n", difficulty);
     fclose(f);
     return state;
 }

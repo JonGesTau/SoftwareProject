@@ -11,12 +11,15 @@ typedef struct chess_gamesettings {
     int userColor;
 } GameSettings;
 
-void promptSelectSetting();
+GameSettings* GameSettingsCreate();
+void GameSettingsDestroy(GameSettings* settings);
+void setDefaultSettings(GameSettings* settings);
+
 void setGameMode(GameSettings* settings, int value);
 void setDifficulty(GameSettings* settings, int value);
 void setUserColor(GameSettings* settings, int value);
 void printSettings(GameSettings*);
-GameSettings* getDefaultSettings();
+//GameSettings* getDefaultSettings();
 
 
 #endif //CHESS1_GAMESETTINGS_H

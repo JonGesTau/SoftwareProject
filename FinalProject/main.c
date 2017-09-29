@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <memory.h>
-#include "ChessParser.h"
 #include "MainAux.h"
+//#include "ChessParser.h"
 
 int main(int argc, char *argv[]) {
     if (argv[1] == "-g") startGUIMode();

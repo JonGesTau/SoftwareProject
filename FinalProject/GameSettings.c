@@ -5,19 +5,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "GameSettings.h"
+#include "MainAux.h"
 
-GameSettings* getDefaultSettings() {
+GameSettings* GameSettingsCreate(){
+    GameSettings* settings = malloc(sizeof(GameSettings));
+    if(settings == NULL){
+        // throw error
+        return NULL;
+    }
+    setDefaultSettings(settings);
+    return settings;
+}
+
+void GameSettingsDestroy(GameSettings* settings){
+    free(settings);
+}
+
+void setDefaultSettings(GameSettings* settings){
+    settings->gameMode = 1;
+    settings->difficulty = 2;
+    settings->userColor = 1;
+}
+
+
+
+/*GameSettings* getDefaultSettings() {
     GameSettings* settings = malloc(sizeof(GameSettings));
     settings->gameMode = 1;
     settings->difficulty = 2;
     settings->userColor = 1;
 
     return settings;
-}
-
-void promptSelectSetting() {
-    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
-}
+}*/
 
 void setGameMode(GameSettings* settings, int value) {
     if (value < 1 || value > 2) {
@@ -33,6 +52,8 @@ void setDifficulty(GameSettings* settings, int value) {
         printf("invalid command\n");
     } else if (value < 1 || value > 5) {
         printf("Wrong difficulty level. The value should be between 1 to 5\n");
+    } else if(value == 5 && !EXPERT_LEVEL_SUPPORTED) {
+        printf("Expert level not supported, please choose a value between 1 to 4:\n");
     } else {
         settings->difficulty = value;
     }

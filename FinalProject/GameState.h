@@ -32,6 +32,11 @@ void GameStateDestroy(GameState* game);
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2);
 
-bool GameStateUndoMove(GameState* game);
+//bool GameStateUndoMove(GameState* game);
+
+HistoryMove* GameStateGetLastMove(GameState* game);
+
+void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist);
+
 
 #endif //CHESS1_GAMESTATE_H

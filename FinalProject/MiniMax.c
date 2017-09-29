@@ -7,6 +7,7 @@
  */
 
 #include "MiniMax.h"
+#include "GameState.h"
 
 ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool isMax, int parentBest) {
     //GameBoard* temp;
@@ -123,6 +124,14 @@ ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool 
     ScoredMove* smove = ScoredMoveCreate(bestMove->y1, bestMove->x1, bestMove->y2, bestMove->x2, bestScore);
     MoveDestroy(bestMove);
     return smove;
+}
+
+Move* miniMaxGetComputerMove(GameState* game){
+    ScoredMove* compScoredMove = miniMaxGetBestMove(game->gameBoard, game->difficulty, game->difficulty,
+                                                    game->gameBoard->whiteTurn, 0);
+    Move* compMove = MoveCreate(compScoredMove->move->y1, compScoredMove->move->x1, compScoredMove->move->y2, compScoredMove->move->x2);
+    ScoredMoveDestroy(compScoredMove);
+    return compMove;
 }
 
 /*
