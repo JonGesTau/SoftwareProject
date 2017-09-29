@@ -25,7 +25,7 @@ void startConsoleMode() {
         }
 
         userCmd = getUserCommand(); // Get the user's command.
-        // TODO: all tested! but for user argument for load
+
         // Settings state
         if (userCmd.cmd == GAME_MODE) {
             arg = strtoumax(userCmd.arg, NULL, 10);
@@ -38,7 +38,7 @@ void startConsoleMode() {
             setUserColor(settings, arg);
         } else if (userCmd.cmd == LOAD) {
             //arg = strtoumax(userCmd.arg, NULL, 10); // TODO: what does this mean? 10 ?
-            game = xmlGameLoadGame("loadtest.xml");
+            game = xmlGameLoadGame(userCmd.arg);
             // TODO: Make sure no errors - should be here or in xml?
             if(game != NULL){
                 GameSettingsDestroy(settings);
@@ -48,6 +48,8 @@ void startConsoleMode() {
                 if(!is_reset){
                     break;
                 }
+            } else {
+                printf(STR_ERR_FILE);
             }
         } else if (userCmd.cmd == DEFAULT) {
             setDefaultSettings(settings); // TODO: This is never freed
@@ -123,7 +125,7 @@ bool startGame(GameState* game) {
                     printf("Checkmate! %s player wins the game\n", color);
                     winner = game->isPlayerWhite;
                 } else if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
-                    printf("Check: %s King is threatend!\n", color);
+                    printf("Check: %s King is threatened!\n", color);
                 }
                 // need to handel stalemate
             }

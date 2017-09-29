@@ -22,6 +22,7 @@
 #define EXPERT_LEVEL_SUPPORTED false
 
 #define STR_SELECT_SETTINGS "Specify game setting or type 'start' to begin a game with the current setting:\n"
+#define STR_ERR_FILE "Error: File doesn't exist or cannot be opened\n"
 #define STR_EXITING "Exiting...\n"
 #define STR_RESTARTING "Restarting...\n"
 #define STR_ERR_UNDO_UNAVAILABLE "Undo command not available in 2 players mode\n"
