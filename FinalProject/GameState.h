@@ -27,7 +27,7 @@ typedef struct chess_gamestate{
     // TODO: do i need to allocate the above explicitly?
 } GameState;
 
-GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode);
+GameState* GameStateCreate(char difficulty, bool isPlayerWhite, char mode);
 void GameStateDestroy(GameState* game);
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2);
@@ -36,7 +36,7 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2);
 
 HistoryMove* GameStateGetLastMove(GameState* game);
 
-void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist);
+void GameStateUndoHistoryMove(GameState* game);
 
 
 #endif //CHESS1_GAMESTATE_H

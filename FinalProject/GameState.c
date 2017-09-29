@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "GameState.h"
 
-GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode){
+GameState* GameStateCreate(char difficulty, bool isPlayerWhite, char mode){
     GameState* game = malloc(sizeof(GameState));
     if(game == NULL){
         printf("ERROR");
@@ -93,15 +93,27 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
 HistoryMove* GameStateGetLastMove(GameState* game){
     HistoryMove* hist = NULL;
 
-    for(char i = MAX_UNDO*2-1; i>-1; i++){
+    for(char i = MAX_UNDO*2-1; i>-1; i--){
         if(game->history[i] != NULL){
             hist = game->history[i];
             break;
         }
     }
+
+    return hist;
 }
 
-void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist){
+void GameStateUndoHistoryMove(GameState* game){
+    HistoryMove* hist = NULL;
+
+    for(char i = MAX_UNDO*2-1; i>-1; i--){
+        if(game->history[i] != NULL){
+            hist = game->history[i];
+            game->history[i] = NULL;
+            break;
+        }
+    }
+
     gameBoardUndoMove(game->gameBoard, hist);
     HistoryMoveDestroy(hist);
     game->current_move--; // TODO: no need for this
