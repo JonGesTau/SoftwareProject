@@ -47,8 +47,8 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
         return PIECE_CLICKED_NONE; //Better to return an error value
     }
 
-    if (event->type == SDL_MOUSEBUTTONDOWN) {
-        if (src->type != CHESS_PIECE_EMPTY) {
+    if (src->type != CHESS_PIECE_EMPTY) {
+        if (event->type == SDL_MOUSEBUTTONDOWN) {
             SDL_Point point;
             point.x = event->button.x;
             point.y = event->button.y;
@@ -57,10 +57,8 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
                 return CHESS_DRAG_PIECE;
             }
         }
-    }
 
-    if (event->type == SDL_MOUSEBUTTONUP) {
-        if (src->type != CHESS_PIECE_EMPTY) {
+        if (event->type == SDL_MOUSEBUTTONUP) {
             SDL_Point point;
             point.x = event->button.x;
             point.y = event->button.y;
@@ -69,10 +67,8 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
                 return CHESS_DROP_PIECE;
             }
         }
-    }
 
-    if (event->type == SDL_MOUSEMOTION) {
-        if (src->type != CHESS_PIECE_EMPTY) {
+        if (event->type == SDL_MOUSEMOTION) {
             if (src->isDragged) {
                 src->location->x = event->motion.x;
                 src->location->y = event->motion.y;

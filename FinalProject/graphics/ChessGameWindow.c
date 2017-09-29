@@ -74,34 +74,6 @@ ChessButton** createGameWindowChessButtons(SDL_Renderer *renderer, GameSettings 
 
     return buttons;
 }
-ChessGameWindow* createGameWindow() {
-    ChessGameWindow* res = malloc(sizeof(ChessGameWindow));
-//    ChessGameWindow* data = malloc(sizeof(ChessGameWindow));
-    SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    GameSettings* settings = getDefaultSettings();
-    GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
-    ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard);
-//    ChessButton** buttons = createGameWindowChessButtons(renderer, getDefaultSettings());
-//    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
-//        free(res);
-//        free(buttons);
-//        //We first destroy the renderer
-//        SDL_DestroyRenderer(renderer); //NULL safe
-//        SDL_DestroyWindow(window); //NULL safe
-//        return NULL ;
-//    }
-    res->buttons = NULL;
-    res->pieces = pieces;
-    res->numOfButtons = 0;
-    res->numOfPieces = 32;
-    res->window = window;
-    res->windowRenderer = renderer;
-    res->settings = settings;
-    res->game = game;
-
-    return res;
-}
 
 ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* board) {
     if (renderer == NULL ) {
@@ -185,6 +157,87 @@ ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* boar
     return pieces;
 }
 
+ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board) {
+    if (renderer == NULL ) {
+        return NULL ;
+    }
+    ChessRect** rects = malloc(sizeof(ChessRect*));
+    if (rects == NULL ) {
+        return NULL ;
+    }
+
+    SDL_Rect rect, darea;
+    SDL_Rect *rectp;
+    ChessRect* chessRect;
+
+    /* Get the Size of drawing surface */
+    SDL_RenderGetViewport(renderer, &darea);
+    darea.w = 0.7 * darea.w;
+    darea.h = 0.7 * darea.h;
+    int i = 0;
+
+    for (int y = 7; y > -1; y--) {
+        for (int x = 0; x < 8; x++) {
+            rect.w = darea.w / 8;
+            rect.h = darea.h / 8;
+            rect.x = x * rect.w + darea.w * 0.4;
+            rect.y = y * rect.h + darea.w * 0.15;
+            rectp = &rect;
+
+            if (y % 2 == 0) {
+                if (x % 2 == 0) {
+                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                } else {
+                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                }
+            } else {
+                if (x % 2 != 0) {
+                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                } else {
+                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                }
+            }
+
+            rects[i] = chessRect;
+            i++;
+        }
+    }
+
+    return rects;
+}
+
+ChessGameWindow* createGameWindow() {
+    ChessGameWindow* res = malloc(sizeof(ChessGameWindow));
+//    ChessGameWindow* data = malloc(sizeof(ChessGameWindow));
+    SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    GameSettings* settings = getDefaultSettings();
+    GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
+    ChessRect** rects = createGameWindowChessRects(renderer, game->gameBoard);
+    ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard);
+//    ChessButton** buttons = createGameWindowChessButtons(renderer, getDefaultSettings());
+//    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
+//        free(res);
+//        free(buttons);
+//        //We first destroy the renderer
+//        SDL_DestroyRenderer(renderer); //NULL safe
+//        SDL_DestroyWindow(window); //NULL safe
+//        return NULL ;
+//    }
+    res->buttons = NULL;
+    res->rects = rects;
+    res->pieces = pieces;
+    res->numOfButtons = 0;
+    res->numOfRects = 64;
+    res->numOfPieces = 32;
+    res->window = window;
+    res->windowRenderer = renderer;
+    res->settings = settings;
+    res->game = game;
+
+    return res;
+}
+
 void destroyGameWindow(ChessGameWindow *src) {
     if (src == NULL ) {
         return;
@@ -197,6 +250,7 @@ void destroyGameWindow(ChessGameWindow *src) {
     free(src->buttons);
     free(src->settings);
     free(src->pieces);
+    free(src->rects);
     free(src->game);
     SDL_DestroyRenderer(src->windowRenderer);
     SDL_DestroyWindow(src->window);
@@ -211,11 +265,17 @@ void drawGameWindow(ChessGameWindow *src) {
     //Draw window
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
-    drawChessBoard(src->windowRenderer, src);
     int i = 0;
+
     for (; i < src->numOfPieces; i++) {
         drawChessPiece(src->pieces[i]);
     }
+
+    for (; i < src->numOfRects; i++) {
+        drawChessRect(src->rects[i]);
+    }
+
+
 //    drawPieces(src, src->windowRenderer);
 //    int i = 0;
 //    for (; i < src->numOfButtons; i++) {

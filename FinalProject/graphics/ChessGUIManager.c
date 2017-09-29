@@ -30,7 +30,7 @@ void chessManagerDestroy(ChessGuiManager *src) {
         destroySettingsWindow(src->settingsWin);
     }
     if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-        destroySettingsWindow(src->gameWin);
+        destroyGameWindow(src->gameWin);
     }
     destroyMainWindow(src->mainWin);
     free(src);
