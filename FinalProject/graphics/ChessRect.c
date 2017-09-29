@@ -34,30 +34,29 @@ void destroyChessRect(ChessRect* src) {
 
 RECT_CLICK_EVENT handleChessRectEvent(ChessRect *src, SDL_Event *event) {
     if (src == NULL || event == NULL ) {
-        return PIECE_CLICKED_NONE; //Better to return an error value
+        return RECT_CLICKED_NONE; //Better to return an error value
     }
 
     if (event->type == SDL_MOUSEBUTTONUP) {
-//        SDL_Point point;
-//        point.x = event->button.x;
-//        point.y = event->button.y;
-//        if (src->isDragged) {
-//            src->isDragged = false;
-//            return CHESS_DROP_PIECE;
-//        }
+        SDL_Point point;
+        point.x = event->button.x;
+        point.y = event->button.y;
+        if (SDL_PointInRect(&point, src->location)) {
+            printf("wow");
+        }
     }
 }
 
-void drawChessRect(ChessRect* src) {
-    if (src == NULL ) {
-        return;
-    }
-
-    if (src->color == CHESS_RECT_COLOR_GREY) {
-        SDL_SetRenderDrawColor(src->windowRenderer, 128, 128, 128, 0xFF);
-    } else {
-        SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 0xFF);
-    }
-
-    SDL_RenderFillRect(src->windowRenderer, src->location);
-}
+//void drawChessRect(ChessRect* src) {
+//    if (src == NULL ) {
+//        return;
+//    }
+//
+//    if (src->color == CHESS_RECT_COLOR_GREY) {
+//        SDL_SetRenderDrawColor(src->windowRenderer, 128, 128, 128, 0xFF);
+//    } else {
+//        SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 0xFF);
+//    }
+//
+//    SDL_RenderFillRect(src->windowRenderer, src->location);
+//}

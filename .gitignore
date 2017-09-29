@@ -79,3 +79,5 @@
 /FinalProject/cmake-build-debug/Chess1.cbp
 /FinalProject/.idea/workspace.xml
 /FinalProject/.idea/.name
+*.o
+/FinalProject/prog

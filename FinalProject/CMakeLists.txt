@@ -17,3 +17,5 @@ include_directories(${SDL2_INCLUDE_DIR})
 target_link_libraries(Chess1 ${SDL2_LIBRARY})
 
 
+
+

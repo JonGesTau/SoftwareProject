@@ -89,8 +89,7 @@ CHESS_MAIN_EVENT handleEventMainWindow(ChessMainWindow *src, SDL_Event *event){
 
     int i =0;
     for(;i<src->numOfButtons;i++){
-        ChessButton* button = src->buttons[i];
-        BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
+        BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(src->buttons[i], event);
         if (clickEvent == CHESS_CLICKED_NEW_GAME) {
             return CHESS_MAIN_START;
         } else if (clickEvent == CHESS_CLICKED_LOAD) {

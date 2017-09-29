@@ -167,8 +167,6 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
     }
 
     SDL_Rect rect, darea;
-    SDL_Rect *rectp;
-    ChessRect* chessRect;
 
     /* Get the Size of drawing surface */
     SDL_RenderGetViewport(renderer, &darea);
@@ -182,24 +180,23 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
             rect.h = darea.h / 8;
             rect.x = x * rect.w + darea.w * 0.4;
             rect.y = y * rect.h + darea.w * 0.15;
-            rectp = &rect;
 
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
-                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, y);
                 } else {
-                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, y);
                 }
             } else {
                 if (x % 2 != 0) {
-                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, y);
                 } else {
-                    chessRect = createChessRect(renderer, rectp, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, y);
                 }
             }
 
-            rects[i] = chessRect;
             i++;
+
         }
     }
 
@@ -267,12 +264,9 @@ void drawGameWindow(ChessGameWindow *src) {
     SDL_RenderClear(src->windowRenderer);
     int i = 0;
 
+    drawChessBoard(src->windowRenderer, src);
     for (; i < src->numOfPieces; i++) {
         drawChessPiece(src->pieces[i]);
-    }
-
-    for (; i < src->numOfRects; i++) {
-        drawChessRect(src->rects[i]);
     }
 
 
@@ -293,6 +287,21 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     for (; i < src->numOfPieces; i++) {
         ChessPiece* piece = src->pieces[i];
         PIECE_CLICK_EVENT clickEvent =  handleChessPieceEvent(piece, event);
+
+        switch(clickEvent) {
+            case CHESS_DRAG_PIECE:
+//                printf("drag");
+                break;
+            case CHESS_DROP_PIECE:
+//                printf("drop");
+                break;
+        }
+    }
+
+    i = 0;
+    for (; i < src->numOfPieces; i++) {
+        ChessRect* chessRect = src->rects[i];
+        RECT_CLICK_EVENT clickEvent =  handleChessRectEvent(chessRect, event);
 
         switch(clickEvent) {
             case CHESS_DRAG_PIECE:

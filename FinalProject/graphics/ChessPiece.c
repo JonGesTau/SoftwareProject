@@ -70,8 +70,8 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
 
         if (event->type == SDL_MOUSEMOTION) {
             if (src->isDragged) {
-                src->location->x = event->motion.x;
-                src->location->y = event->motion.y;
+                src->location->x = event->motion.x - src->location->w / 2;
+                src->location->y = event->motion.y - src->location->h / 2;
             }
         }
     }
