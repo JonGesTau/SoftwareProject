@@ -9,13 +9,21 @@ const char* const PIECE_NAMES[] = {"pawn","bishop","knight","rook","queen","king
 
 void startConsoleMode() {
     Command userCmd;
-    GameSettings* settings = GameSettingsCreate();
+    GameSettings* settings;
     GameState* game = NULL;
+    bool is_reset = true;
     // also never checked for memory errors - are we supposed to anyway?
 
-    printf(STR_SELECT_SETTINGS);
-
     do {
+        if(is_reset){
+            printf(STR_SELECT_SETTINGS);
+            is_reset = false;
+        }
+
+        if(settings == NULL){
+            settings = GameSettingsCreate();
+        }
+
         userCmd = getUserCommand(); // Get the user's command.
         // TODO: all tested! but for user argument for load
         // Settings state
@@ -33,7 +41,13 @@ void startConsoleMode() {
             game = xmlGameLoadGame("loadtest.xml");
             // TODO: Make sure no errors - should be here or in xml?
             if(game != NULL){
-                break;
+                GameSettingsDestroy(settings);
+                settings = NULL;
+                is_reset = startGame(game);
+                game = NULL;
+                if(!is_reset){
+                    break;
+                }
             }
         } else if (userCmd.cmd == DEFAULT) {
             setDefaultSettings(settings); // TODO: This is never freed
@@ -47,44 +61,27 @@ void startConsoleMode() {
             // Quit
             // free settings and command(does it need freeing?)
             // then break
+        } else if (userCmd.cmd == START){
+            if(game == NULL){
+                game = GameStateCreate(settings->difficulty, settings->userColor==1, settings->gameMode);
+            }
+
+            GameSettingsDestroy(settings);
+            settings = NULL;
+            is_reset = startGame(game);
+            game = NULL;
+            if(!is_reset){
+                break;
+            }
         }
-    } while (userCmd.cmd != START);
+    } while (userCmd.cmd != QUIT);
     // also handle load
-    if(userCmd.cmd == QUIT){
-        GameSettingsDestroy(settings);
-        return;
-    }
-    // Start game
-
-    if(game == NULL){
-        game = GameStateCreate(settings->difficulty, settings->userColor==1, settings->gameMode);
-    }
-
     GameSettingsDestroy(settings);
-    startGame(game);
+    return;
 }
 
-void startGUIMode() {
-    // Do nothing for now
-}
-
-Command getUserCommand() {
-    char userInput[1024];
-    Command userCommand;
-
-    fgets(userInput, 1024, stdin);
-    char *pos;
-
-    // remove line break character
-    if ((pos=strchr(userInput, '\n')) != NULL)
-        *pos = '\0';
-
-    userCommand = parseLine(userInput);
-
-    return userCommand;
-}
-
-void startGame(GameState* game) {
+// returns true if restart command, false if quit
+bool startGame(GameState* game) {
     Command userCmd;
     Move* userMove;
     bool isLegalMove = false;
@@ -92,8 +89,8 @@ void startGame(GameState* game) {
     int winner = '\0';
     // in mode 1 - 1 player mode, we have to take care of computer move and also notice the color of player
     while (winner == '\0') {
-        // TODO: tested move, quit, undo, save. remaining: reset. bonus: get_moves
-        //
+        // tested move, quit, undo, save, reset. bonus: get_moves
+        // TODO: handle check/mate/stalemate
         // take care of what happens when the player makes a bad command so nothing actually changed.
         // do we reprint board? it seems board is not reprinted but the request for move is.
         if(game->mode == 1 && (game->gameBoard->whiteTurn != game->isPlayerWhite)){
@@ -133,8 +130,6 @@ void startGame(GameState* game) {
         } else if (userCmd.cmd == SAVE) {
             if(!xmlGameSaveGame(game, userCmd.arg))
                 printf(STR_ERR_CANT_SAVE);
-        } else if (userCmd.cmd == LOAD) { // TODO: should this be here?
-            xmlGameLoadGame(userCmd.arg);
         } else if (userCmd.cmd == UNDO) {
             if(game->mode == 2){ // illegal
                 printf(STR_ERR_UNDO_UNAVAILABLE);
@@ -162,14 +157,38 @@ void startGame(GameState* game) {
             }
         } else if (userCmd.cmd == RESET) {
             // TODO
+            printf(STR_RESTARTING);
+            GameStateDestroy(game);
+            MoveDestroy(userMove); // TODO: was this used?
+            return true;
         } else if (userCmd.cmd == QUIT) {
             printf(STR_EXITING);
             GameStateDestroy(game);
             MoveDestroy(userMove); // TODO: was this used?
-            return;
+            return false;
             // TODO
         }
     }
+}
+
+void startGUIMode() {
+    // Do nothing for now
+}
+
+Command getUserCommand() {
+    char userInput[1024];
+    Command userCommand;
+
+    fgets(userInput, 1024, stdin);
+    char *pos;
+
+    // remove line break character
+    if ((pos=strchr(userInput, '\n')) != NULL)
+        *pos = '\0';
+
+    userCommand = parseLine(userInput);
+
+    return userCommand;
 }
 
 void promptUserMove(GameState* game) {

@@ -72,24 +72,6 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     return true;
 }
 
-/*bool GameStateUndoMove(GameState* game){ // TODO: deprecated
-    HistoryMove* hist;
-
-    for(char i = MAX_UNDO*2-1; i>-1; i++){
-        if(game->history[i] != NULL){
-            hist = game->history[i];
-            break;
-        }
-    }
-
-    if(hist == NULL) return false;
-
-    gameBoardUndoMove(game->gameBoard, hist);
-    game->current_move--;
-
-    return true;
-}*/
-
 HistoryMove* GameStateGetLastMove(GameState* game){
     HistoryMove* hist = NULL;
 

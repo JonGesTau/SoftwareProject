@@ -23,6 +23,7 @@
 
 #define STR_SELECT_SETTINGS "Specify game setting or type 'start' to begin a game with the current setting:\n"
 #define STR_EXITING "Exiting...\n"
+#define STR_RESTARTING "Restarting...\n"
 #define STR_ERR_UNDO_UNAVAILABLE "Undo command not available in 2 players mode\n"
 #define STR_ERR_EMPTY_HISTORY "Empty history, move cannot be undone\n"
 #define STR_ERR_CANT_SAVE "File cannot be created or modified\n"
@@ -36,7 +37,7 @@ GameState* game;
 
 void startConsoleMode();
 void startGUIMode();
-void startGame(GameState* game);
+bool startGame(GameState* game);
 void promptUserMove(GameState* game);
 bool handleUserMove(GameState* game, Move* userMove);
 
