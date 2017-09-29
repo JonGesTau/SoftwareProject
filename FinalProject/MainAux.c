@@ -92,18 +92,16 @@ void startGame(GameState* game) {
     int winner = '\0';
     // in mode 1 - 1 player mode, we have to take care of computer move and also notice the color of player
     while (winner == '\0') {
-        // TODO: test move
+        // TODO: tested move, quit, undo, save. remaining: reset. bonus: get_moves
+        //
         // take care of what happens when the player makes a bad command so nothing actually changed.
         // do we reprint board? it seems board is not reprinted but the request for move is.
         if(game->mode == 1 && (game->gameBoard->whiteTurn != game->isPlayerWhite)){
             // if player vs AI and it's not the human's turn
             Move* compMove = miniMaxGetComputerMove(game);
-            // TODO: macro/function to covert coords to correct form
-            printf("Computer: move %s at <%d,%d> to <%d,%d>\n",
+            printf("Computer: move %s at <%c,%c> to <%c,%c>\n",
                    PIECE_NAMES[(whichPiece(game->gameBoard->board[compMove->y1][compMove->x1]))-1],
-                   compMove->y1, compMove->x1, compMove->y2, compMove->x2);
-
-            //TODO: this is actually wrong, should switch x and y, convert y to char and add 1 to x
+                   (compMove->y1+'1'), (compMove->x1+'A'), (compMove->y2+'1'), (compMove->x2+'A'));
 
             GameStatePerformMove(game, compMove->y1, compMove->x1, compMove->y2, compMove->x2);
             MoveDestroy(compMove);
@@ -133,26 +131,34 @@ void startGame(GameState* game) {
                 // need to handel stalemate
             }
         } else if (userCmd.cmd == SAVE) {
-            xmlGameSaveGame(game, userCmd.arg);
-        } else if (userCmd.cmd == LOAD) {
+            if(!xmlGameSaveGame(game, userCmd.arg))
+                printf(STR_ERR_CANT_SAVE);
+        } else if (userCmd.cmd == LOAD) { // TODO: should this be here?
             xmlGameLoadGame(userCmd.arg);
         } else if (userCmd.cmd == UNDO) {
             if(game->mode == 2){ // illegal
                 printf(STR_ERR_UNDO_UNAVAILABLE);
             } else {
                 HistoryMove* hist = GameStateGetLastMove(game);
-                if(hist == NULL)
+                if(hist == NULL) {
                     printf(STR_ERR_EMPTY_HISTORY);
-
-                printf("Undo move for player XXX : <x,y> -> <w,z>\n");
-                GameStateUndoHistoryMove(game, hist);
-                hist = GameStateGetLastMove(game);
-                // make sure hist != NULL!
-                printf("Undo move for player XXX : <x,y> -> <w,z>\n");
-                GameStateUndoHistoryMove(game, hist);
-
-                // TODO: what happens if player went first and then undos it all?
-                // then only one undo is possible
+                } else {
+                    printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
+                           (game->gameBoard->whiteTurn ? "black" : "white"),
+                           (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
+                           (hist->move->x1 + 'A'));
+                    GameStateUndoHistoryMove(game);
+                    hist = GameStateGetLastMove(game);
+                    // TODO: make sure hist gets destroyed
+                    if(hist != NULL) {
+                        printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
+                               (game->gameBoard->whiteTurn ? "black" : "white"),
+                               (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
+                               (hist->move->x1 + 'A'));
+                        GameStateUndoHistoryMove(game);
+                        // TODO: what happens if player went first and then undos it all?
+                    }
+                }
             }
         } else if (userCmd.cmd == RESET) {
             // TODO
@@ -172,18 +178,21 @@ void promptUserMove(GameState* game) {
 }
 
 bool handleUserMove(GameState* game, Move* userMove) {
-    //TODO:change argument to GameState* and use GameStatePerformMove instead, which also tests for legality
-
-    bool isLegalMove;
-    isLegalMove = gameBoardIsLegalMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
-
-    if (isLegalMove) {
-        GameStatePerformMove(game, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
-        //TODO: gescheit, change the function so that we use GameStatePerformMove instead!
-        return true;
-    } else {
-        // TODO: Handle all kinds of errors here
-        printf("Illegal move\n");
+    if(!isLegalCoordinate(userMove->y1, userMove->x1) || !isLegalCoordinate(userMove->y2, userMove->x2)){
+        printf(STR_ERR_INVALID_POSITION);
         return false;
     }
+
+    if(game->gameBoard->board[userMove->y1][userMove->x1] == CH_PIECE_EMPTY ||
+            isWhite(game->gameBoard->board[userMove->y1][userMove->x1]) != game->gameBoard->whiteTurn){
+        printf(STR_ERR_WRONG_COLOR);
+        return false;
+    }
+
+    if (!gameBoardIsLegalMove(game->gameBoard, userMove->y1, userMove->x1, userMove->y2, userMove->x2)){
+        printf(STR_ERR_ILLEGAL_MOVE);
+        return false;
+    }
+
+    return GameStatePerformMove(game, userMove->y1, userMove->x1, userMove->y2, userMove->x2);
 }
