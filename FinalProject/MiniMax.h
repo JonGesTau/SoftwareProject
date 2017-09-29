@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include "GameBoard.h"
 #include "Moves.h"
+#include "tests/MovesTest.h"
+#include "GameState.h"
 
 /*
  * Use this function to select a move:
@@ -21,6 +23,7 @@
 
 ScoredMove* miniMaxGetBestMove(GameBoard* game, char depth, char maxDepth, bool isMax, int parentBest);
 
+Move* miniMaxGetComputerMove(GameState* game);
 // given a board (a node in the minimax tree), returns a naive evaluation
 // positive is good for white
 int miniMaxBoardScore(GameBoard* game);

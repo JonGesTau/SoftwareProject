@@ -21,8 +21,8 @@ typedef struct chess_gamestate{
     GameBoard* gameBoard;
     int current_move; // TODO: newly added, make sure we deal with this everywhere
     char difficulty; // 1-5
+    char mode; // 1 or 2
     bool isPlayerWhite;
-    bool mode; // false is 1
     HistoryMove* history[MAX_UNDO*2]; // each undo also undoes opponent
     // TODO: do i need to allocate the above explicitly?
 } GameState;
@@ -32,6 +32,11 @@ void GameStateDestroy(GameState* game);
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2);
 
-bool GameStateUndoMove(GameState* game);
+//bool GameStateUndoMove(GameState* game);
+
+HistoryMove* GameStateGetLastMove(GameState* game);
+
+void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist);
+
 
 #endif //CHESS1_GAMESTATE_H

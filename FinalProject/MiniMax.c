@@ -7,6 +7,7 @@
  */
 
 #include "MiniMax.h"
+#include "GameState.h"
 
 ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool isMax, int parentBest) {
     //GameBoard* temp;
@@ -60,13 +61,7 @@ ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool 
                 score = miniMaxBoardScore(temp);
             } else {
                 ScoredMove* result = miniMaxGetBestMove(temp, depth-1, maxDepth, !isMax, bestScore);
-                //printf("(%d,%d)->(%d,%d): ", move->y1, move->x1, move->y2, move->x2);
-                //printf("(%d,%d)->(%d,%d)\n", result->move->y1, result->move->x1, result->move->y2, result->move->x2);
                 score = result->score;
-                //bestMove->y1 = result->move->y1; //TODO: delete thiscrap!
-                //bestMove->x1 = result->move->x1;
-                //bestMove->y2 = result->move->y2;
-                //bestMove->x2 = result->move->x2;
                 ScoredMoveDestroy(result);
             }
 
@@ -129,6 +124,14 @@ ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool 
     ScoredMove* smove = ScoredMoveCreate(bestMove->y1, bestMove->x1, bestMove->y2, bestMove->x2, bestScore);
     MoveDestroy(bestMove);
     return smove;
+}
+
+Move* miniMaxGetComputerMove(GameState* game){
+    ScoredMove* compScoredMove = miniMaxGetBestMove(game->gameBoard, game->difficulty, game->difficulty,
+                                                    game->gameBoard->whiteTurn, 0);
+    Move* compMove = MoveCreate(compScoredMove->move->y1, compScoredMove->move->x1, compScoredMove->move->y2, compScoredMove->move->x2);
+    ScoredMoveDestroy(compScoredMove);
+    return compMove;
 }
 
 /*

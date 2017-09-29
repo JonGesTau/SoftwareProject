@@ -1,6 +1,4 @@
-#include <memory.h>
-#include <ctype.h>
-#include <stdbool.h>
+
 #include "ChessParser.h"
 
 bool isInt(const char* str) {
@@ -117,22 +115,20 @@ Move* parseMove(char* str) {
     char x1[2];
     char x2[2];
 
+    // TODO: make sure basics? should be "<x,y> to <i,j>"
     strcpy(strCopy, str);
-    copyCharByIndex(&x1, strCopy, 3);
-    copyCharByIndex(&y1, strCopy, 1);
-    copyCharByIndex(&x2, strCopy, 12);
-    copyCharByIndex(&y2, strCopy, 10);
-    
+    copyCharByIndex(x1, strCopy, 3);
+    copyCharByIndex(y1, strCopy, 1);
+    copyCharByIndex(x2, strCopy, 12);
+    copyCharByIndex(y2, strCopy, 10);
 
-    move->x1 = (char) (*x1 - '0' - 17);
-    move->x2 = (char) (*x2 - '0' - 17);
-    move->y1 = (char) (*y1 - '0' - 1);
-    move->y2 = (char) (*y2 - '0' - 1);
+    move = MoveCreate(y1[0]-'0'-1, x1[0]-'0'-17, y2[0]-'0'-1, x2[0] - '0' - 17);
 
     return move;
 }
 
 void copyCharByIndex(char* dest, char* src, int index) {
-    strncpy(dest, src+index, 1);
+    dest[0] = src[index];
+    //strncpy(dest, src+index, 1);
     dest[1] = '\0';
 }

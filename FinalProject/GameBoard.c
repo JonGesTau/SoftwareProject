@@ -2,6 +2,7 @@
 // Created by Dror on 2017-08-18.
 //
 
+#include <stdio.h>
 #include "GameBoard.h"
 
 bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
@@ -115,6 +116,7 @@ GameBoard* gameBoardCreate(){
     GameBoard* game = malloc(sizeof(GameBoard));
     if(game == NULL){
         //ERROR
+        printf("ERROR");
         return NULL;
     }
 
@@ -123,6 +125,7 @@ GameBoard* gameBoardCreate(){
             game->board[y][x] = CH_PIECE_EMPTY;
         }
     }
+    game->whiteTurn = true;
     return game;
 }
 
@@ -179,6 +182,7 @@ bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2){
     if(game == NULL) return false;
     game->board[y2][x2] = game->board[y1][x1];
     game->board[y1][x1] = CH_PIECE_EMPTY;
+    game->whiteTurn = !game->whiteTurn;
     return true;
 }
 
@@ -187,6 +191,7 @@ bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
     Move* mv = hist->move;
     game->board[mv->y1][mv->x1] = game->board[mv->y2][mv->x2];
     game->board[mv->y2][mv->x2] = hist->original;
+    game->whiteTurn = !game->whiteTurn;
     return true;
 }
 

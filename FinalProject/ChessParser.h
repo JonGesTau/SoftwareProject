@@ -8,7 +8,11 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include "Moves.h"
-#include "ChessParser.h"
+#include <memory.h>
+#include <ctype.h>
+#include <assert.h>
+#include <stdio.h>
+
 
 //a type used to represent a command
 typedef enum {

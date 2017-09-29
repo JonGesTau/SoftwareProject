@@ -14,10 +14,10 @@ bool xmlGameSaveGame(GameState* game, char* filename){
 
     fprintf(f, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     fprintf(f, "<game>\n");
-    fprintf(f, "\t<current_turn>%d</current_turn>\n",42); // TODO
-    fprintf(f, "\t<game_mode>%d</game_mode>\n", game->mode+1); // TODO make sure accuracy
+    fprintf(f, "\t<current_turn>%d</current_turn>\n",(game->current_move%2==0)); // TODO: need to keep next turn instead! also load it!
+    fprintf(f, "\t<game_mode>%d</game_mode>\n", game->mode);
     fprintf(f, "\t<difficulty>%d</difficulty>\n", game->difficulty);
-    fprintf(f, "\t<user_color>%d</user_color>\n", game->isPlayerWhite); // TODO make sure bool is converted correctly
+    fprintf(f, "\t<user_color>%d</user_color>\n", (game->isPlayerWhite?1:0));
     fprintf(f, "\t<board>\n");
 
     for(int y = 7; y > -1; y--){
@@ -64,7 +64,7 @@ GameState* xmlGameLoadGame(char* filename){
     int start_pos = 0;
 
     int current_turn = 0;
-    char game_mode = 2; // TODO: clean here
+    char game_mode; // TODO: clean here
     char difficulty = 2;
     char user_color = 1; // player is white by default
 
@@ -140,15 +140,14 @@ GameState* xmlGameLoadGame(char* filename){
  // can also be discarded from the file. MODE ==2
  // the order is exactly the sam.e there will be no superfluous empty lines.
 
-    consoleUIPrintBoard(board); // TODO: delete this eventually
+    //consoleUIPrintBoard(board);
     //gameBoardDestroy(board);
 
-    GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode==1);
-    // TODO: make sure game mode condition is not the reverse
+    GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode);
+    gameBoardDestroy(state->gameBoard); // pretty stupid actually
     state->gameBoard = board;
     state->current_move = current_turn;
 
-    printf("difficulty is %d\n", difficulty);
     fclose(f);
     return state;
 }

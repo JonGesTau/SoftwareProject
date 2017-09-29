@@ -2,22 +2,28 @@
 // Created by Dror on 2017-08-19.
 //
 
+#include <stdio.h>
 #include "GameState.h"
 
 GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode){
     GameState* game = malloc(sizeof(GameState));
     if(game == NULL){
+        printf("ERROR");
+        return NULL;
         // ERROR
     }
+
     game -> isPlayerWhite = isPlayerWhite;
     game ->mode = mode;
     game->difficulty = difficulty;
     game ->gameBoard = gameBoardCreate();
+    gameBoardSetup(game -> gameBoard);
+
     // make sure history is all NULL
     for(int i = 0; i<MAX_UNDO*2; i++){
         game->history[i] = NULL;
     }
-    gameBoardSetup(game -> gameBoard);
+
     return game;
 }
 
@@ -66,7 +72,7 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     return true;
 }
 
-bool GameStateUndoMove(GameState* game){
+/*bool GameStateUndoMove(GameState* game){ // TODO: deprecated
     HistoryMove* hist;
 
     for(char i = MAX_UNDO*2-1; i>-1; i++){
@@ -82,4 +88,21 @@ bool GameStateUndoMove(GameState* game){
     game->current_move--;
 
     return true;
+}*/
+
+HistoryMove* GameStateGetLastMove(GameState* game){
+    HistoryMove* hist = NULL;
+
+    for(char i = MAX_UNDO*2-1; i>-1; i++){
+        if(game->history[i] != NULL){
+            hist = game->history[i];
+            break;
+        }
+    }
+}
+
+void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist){
+    gameBoardUndoMove(game->gameBoard, hist);
+    HistoryMoveDestroy(hist);
+    game->current_move--; // TODO: no need for this
 }

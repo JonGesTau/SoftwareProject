@@ -1,7 +1,7 @@
 stuff left to do:
 - TODO s
 - make sure tie is dealt with during minimax
-- stop checking ptr!=NULL before freeing
+V stop checking ptr!=NULL before freeing
 - error handling:
   - remember to deal with SDL
   - print error if there is
@@ -35,5 +35,3 @@ Status:
     - test these
 
 * consider avoiding boolean parameters in gameState, doesn't really mean anything anyway
-
-* how do we return the move from minimax? create perhaps move struct with chars y1,x1,y2,x2?
