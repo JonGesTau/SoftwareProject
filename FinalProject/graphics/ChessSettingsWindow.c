@@ -78,7 +78,8 @@ ChessSettingsWindow* createSettingsWindow() {
     ChessSettingsWindow* res = malloc(sizeof(ChessSettingsWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    ChessButton** buttons = createSettingsWindowChessButtons(renderer, getDefaultSettings());
+    GameSettings* settings = GameSettingsCreate();
+    ChessButton** buttons = createSettingsWindowChessButtons(renderer, settings);
     if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
         free(res);
         free(buttons);
@@ -91,7 +92,7 @@ ChessSettingsWindow* createSettingsWindow() {
     res->numOfButtons = 11;
     res->window = window;
     res->windowRenderer = renderer;
-    res->settings = getDefaultSettings();
+    res->settings = settings;
 
     return res;
 }
