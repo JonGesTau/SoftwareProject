@@ -4,7 +4,8 @@
 
 #include "ChessPiece.h"
 //You need a create function:
-ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, PieceType type, PieceColor color) {
+ChessPiece *
+createChessPiece(SDL_Renderer *windowRender, SDL_Rect *location, PieceType type, PieceColor color, int x, int y) {
     if (windowRender == NULL || location == NULL) {
         return NULL ;
     }
@@ -24,6 +25,10 @@ ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, Pie
     res->location = spCopyRect(location);
     res->windowRenderer = windowRender;
     res->type = type;
+    res->color = color;
+    res->isDragged = false;
+    res->x = x;
+    res->y = y;
     return res;
 }
 
@@ -42,49 +47,38 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
         return PIECE_CLICKED_NONE; //Better to return an error value
     }
 
-//    if (event->type == SDL_MOUSEBUTTONUP) {
-//        SDL_Point point;
-//        point.x = event->button.x;
-//        point.y = event->button.y;
-//        if (SDL_PointInRect(&point, src->location)) {
-//            switch (src->type) {
-//                case CHESS_BUTTON_NEW_GAME:
-//                    return CHESS_CLICKED_NEW_GAME;
-//                case CHESS_BUTTON_LOAD:
-//                    return CHESS_CLICKED_LOAD;
-//                case CHESS_BUTTON_QUIT:
-//                    return CHESS_CLICKED_QUIT;
-//                case CHESS_BUTTON_1PLAYER:
-//                    return CHESS_CLICKED_1PLAYER;
-//                case CHESS_BUTTON_2PLAYER:
-//                    return CHESS_CLICKED_2PLAYER;
-//                case CHESS_BUTTON_NOOB:
-//                    return CHESS_CLICKED_NOOB;
-//                case CHESS_BUTTON_EASY:
-//                    return CHESS_CLICKED_EASY;
-//                case CHESS_BUTTON_MODERATE:
-//                    return CHESS_CLICKED_MODERATE;
-//                case CHESS_BUTTON_HARD:
-//                    return CHESS_CLICKED_HARD;
-//                case CHESS_BUTTON_EXPERT:
-//                    return CHESS_CLICKED_EXPERT;
-//                case CHESS_BUTTON_WHITE:
-//                    return CHESS_CLICKED_WHITE;
-//                case CHESS_BUTTON_BLACK:
-//                    return CHESS_CLICKED_BLACK;
-//                case CHESS_BUTTON_BACK:
-//                    return CHESS_CLICKED_BACK;
-//                case CHESS_BUTTON_START:
-//                    return CHESS_CLICKED_START;
-//                default:
-//                    return CHESS_CLICKED_NONE;
-//            }
-//        } else {
-//            return CHESS_CLICKED_NONE;
-//        }
-//    } else {
-//        return CHESS_CLICKED_NONE;
-//    }
+    if (event->type == SDL_MOUSEBUTTONDOWN) {
+        if (src->type != CHESS_PIECE_EMPTY) {
+            SDL_Point point;
+            point.x = event->button.x;
+            point.y = event->button.y;
+            if (SDL_PointInRect(&point, src->location)) {
+                src->isDragged = true;
+                return CHESS_DRAG_PIECE;
+            }
+        }
+    }
+
+    if (event->type == SDL_MOUSEBUTTONUP) {
+        if (src->type != CHESS_PIECE_EMPTY) {
+            SDL_Point point;
+            point.x = event->button.x;
+            point.y = event->button.y;
+            if (src->isDragged) {
+                src->isDragged = false;
+                return CHESS_DROP_PIECE;
+            }
+        }
+    }
+
+    if (event->type == SDL_MOUSEMOTION) {
+        if (src->type != CHESS_PIECE_EMPTY) {
+            if (src->isDragged) {
+                src->location->x = event->motion.x;
+                src->location->y = event->motion.y;
+            }
+        }
+    }
 }
 
 void drawChessPiece(ChessPiece* src) {
@@ -105,6 +99,7 @@ void toggleChessPiece(ChessPiece* src) {
 }
 
 char* getPieceImg(PieceType type, PieceColor color) {
+    if (type == CHESS_PIECE_EMPTY) return whiteRookImg;
     if (color == CHESS_PIECE_COLOR_WHITE) {
         switch (type) {
             case CHESS_PIECE_ROOK:

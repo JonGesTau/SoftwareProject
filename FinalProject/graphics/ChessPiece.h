@@ -42,10 +42,15 @@ typedef struct chess_piece {
     SDL_Rect* location;
     bool isActive;
     PieceType type;
+    PieceColor color;
+    bool isDragged;
+    int x;
+    int y;
 } ChessPiece;
 
 //You need a create function:
-ChessPiece* createChessPiece(SDL_Renderer* windowRender, SDL_Rect* location, PieceType type, PieceColor color);
+ChessPiece *
+createChessPiece(SDL_Renderer *windowRender, SDL_Rect *location, PieceType type, PieceColor color, int x, int y);
 
 //You need this function in order to destroy all data Associate with a button:
 void destroyChessPiece(ChessPiece*);

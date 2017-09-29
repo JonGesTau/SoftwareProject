@@ -9,7 +9,7 @@
 #include "../GameSettings.h"
 
 typedef enum {
-    CHESS_SETTINGS_START, CHESS_SETTINGS_BACK, CHESS_SETTINGS_EXIT
+    CHESS_SETTINGS_START, CHESS_SETTINGS_BACK, CHESS_SETTINGS_EXIT, CHESS_SETTINGS_NONE
 } CHESS_SETTINGS_EVENT;
 
 typedef struct chess_settings_window ChessSettingsWindow;

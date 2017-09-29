@@ -235,7 +235,7 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
 
     if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_SETTINGS_EXIT;
 
-    return CHESS_CLICKED_NONE;
+    return CHESS_SETTINGS_NONE;
 }
 
 void hideSettingsWindow(ChessSettingsWindow* src) {

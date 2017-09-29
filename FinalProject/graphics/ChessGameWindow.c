@@ -79,6 +79,9 @@ ChessGameWindow* createGameWindow() {
 //    ChessGameWindow* data = malloc(sizeof(ChessGameWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    GameSettings* settings = getDefaultSettings();
+    GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
+    ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard);
 //    ChessButton** buttons = createGameWindowChessButtons(renderer, getDefaultSettings());
 //    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
 //        free(res);
@@ -89,16 +92,99 @@ ChessGameWindow* createGameWindow() {
 //        return NULL ;
 //    }
     res->buttons = NULL;
-    res->pieces = NULL;
+    res->pieces = pieces;
     res->numOfButtons = 0;
-    res->numOfPieces = 1;
+    res->numOfPieces = 32;
     res->window = window;
     res->windowRenderer = renderer;
-    res->settings = getDefaultSettings();
-    res->game = GameStateCreate(res->settings->difficulty, res->settings->userColor, res->settings->gameMode);
+    res->settings = settings;
+    res->game = game;
 
     return res;
 }
+
+ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* board) {
+    if (renderer == NULL ) {
+        return NULL ;
+    }
+    ChessPiece** pieces = malloc(sizeof(ChessPiece*));
+    if (pieces == NULL ) {
+        return NULL ;
+    }
+
+    SDL_Rect rect, darea;
+    SDL_Rect *rectp;
+    char piece;
+
+    /* Get the Size of drawing surface */
+    SDL_RenderGetViewport(renderer, &darea);
+    darea.w = 0.7 * darea.w;
+    darea.h = 0.7 * darea.h;
+    int i = 0;
+
+    for (int y = 7; y > -1; y--) {
+        for (int x = 0; x < 8; x++) {
+            piece = consolePieceChar(board->board[y][x]);
+            ChessPiece *piecep;
+
+            rect.w = darea.w / 8;
+            rect.h = darea.h / 8;
+            rect.x = x * rect.w + darea.w * 0.4;
+            rect.y = y * rect.h + darea.w * 0.15;
+            rectp = &rect;
+
+            switch (piece) {
+                case 'M':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'B':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'R':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'N':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'Q':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_QUEEN, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'K':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_KING, CHESS_PIECE_COLOR_BLACK, x, y);
+                    break;
+                case 'm':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                case 'b':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                case 'r':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                case 'n':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                case 'q':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_QUEEN, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                case 'k':
+                    piecep = createChessPiece(renderer, rectp, CHESS_PIECE_KING, CHESS_PIECE_COLOR_WHITE, x, y);
+                    break;
+                default:
+                    piecep = NULL;
+                    break;
+            }
+
+            if (piecep != NULL) {
+                pieces[i] = piecep;
+                i++;
+            }
+        }
+    }
+
+    return pieces;
+}
+
 void destroyGameWindow(ChessGameWindow *src) {
     if (src == NULL ) {
         return;
@@ -110,6 +196,8 @@ void destroyGameWindow(ChessGameWindow *src) {
     }
     free(src->buttons);
     free(src->settings);
+    free(src->pieces);
+    free(src->game);
     SDL_DestroyRenderer(src->windowRenderer);
     SDL_DestroyWindow(src->window);
 
@@ -124,6 +212,10 @@ void drawGameWindow(ChessGameWindow *src) {
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
     drawChessBoard(src->windowRenderer, src);
+    int i = 0;
+    for (; i < src->numOfPieces; i++) {
+        drawChessPiece(src->pieces[i]);
+    }
 //    drawPieces(src, src->windowRenderer);
 //    int i = 0;
 //    for (; i < src->numOfButtons; i++) {
@@ -138,107 +230,123 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     }
 
     int i =0;
-    for(;i<src->numOfButtons;i++){
-        ChessButton* button = src->buttons[i];
-        BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
-        // TODO: Refactor handling functions
-        switch (clickEvent) {
-            case CHESS_CLICKED_1PLAYER:
-                if (src->settings->gameMode != 1) {
-                    src->settings->gameMode = 1;
-                    printf("Mode is %d\n", src->settings->gameMode);
-                    toggleChessButton(src->buttons[0]);
-                    toggleChessButton(src->buttons[1]);
-                }
+    for (; i < src->numOfPieces; i++) {
+        ChessPiece* piece = src->pieces[i];
+        PIECE_CLICK_EVENT clickEvent =  handleChessPieceEvent(piece, event);
+
+        switch(clickEvent) {
+            case CHESS_DRAG_PIECE:
+//                printf("drag");
                 break;
-            case CHESS_CLICKED_2PLAYER:
-                if (src->settings->gameMode != 2) {
-                    src->settings->gameMode = 2;
-                    printf("Mode is %d\n", src->settings->gameMode);
-                    toggleChessButton(src->buttons[0]);
-                    toggleChessButton(src->buttons[1]);
-                }
+            case CHESS_DROP_PIECE:
+//                printf("drop");
                 break;
-            case CHESS_CLICKED_NOOB:
-                if (src->settings->difficulty != 1) {
-                    src->settings->difficulty = 1;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_EASY:
-                if (src->settings->difficulty != 2) {
-                    src->settings->difficulty = 2;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_MODERATE:
-                if (src->settings->difficulty != 3) {
-                    src->settings->difficulty = 3;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_HARD:
-                if (src->settings->difficulty != 4) {
-                    src->settings->difficulty = 4;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_EXPERT:
-                if (src->settings->difficulty != 5) {
-                    src->settings->difficulty = 5;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_WHITE:
-                if (!src->settings->userColor) {
-                    src->settings->userColor = 1;
-                    printf("Color is %d\n", src->settings->userColor);
-                    toggleChessButton(src->buttons[7]);
-                    toggleChessButton(src->buttons[8]);
-                }
-                break;
-            case CHESS_CLICKED_BLACK:
-                if (src->settings->userColor) {
-                    src->settings->userColor = 0;
-                    printf("Color is %d\n", src->settings->userColor);
-                    toggleChessButton(src->buttons[7]);
-                    toggleChessButton(src->buttons[8]);
-                }
-                break;
-            case CHESS_CLICKED_START:
-                return CHESS_GAME_START;
-                break;
-            case CHESS_CLICKED_BACK:
-                return CHESS_GAME_BACK;
         }
     }
 
+//    for(;i<src->numOfButtons;i++){
+//        ChessButton* button = src->buttons[i];
+//        BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
+//        // TODO: Refactor handling functions
+//        switch (clickEvent) {
+//            case CHESS_CLICKED_1PLAYER:
+//                if (src->settings->gameMode != 1) {
+//                    src->settings->gameMode = 1;
+//                    printf("Mode is %d\n", src->settings->gameMode);
+//                    toggleChessButton(src->buttons[0]);
+//                    toggleChessButton(src->buttons[1]);
+//                }
+//                break;
+//            case CHESS_CLICKED_2PLAYER:
+//                if (src->settings->gameMode != 2) {
+//                    src->settings->gameMode = 2;
+//                    printf("Mode is %d\n", src->settings->gameMode);
+//                    toggleChessButton(src->buttons[0]);
+//                    toggleChessButton(src->buttons[1]);
+//                }
+//                break;
+//            case CHESS_CLICKED_NOOB:
+//                if (src->settings->difficulty != 1) {
+//                    src->settings->difficulty = 1;
+//                    printf("Difficulty is %d\n", src->settings->difficulty);
+//                    int j = 2;
+//                    for (;j<7; j++) {
+//                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+//                    }
+//                    toggleChessButton(button);
+//                }
+//                break;
+//            case CHESS_CLICKED_EASY:
+//                if (src->settings->difficulty != 2) {
+//                    src->settings->difficulty = 2;
+//                    printf("Difficulty is %d\n", src->settings->difficulty);
+//                    int j = 2;
+//                    for (;j<7; j++) {
+//                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+//                    }
+//                    toggleChessButton(button);
+//                }
+//                break;
+//            case CHESS_CLICKED_MODERATE:
+//                if (src->settings->difficulty != 3) {
+//                    src->settings->difficulty = 3;
+//                    printf("Difficulty is %d\n", src->settings->difficulty);
+//                    int j = 2;
+//                    for (;j<7; j++) {
+//                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+//                    }
+//                    toggleChessButton(button);
+//                }
+//                break;
+//            case CHESS_CLICKED_HARD:
+//                if (src->settings->difficulty != 4) {
+//                    src->settings->difficulty = 4;
+//                    printf("Difficulty is %d\n", src->settings->difficulty);
+//                    int j = 2;
+//                    for (;j<7; j++) {
+//                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+//                    }
+//                    toggleChessButton(button);
+//                }
+//                break;
+//            case CHESS_CLICKED_EXPERT:
+//                if (src->settings->difficulty != 5) {
+//                    src->settings->difficulty = 5;
+//                    printf("Difficulty is %d\n", src->settings->difficulty);
+//                    int j = 2;
+//                    for (;j<7; j++) {
+//                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+//                    }
+//                    toggleChessButton(button);
+//                }
+//                break;
+//            case CHESS_CLICKED_WHITE:
+//                if (!src->settings->userColor) {
+//                    src->settings->userColor = 1;
+//                    printf("Color is %d\n", src->settings->userColor);
+//                    toggleChessButton(src->buttons[7]);
+//                    toggleChessButton(src->buttons[8]);
+//                }
+//                break;
+//            case CHESS_CLICKED_BLACK:
+//                if (src->settings->userColor) {
+//                    src->settings->userColor = 0;
+//                    printf("Color is %d\n", src->settings->userColor);
+//                    toggleChessButton(src->buttons[7]);
+//                    toggleChessButton(src->buttons[8]);
+//                }
+//                break;
+//            case CHESS_CLICKED_START:
+//                return CHESS_GAME_START;
+//                break;
+//            case CHESS_CLICKED_BACK:
+//                return CHESS_GAME_BACK;
+//        }
+//    }
+
     if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_GAME_EXIT;
+
+    return CHESS_GAME_NONE;
 }
 
 void hideGameWindow(ChessGameWindow* src) {
@@ -252,7 +360,6 @@ void showGameWindow(ChessGameWindow* src) {
 void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
     SDL_Rect rect, darea;
     SDL_Rect *rectp;
-    char piece;
 
     /* Get the Size of drawing surface */
     SDL_RenderGetViewport(renderer, &darea);
@@ -261,8 +368,6 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
 
     for (int y = 7; y > -1; y--) {
         for (int x = 0; x < 8; x++) {
-            piece = consolePieceChar(src->game->gameBoard->board[y][x]);
-            ChessPiece *piecep;
             SDL_SetRenderDrawColor(renderer, 128, 128, 128, 0xFF);
 
             rect.w = darea.w / 8;
@@ -280,48 +385,7 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
                     SDL_RenderFillRect(renderer, &rect);
                 }
             }
-
-            switch (piece) {
-                case 'M':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'B':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'R':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'N':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'Q':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'K':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_BLACK);
-                    break;
-                case 'm':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_PAWN, CHESS_PIECE_COLOR_WHITE);
-                    break;
-                case 'b':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_BISHOP, CHESS_PIECE_COLOR_WHITE);
-                    break;
-                case 'r':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_ROOK, CHESS_PIECE_COLOR_WHITE);
-                    break;
-                case 'n':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KNIGHT, CHESS_PIECE_COLOR_WHITE);
-                    break;
-                case 'q':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_QUEEN, CHESS_PIECE_COLOR_WHITE);
-                    break;
-                case 'k':
-                    piecep = createChessPiece(src->windowRenderer, rectp, CHESS_PIECE_KING, CHESS_PIECE_COLOR_WHITE);
-                    break;
-            }
-            drawChessPiece(piecep);
         }
     }
 }
-
 

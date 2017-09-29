@@ -29,6 +29,9 @@ void chessManagerDestroy(ChessGuiManager *src) {
     if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         destroySettingsWindow(src->settingsWin);
     }
+    if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
+        destroySettingsWindow(src->gameWin);
+    }
     destroyMainWindow(src->mainWin);
     free(src);
 }
@@ -128,26 +131,9 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
     return CHESS_MANAGER_NONE;
 }
 
-//CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event) {
-//    if (event == CHESS_GAME_EVENT_NONE || src == NULL ) {
-//        return CHESS_MANAGER_NONE;
-//    }
-//    if (event == CHESS_GAME_EVENT_X_WON) {
-//        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "X won",
-//                                 NULL );
-//    } else if (event == CHESS_GAME_EVENT_O_WON) {
-//        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "O won",
-//                                 NULL );
-//    } else if (event == CHESS_GAME_EVENT_TIE) {
-//        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over",
-//                                 "it's a tie", NULL );
-//    }
-//    spGameWindowDestroy(src->gameWin);
-//    src->gameWin = NULL;
-//    src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
-//    spMainWindowShow(src->mainWin);
-//    return CHESS_MANAGER_NONE;
-//}
+CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event) {
+//    nothing
+}
 
 CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *event) {
     if (src == NULL || event == NULL ) {
@@ -157,12 +143,10 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
         CHESS_MAIN_EVENT mainEvent = handleEventMainWindow(src->mainWin, event);
         return handleManagerDueToMainEvent(src, mainEvent);
     } else if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-//        CHESS_GAME_EVENT gameEvent = spGameWindowHandleEvent(src->gameWin, event);
-//        spManagerDraw(src);
-//        return handleManagerDueToGameEvent(src, gameEvent);
+        CHESS_GAME_EVENT gameEvent = handleEventGameWindow(src->gameWin, event);
+        return handleManagerDueToGameEvent(src, gameEvent);
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         CHESS_SETTINGS_EVENT settingsEvent = handleEventSettingsWindow(src->settingsWin, event);
-//        chessManagerDraw(src);
         return handleManagerDueToSettingsEvent(src, settingsEvent);
     }
     return CHESS_MANAGER_NONE;

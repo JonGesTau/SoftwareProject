@@ -13,7 +13,7 @@
 #include "ChessPiece.h"
 
 typedef enum {
-    CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT
+    CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT, CHESS_GAME_NONE
 } CHESS_GAME_EVENT;
 
 typedef struct chess_game_window ChessGameWindow;
@@ -36,5 +36,6 @@ void showGameWindow(ChessGameWindow* src);
 CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event);
 void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src);
 void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer);
+ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* board);
 
 #endif //CHESS1_CHESSGAMEWINDOW_H
