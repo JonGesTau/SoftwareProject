@@ -90,6 +90,16 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
                     return CHESS_CLICKED_UNDO;
                 case CHESS_BUTTON_MAIN_MENU:
                     return CHESS_CLICKED_MAIN_MENU;
+                case CHESS_BUTTON_SLOT_1:
+                    return CHESS_CLICKED_SLOT_1;
+                case CHESS_BUTTON_SLOT_2:
+                    return CHESS_CLICKED_SLOT_2;
+                case CHESS_BUTTON_SLOT_3:
+                    return CHESS_CLICKED_SLOT_3;
+                case CHESS_BUTTON_SLOT_4:
+                    return CHESS_CLICKED_SLOT_4;
+                case CHESS_BUTTON_SLOT_5:
+                    return CHESS_CLICKED_SLOT_5;
                 default:
                     return CHESS_CLICKED_NONE;
             }

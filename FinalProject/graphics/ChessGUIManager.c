@@ -18,6 +18,7 @@ ChessGuiManager* ChessManagerCreate() {
     }
     res->gameWin = NULL;
     res->settingsWin = NULL;
+    res->loadWin = NULL;
     res->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
     return res;
 }
@@ -29,6 +30,8 @@ void chessManagerDestroy(ChessGuiManager *src) {
     if (src->mainWin != NULL) destroyMainWindow(src->mainWin);
     if (src->settingsWin != NULL) destroySettingsWindow(src->settingsWin);
     if (src->gameWin != NULL) destroyGameWindow(src->gameWin);
+    if (src->loadWin != NULL) destroyLoadWindow(src->loadWin);
+
 
     free(src);
 }
@@ -42,6 +45,8 @@ void chessManagerDraw(ChessGuiManager *src) {
         drawGameWindow(src->gameWin);
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         drawSettingsWindow(src->settingsWin);
+    } else if (src->activeWin == CHESS_LOAD_WINDOW_ACTIVE) {
+        drawLoadWindow(src->loadWin);
     }
 }
 CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN_EVENT event) {
@@ -63,6 +68,23 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
 
         src->activeWin = CHESS_SETTINGS_WINDOW_ACTIVE;
     }
+
+    if (event == CHESS_MAIN_LOAD) {
+        if (src->mainWin != NULL) {
+            hideMainWindow(src->mainWin);
+        } else {
+            printf("No Main Window To Hide");
+        }
+
+        if (src->loadWin != NULL) {
+            showLoadWindow(src->loadWin);
+        } else {
+            src->loadWin = createLoadWindow();
+        }
+
+        src->activeWin = CHESS_LOAD_WINDOW_ACTIVE;
+    }
+
     if (event == CHESS_MAIN_EXIT) {
         return CHESS_MANAGER_QUTT;
     }
@@ -105,6 +127,32 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
     }
 
     if (event == CHESS_SETTINGS_EXIT) {
+        return CHESS_MANAGER_QUTT;
+    }
+    return CHESS_MANAGER_NONE;
+}
+
+CHESS_MANAGER_EVENT handleManagerDueToLoadEvent(ChessGuiManager* src, CHESS_LOAD_EVENT event) {
+    if (src == NULL ) {
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_LOAD_BACK) {
+        if (src->loadWin != NULL) {
+            hideLoadWindow(src->loadWin);
+        } else {
+            printf("No Load Win To Hide");
+        }
+
+        if (src->mainWin != NULL) {
+            showMainWindow(src->mainWin);
+        } else {
+            printf("No Main Window To Show");
+        }
+        src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+    }
+
+    if (event == CHESS_LOAD_EXIT) {
         return CHESS_MANAGER_QUTT;
     }
     return CHESS_MANAGER_NONE;
@@ -269,6 +317,9 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
     } else if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
         CHESS_SETTINGS_EVENT settingsEvent = handleEventSettingsWindow(src->settingsWin, event);
         return handleManagerDueToSettingsEvent(src, settingsEvent);
+    } else if (src->activeWin == CHESS_LOAD_WINDOW_ACTIVE) {
+        CHESS_LOAD_EVENT loadEvent = handleEventSettingsWindow(src->settingsWin, event);
+        return handleManagerDueToLoadEvent(src, loadEvent);
     }
     return CHESS_MANAGER_NONE;
 }

@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 99)
 SET(GCC_COMPILE_FLAGS "-Wall -Wextra -Werror -pedantic-errors")
 add_definitions(${GCC_COMPILE_FLAGS})
 
-set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h graphics/ChessButton.c graphics/ChessButton.h graphics/ChessGUICommon.c graphics/ChessGUICommon.h graphics/ChessGUIManager.c graphics/ChessGUIManager.h graphics/ChessMainWindow.c graphics/ChessMainWindow.h graphics/ChessSettingsWindow.c graphics/ChessSettingsWindow.h graphics/ChessGameWindow.c graphics/ChessGameWindow.h graphics/ChessPiece.c graphics/ChessPiece.h graphics/ChessRect.c graphics/ChessRect.h GameFlowHelper.c GameFlowHelper.h)
+set(SOURCE_FILES main.c GameBoard.c GameBoard.h consoleUI.c consoleUI.h GameState.c GameState.h MiniMax.c MiniMax.h Moves.c Moves.h ChessParser.c ChessParser.h MainAux.c MainAux.h GameSettings.c GameSettings.h xmlGame.c xmlGame.h graphics/ChessButton.c graphics/ChessButton.h graphics/ChessGUICommon.c graphics/ChessGUICommon.h graphics/ChessGUIManager.c graphics/ChessGUIManager.h graphics/ChessMainWindow.c graphics/ChessMainWindow.h graphics/ChessSettingsWindow.c graphics/ChessSettingsWindow.h graphics/ChessGameWindow.c graphics/ChessGameWindow.h graphics/ChessPiece.c graphics/ChessPiece.h graphics/ChessRect.c graphics/ChessRect.h GameFlowHelper.c GameFlowHelper.h graphics/ChessLoadWindow.c graphics/ChessLoadWindow.h)
 add_executable(Chess1 ${SOURCE_FILES})
 
 cmake_minimum_required(VERSION 2.8)

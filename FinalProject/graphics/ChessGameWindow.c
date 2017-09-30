@@ -365,6 +365,11 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
             case CHESS_CLICKED_BLACK:break;
             case CHESS_CLICKED_BACK:break;
             case CHESS_CLICKED_START:break;
+            case CHESS_CLICKED_SLOT_1:break;
+            case CHESS_CLICKED_SLOT_2:break;
+            case CHESS_CLICKED_SLOT_3:break;
+            case CHESS_CLICKED_SLOT_4:break;
+            case CHESS_CLICKED_SLOT_5:break;
         }
     }
 

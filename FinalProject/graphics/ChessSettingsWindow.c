@@ -222,6 +222,11 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
             case CHESS_CLICKED_SAVE:break;
             case CHESS_CLICKED_MAIN_MENU:break;
             case CHESS_CLICKED_UNDO:break;
+            case CHESS_CLICKED_SLOT_1:break;
+            case CHESS_CLICKED_SLOT_2:break;
+            case CHESS_CLICKED_SLOT_3:break;
+            case CHESS_CLICKED_SLOT_4:break;
+            case CHESS_CLICKED_SLOT_5:break;
         }
     }
 

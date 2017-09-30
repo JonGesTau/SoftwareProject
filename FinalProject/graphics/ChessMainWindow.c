@@ -91,7 +91,7 @@ CHESS_MAIN_EVENT handleEventMainWindow(ChessMainWindow *src, SDL_Event *event){
         if (clickEvent == CHESS_CLICKED_NEW_GAME) {
             return CHESS_MAIN_START;
         } else if (clickEvent == CHESS_CLICKED_LOAD) {
-            printf("LOAD ");
+            return CHESS_MAIN_LOAD;
         } else if (clickEvent == CHESS_CLICKED_QUIT) {
             return CHESS_MAIN_EXIT;
         }
