@@ -132,7 +132,26 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
 }
 
 CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event) {
-//    nothing
+    if (src == NULL) {
+        return CHESS_MAIN_INVALID_ARGUMENT;
+    }
+
+    if (event == CHESS_GAME_MOVE_SUCCESS || event == CHESS_GAME_MOVE_FAIL) {
+        resetGameWindowChessPieces(src->gameWin);
+        int numOfPieces = 0;
+
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                char piece = src->gameWin->game->gameBoard->board[y][x];
+                if (piece != CH_PIECE_EMPTY) numOfPieces++;
+            }
+        }
+        src->gameWin->pieces = createGameWindowChessPieces(src->gameWin->windowRenderer, src->gameWin->game->gameBoard, numOfPieces);
+        src->gameWin->numOfPieces = numOfPieces;
+        for (int i = 0; i < src->gameWin->numOfPieces; i++) {
+            if (src->gameWin->pieces[i] != NULL) drawChessPiece(src->gameWin->pieces[i]);
+        }
+    }
 }
 
 CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *event) {

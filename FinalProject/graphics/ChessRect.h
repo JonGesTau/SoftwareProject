@@ -8,7 +8,6 @@
 #include <SDL_video.h>
 #include "ChessGUICommon.h"
 #include <stdbool.h>
-#include "ChessPiece.h"
 
 
 typedef enum {
@@ -24,14 +23,13 @@ typedef struct chess_rect {
     SDL_Renderer* windowRenderer;
     SDL_Rect* location;
     RectColor color;
-    ChessPiece* piece;
     int x;
     int y;
 } ChessRect;
 
 //You need a create function:
 ChessRect *
-createChessRect(SDL_Renderer *windowRender, SDL_Rect *location, RectColor color, ChessRect* piece, int x, int y);
+createChessRect(SDL_Renderer *windowRender, SDL_Rect *location, RectColor color, int x, int y);
 
 //You need this function in order to destroy all data Associate with a button:
 void destroyChessRect(ChessRect*);

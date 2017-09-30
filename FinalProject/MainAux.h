@@ -19,6 +19,7 @@
 #include "xmlGame.h"
 #include "MiniMax.h"
 #include "graphics/ChessGUIManager.h"
+#include "GameFlowHelper.h"
 
 #define EXPERT_LEVEL_SUPPORTED false
 
@@ -29,11 +30,8 @@
 #define STR_ERR_UNDO_UNAVAILABLE "Undo command not available in 2 players mode\n"
 #define STR_ERR_EMPTY_HISTORY "Empty history, move cannot be undone\n"
 #define STR_ERR_CANT_SAVE "File cannot be created or modified\n"
-#define STR_ERR_INVALID_POSITION "Invalid position on the board\n"
-#define STR_ERR_WRONG_COLOR "The specified position does not contain your piece\n"
-#define STR_ERR_ILLEGAL_MOVE "Illegal move\n"
 
-#define COLOR(p) (p?"White":"Black")
+
 
 Command getUserCommand();
 int arg;
@@ -43,7 +41,6 @@ void startConsoleMode();
 int startGUIMode();
 bool startGame(GameState* game);
 void promptUserMove(GameState* game);
-bool handleUserMove(GameState* game, Move* userMove);
 
 
 #endif //CHESS1_MAINAUX_H

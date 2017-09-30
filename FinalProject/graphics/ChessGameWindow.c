@@ -75,11 +75,12 @@ ChessButton** createGameWindowChessButtons(SDL_Renderer *renderer, GameSettings 
     return buttons;
 }
 
-ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* board) {
+ChessPiece **createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard *board, int numOfPieces) {
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessPiece** pieces = malloc(32 * sizeof(ChessPiece*));
+
+    ChessPiece** pieces = malloc(numOfPieces * sizeof(ChessPiece*));
     if (pieces == NULL ) {
         return NULL ;
     }
@@ -154,7 +155,15 @@ ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* boar
         }
     }
 
+
     return pieces;
+}
+
+void resetGameWindowChessPieces(ChessGameWindow* src) {
+    for(int i = 0; i < src->numOfPieces; i++) {
+        destroyChessPiece(src->pieces[i]);
+//        src->pieces[i] = NULL;
+    }
 }
 
 ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board) {
@@ -183,15 +192,15 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
 
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, 7-y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, x, 7 - y);
                 } else {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, 7-y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, x, 7 - y);
                 }
             } else {
                 if (x % 2 != 0) {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, 7-y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, x, 7 - y);
                 } else {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, 7-y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, x, 7 - y);
                 }
             }
 
@@ -211,7 +220,7 @@ ChessGameWindow* createGameWindow() {
     GameSettings* settings = GameSettingsCreate();
     GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
     ChessRect** rects = createGameWindowChessRects(renderer, game->gameBoard);
-    ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard);
+    ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard, 32);
 //    ChessButton** buttons = createGameWindowChessButtons(renderer, getDefaultSettings());
 //    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
 //        free(res);
@@ -313,8 +322,37 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     if (droppedPiece != NULL && droppedRect != NULL) {
         SDL_Rect rect;
         if (SDL_IntersectRect(droppedPiece->location, droppedRect->location, &rect)) {
-            droppedPiece->location = spCopyRect(droppedRect->location);
-            droppedPiece->previousLocation = spCopyRect(droppedRect->location);
+            Move* userMove = MoveCreate(droppedPiece->y, droppedPiece->x, droppedRect->y, droppedRect->x);
+            bool isMoveSuccessful = handleUserMove(src->game, userMove);
+
+            if (isMoveSuccessful) {
+
+//                droppedPiece->location = spCopyRect(droppedRect->location);
+//                droppedPiece->previousLocation = spCopyRect(droppedRect->location);
+
+                if(gameBoardIsStalemate(src->game->gameBoard)){
+                    // TODO: actually thehre is waste because we check for mate twice
+                    printf("The game is tied\n");
+                    GameStateDestroy(src->game);
+                    MoveDestroy(userMove); // TODO: was this used?
+                    return CHESS_GAME_STALEMATE;
+                }
+                if (gameBoardIsMate(src->game->gameBoard, src->game->gameBoard->whiteTurn)) {
+                    printf("Checkmate! %s player wins the game\n", COLOR(!src->game->gameBoard->whiteTurn));
+                    GameStateDestroy(src->game);
+                    MoveDestroy(userMove); // TODO: was this used?
+                    return CHESS_GAME_MATE;
+                }
+
+                if (gameBoardIsCheck(src->game->gameBoard, src->game->gameBoard->whiteTurn)) {
+                    printf("Check: %s King is threatened!\n", COLOR(src->game->gameBoard->whiteTurn));
+                    return CHESS_GAME_CHECK;
+                }
+
+                return CHESS_GAME_MOVE_SUCCESS;
+            } else {
+                return CHESS_GAME_MOVE_FAIL;
+            }
         }
     } else if (droppedPiece != NULL && droppedRect == NULL) {
         droppedPiece->location = spCopyRect(droppedPiece->previousLocation);
