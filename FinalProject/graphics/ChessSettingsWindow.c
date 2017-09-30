@@ -233,6 +233,14 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 break;
             case CHESS_CLICKED_BACK:
                 return CHESS_SETTINGS_BACK;
+            case CHESS_CLICKED_NEW_GAME:break;
+            case CHESS_CLICKED_LOAD:break;
+            case CHESS_CLICKED_QUIT:break;
+            case CHESS_CLICKED_NONE:break;
+            case CHESS_CLICKED_RESTART:break;
+            case CHESS_CLICKED_SAVE:break;
+            case CHESS_CLICKED_MAIN_MENU:break;
+            case CHESS_CLICKED_UNDO:break;
         }
     }
 

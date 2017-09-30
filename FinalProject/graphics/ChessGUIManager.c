@@ -218,6 +218,16 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
                 SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
                 GameStateDestroy(src->gameWin->game);
                 break;
+            case CHESS_GAME_INVALID:break;
+            case CHESS_GAME_START:break;
+            case CHESS_GAME_BACK:break;
+            case CHESS_GAME_EXIT:break;
+            case CHESS_GAME_NONE:break;
+            case CHESS_GAME_UNDO:break;
+            case CHESS_GAME_RESTART:break;
+            case CHESS_GAME_LOAD:break;
+            case CHESS_GAME_SAVE:break;
+            case CHESS_GAME_MAIN_MENU:break;
         }
     }
 

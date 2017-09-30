@@ -61,9 +61,6 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
         }
 
         if (event->type == SDL_MOUSEBUTTONUP) {
-            SDL_Point point;
-            point.x = event->button.x;
-            point.y = event->button.y;
             if (src->isDragged) {
                 src->isDragged = false;
                 return CHESS_DROP_PIECE;
@@ -103,6 +100,7 @@ void toggleChessPiece(ChessPiece* src) {
 char* getPieceImg(PieceType type, PieceColor color) {
     if (type == CHESS_PIECE_EMPTY) return whiteRookImg;
     if (color == CHESS_PIECE_COLOR_WHITE) {
+        // TODO: return null img sort of thing
         switch (type) {
             case CHESS_PIECE_ROOK:
                 return whiteRookImg;
@@ -116,6 +114,8 @@ char* getPieceImg(PieceType type, PieceColor color) {
                 return whiteKnightImg;
             case CHESS_PIECE_PAWN:
                 return whitePawnImg;
+            case CHESS_PIECE_EMPTY:
+                return whiteRookImg;
         }
     } else {
         switch (type) {
@@ -131,6 +131,10 @@ char* getPieceImg(PieceType type, PieceColor color) {
                 return blackKnightImg;
             case CHESS_PIECE_PAWN:
                 return blackPawnImg;
+            case CHESS_PIECE_EMPTY:
+                return blackRookImg;
         }
     }
+
+    return whiteRookImg;
 }

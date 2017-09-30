@@ -47,6 +47,7 @@ RECT_CLICK_EVENT handleChessRectEvent(ChessRect *src, SDL_Event *event) {
             return RECT_CLICKED_NONE;
         }
     }
+    return RECT_CLICKED_NONE;
 }
 
 //void drawChessRect(ChessRect* src) {

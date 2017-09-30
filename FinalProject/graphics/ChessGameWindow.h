@@ -40,10 +40,10 @@ void drawGameWindow(ChessGameWindow *src);
 void hideGameWindow(ChessGameWindow* src);
 void showGameWindow(ChessGameWindow* src);
 CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event);
-void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src);
+void drawChessBoard(SDL_Renderer *renderer);
 void drawChessGamePieces(ChessGameWindow* src);
 ChessPiece **createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard *board, int numOfPieces);
-ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board);
+ChessRect **createGameWindowChessRects(SDL_Renderer *renderer);
 void resetGameWindowChessPieces(ChessGameWindow* src);
 void destroyGameWindowButtons(ChessButton** buttons, int numOfButtons);
 

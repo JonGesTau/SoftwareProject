@@ -135,7 +135,7 @@ void resetGameWindowChessPieces(ChessGameWindow* src) {
     }
 }
 
-ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board) {
+ChessRect **createGameWindowChessRects(SDL_Renderer *renderer) {
     if (renderer == NULL ) {
         return NULL ;
     }
@@ -192,7 +192,7 @@ ChessGameWindow *createGameWindow(GameSettings *settings) {
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
-    ChessRect** rects = createGameWindowChessRects(renderer, game->gameBoard);
+    ChessRect** rects = createGameWindowChessRects(renderer);
     ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard, numOfPieces);
     ChessButton** buttons = createGameWindowChessButtons(renderer, settings->gameMode);
 
@@ -258,7 +258,7 @@ void drawGameWindow(ChessGameWindow *src) {
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
 
-    drawChessBoard(src->windowRenderer, src);
+    drawChessBoard(src->windowRenderer);
     for (int i = 0; i < src->numOfPieces; i++) {
         drawChessPiece(src->pieces[i]);
     }
@@ -287,6 +287,8 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
                 break;
             case CHESS_DRAG_PIECE:
                 break;
+            case PIECE_CLICKED_NONE:break;
+            case CHESS_MOTION_PIECE:break;
         }
     }
 
@@ -297,6 +299,7 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
             case CHESS_DROP_RECT:
                 droppedRect = src->rects[i];
                 break;
+            case RECT_CLICKED_NONE:break;
         }
     }
 
@@ -350,6 +353,19 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
                 return CHESS_GAME_MAIN_MENU;
             case CHESS_CLICKED_QUIT:
                 return CHESS_GAME_EXIT;
+            case CHESS_CLICKED_NEW_GAME:break;
+            case CHESS_CLICKED_NONE:break;
+            case CHESS_CLICKED_1PLAYER:break;
+            case CHESS_CLICKED_2PLAYER:break;
+            case CHESS_CLICKED_NOOB:break;
+            case CHESS_CLICKED_EASY:break;
+            case CHESS_CLICKED_MODERATE:break;
+            case CHESS_CLICKED_HARD:break;
+            case CHESS_CLICKED_EXPERT:break;
+            case CHESS_CLICKED_WHITE:break;
+            case CHESS_CLICKED_BLACK:break;
+            case CHESS_CLICKED_BACK:break;
+            case CHESS_CLICKED_START:break;
         }
     }
 
@@ -366,9 +382,8 @@ void showGameWindow(ChessGameWindow* src) {
     SDL_ShowWindow(src->window);
 }
 
-void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
+void drawChessBoard(SDL_Renderer *renderer) {
     SDL_Rect rect, darea;
-    SDL_Rect *rectp;
 
     /* Get the Size of drawing surface */
     SDL_RenderGetViewport(renderer, &darea);
@@ -383,7 +398,6 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
             rect.h = darea.h / 8;
             rect.x = x * rect.w + darea.w * 0.4;
             rect.y = y * rect.h + darea.w * 0.15;
-            rectp = &rect;
 
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
