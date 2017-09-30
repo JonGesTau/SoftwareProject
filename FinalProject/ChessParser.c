@@ -115,7 +115,7 @@ Move* parseMove(char* str) {
     char x1[2];
     char x2[2];
 
-    // TODO: make sure basics? should be "<x,y> to <i,j>"
+
     strcpy(strCopy, str);
     copyCharByIndex(x1, strCopy, 3);
     copyCharByIndex(y1, strCopy, 1);

@@ -45,7 +45,6 @@ void GameStateDestroy(GameState* game){
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     //if(!gameBoardIsLegalMove(game->gameBoard, y1, x1, y2, x2)) return false;
-    // TODO: since we need to remember computer moves as well, the AI result also should come here
     // so maybe we can skip the legality check and put it in a higher level?
 
     HistoryMove* hist = HistoryMoveCreate(y1, x1, y2, x2, game->gameBoard->board[y2][x2]);
@@ -67,7 +66,6 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     }
 
     gameBoardPerformMove(game->gameBoard, y1, x1, y2, x2);
-    game->current_move ++;
 
     return true;
 }
@@ -98,5 +96,4 @@ void GameStateUndoHistoryMove(GameState* game){
 
     gameBoardUndoMove(game->gameBoard, hist);
     HistoryMoveDestroy(hist);
-    game->current_move--; // TODO: no need for this
 }

@@ -408,7 +408,7 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
             }
         }
     }
-    // TODO: screen all moves with check
+    // screen all moves with check
 
     MoveList* filtered = MoveListCreate();
 

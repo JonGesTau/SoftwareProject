@@ -19,12 +19,10 @@
 // contains everything about a game, including board, game settings and history
 typedef struct chess_gamestate{
     GameBoard* gameBoard;
-    int current_move; // TODO: newly added, make sure we deal with this everywhere
     char difficulty; // 1-5
     char mode; // 1 or 2
     bool isPlayerWhite;
     HistoryMove* history[MAX_UNDO*2]; // each undo also undoes opponent
-    // TODO: do i need to allocate the above explicitly?
 } GameState;
 
 GameState* GameStateCreate(char difficulty, bool isPlayerWhite, char mode);

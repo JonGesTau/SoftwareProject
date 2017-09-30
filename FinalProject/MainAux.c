@@ -87,10 +87,6 @@ bool startGame(GameState* game) {
     Move* userMove = NULL;
 
     while (true) {
-        // tested move, quit, undo, save, reset. bonus: get_moves
-        // TODO: handle check/mate/stalemate
-        // take care of what happens when the player makes a bad command so nothing actually changed.
-        // do we reprint board? it seems board is not reprinted but the request for move is.
         if(game->mode == 1 && (game->gameBoard->whiteTurn != game->isPlayerWhite)){
             // if player vs AI and it's not the human's turn
             Move* compMove = miniMaxGetComputerMove(game);
@@ -181,7 +177,6 @@ bool startGame(GameState* game) {
                 }
             }
         } else if (userCmd.cmd == RESET) {
-            // TODO
             printf(STR_RESTARTING);
             GameStateDestroy(game);
             MoveDestroy(userMove); // TODO: was this used?
@@ -191,7 +186,6 @@ bool startGame(GameState* game) {
             GameStateDestroy(game);
             MoveDestroy(userMove); // TODO: was this used?
             return false;
-            // TODO
         }
     }
 }
