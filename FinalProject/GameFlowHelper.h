@@ -14,7 +14,6 @@
 #define STR_ERR_ILLEGAL_MOVE "Illegal move\n"
 #define COLOR(p) (p?"White":"Black")
 
-
 bool handleUserMove(GameState* game, Move* userMove);
 
 #endif //CHESS1_GAMEFLOWHELPER_H

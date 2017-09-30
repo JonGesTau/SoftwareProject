@@ -212,12 +212,11 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
     return rects;
 }
 
-ChessGameWindow* createGameWindow() {
+ChessGameWindow *createGameWindow(GameSettings *settings) {
     ChessGameWindow* res = malloc(sizeof(ChessGameWindow));
 //    ChessGameWindow* data = malloc(sizeof(ChessGameWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    GameSettings* settings = GameSettingsCreate();
     GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
     ChessRect** rects = createGameWindowChessRects(renderer, game->gameBoard);
     ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard, 32);

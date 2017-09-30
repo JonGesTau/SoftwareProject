@@ -4,6 +4,8 @@
 
 #include "ChessGUIManager.h"
 
+char* PIECES[] = {"pawn","bishop","knight","rook","queen","king"};
+
 ChessGuiManager* ChessManagerCreate() {
     ChessGuiManager* res = (ChessGuiManager*) malloc(sizeof(ChessGuiManager));
     if (res == NULL ) {
@@ -120,7 +122,7 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
         if (src->gameWin!= NULL) {
             hideSettingsWindow(src->settingsWin);
         } else {
-            src->gameWin = createGameWindow();
+            src->gameWin = createGameWindow(src->settingsWin->settings);
         }
         src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
@@ -138,27 +140,58 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
 
     char msg[1024];
 
-    switch (event) {
-        case CHESS_GAME_MOVE_SUCCESS:
-        case CHESS_GAME_MOVE_FAIL:
-            drawChessGamePieces(src->gameWin);
-//            free(msg);
-            break;
-        case CHESS_GAME_CHECK:
-            drawChessGamePieces(src->gameWin);
-            sprintf(msg, "Check: %s King is threatened!\n", COLOR(src->gameWin->game->gameBoard->whiteTurn));
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check", msg, NULL);
-            break;
-        case CHESS_GAME_MATE:
-            sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Mate", msg, NULL);
-            GameStateDestroy(src->gameWin->game);
-            break;
-        case CHESS_GAME_STALEMATE:
+    if (src->gameWin->game->mode == 1 && (src->gameWin->game->gameBoard->whiteTurn != src->gameWin->game->isPlayerWhite)) {
+        Move* compMove = miniMaxGetComputerMove(src->gameWin->game);
+        printf("Computer: move %s at <%c,%c> to <%c,%c>\n",
+               PIECES[(whichPiece(src->gameWin->game->gameBoard->board[compMove->y1][compMove->x1]))-1],
+               (compMove->y1+'1'), (compMove->x1+'A'), (compMove->y2+'1'), (compMove->x2+'A'));
+
+        GameStatePerformMove(src->gameWin->game, compMove->y1, compMove->x1, compMove->y2, compMove->x2);
+        MoveDestroy(compMove);
+
+        if(gameBoardIsStalemate(src->gameWin->game->gameBoard)){
             sprintf(msg, "The game is tied\n");
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
             GameStateDestroy(src->gameWin->game);
-            break;
+//            MoveDestroy(userMove); // TODO: was this used?
+            return false;
+        }
+        if (gameBoardIsMate(src->gameWin->game->gameBoard, src->gameWin->game->gameBoard->whiteTurn)) {
+            sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Mate", msg, NULL);
+            GameStateDestroy(src->gameWin->game);
+//            MoveDestroy(userMove); // TODO: was this used?
+        }
+
+        if (gameBoardIsCheck(src->gameWin->game->gameBoard, src->gameWin->game->gameBoard->whiteTurn)) {
+            drawChessGamePieces(src->gameWin);
+            sprintf(msg, "Check: %s King is threatened!\n", COLOR(src->gameWin->game->gameBoard->whiteTurn));
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check", msg, NULL);
+        } else {
+            drawChessGamePieces(src->gameWin);
+        }
+    } else {
+        switch (event) {
+            case CHESS_GAME_MOVE_SUCCESS:
+            case CHESS_GAME_MOVE_FAIL:
+                drawChessGamePieces(src->gameWin);
+                break;
+            case CHESS_GAME_CHECK:
+                drawChessGamePieces(src->gameWin);
+                sprintf(msg, "Check: %s King is threatened!\n", COLOR(src->gameWin->game->gameBoard->whiteTurn));
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check", msg, NULL);
+                break;
+            case CHESS_GAME_MATE:
+                sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Mate", msg, NULL);
+                GameStateDestroy(src->gameWin->game);
+                break;
+            case CHESS_GAME_STALEMATE:
+                sprintf(msg, "The game is tied\n");
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
+                GameStateDestroy(src->gameWin->game);
+                break;
+        }
     }
 
     return CHESS_MANAGER_NONE;

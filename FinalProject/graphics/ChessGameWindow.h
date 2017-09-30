@@ -14,6 +14,7 @@
 #include "../GameSettings.h"
 #include "../GameFlowHelper.h"
 #include "../consoleUI.h"
+#include "../MiniMax.h"
 
 typedef enum {
     CHESS_GAME_INVALID, CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT, CHESS_GAME_NONE, CHESS_GAME_MOVE_FAIL, CHESS_GAME_MOVE_SUCCESS, CHESS_GAME_STALEMATE, CHESS_GAME_MATE, CHESS_GAME_CHECK
@@ -33,7 +34,7 @@ struct chess_game_window {
     int numOfRects;
 };
 
-ChessGameWindow* createGameWindow();
+ChessGameWindow *createGameWindow(GameSettings *settings);
 void destroyGameWindow(ChessGameWindow *src);
 void drawGameWindow(ChessGameWindow *src);
 void hideGameWindow(ChessGameWindow* src);
