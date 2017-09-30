@@ -10,7 +10,7 @@
 GameSettings* GameSettingsCreate(){
     GameSettings* settings = malloc(sizeof(GameSettings));
     if(settings == NULL){
-        // throw error
+        // ERROR
         return NULL;
     }
     setDefaultSettings(settings);
@@ -26,17 +26,6 @@ void setDefaultSettings(GameSettings* settings){
     settings->difficulty = 2;
     settings->userColor = 1;
 }
-
-
-
-/*GameSettings* getDefaultSettings() {
-    GameSettings* settings = malloc(sizeof(GameSettings));
-    settings->gameMode = 1;
-    settings->difficulty = 2;
-    settings->userColor = 1;
-
-    return settings;
-}*/
 
 void setGameMode(GameSettings* settings, int value) {
     if (value < 1 || value > 2) {
