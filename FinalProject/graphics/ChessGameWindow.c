@@ -299,7 +299,7 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     }
 
     i = 0;
-    for (; i < src->numOfPieces; i++) {
+    for (; i < src->numOfRects; i++) {
         RECT_CLICK_EVENT clickEvent =  handleChessRectEvent(src->rects[i], event);
 
         switch(clickEvent) {
