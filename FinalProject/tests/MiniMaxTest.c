@@ -88,3 +88,18 @@ int MiniMaxTestScore(){
     gameBoardDestroy(board);
   return 1;
 }
+
+int StrangeMateTest(){
+    GameBoard* game = gameBoardCreate();
+    game->board[7][4] = CH_PIECE_KING;
+    game->board[6][7] = -CH_PIECE_ROOK;
+    game->board[5][0] = -CH_PIECE_ROOK;
+    game->board[4][4] = -CH_PIECE_KNIGHT;
+    game->board[0][5] = -CH_PIECE_KING;
+    game->whiteTurn = false;
+
+    consoleUIPrintBoard(game);
+    ScoredMove* smv = miniMaxGetBestMove(game, 3, 3, false, 0);
+    Move* mv = smv->move;
+    printf("<%d,%d> -> <%d,%d>\n", mv->y1, mv->x1, mv->y2, mv->x2);
+}

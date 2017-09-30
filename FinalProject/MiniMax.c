@@ -43,8 +43,12 @@ ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool 
 
     LinkedMove* lmove = MovePop(moves);
     if(lmove == NULL){
+        bestScore = 0;
+        if(gameBoardIsCheck(game, isMax)){
+            bestScore = isMax ? INT_MIN : INT_MAX;
+        }
         MoveDestroy(bestMove);
-        ScoredMove* smove = ScoredMoveCreate(9, 9, 9, 9, 0);
+        ScoredMove* smove = ScoredMoveCreate(9, 9, 9, 9, bestScore);
         return smove;
     }
     Move* move;
@@ -116,8 +120,12 @@ ScoredMove* miniMaxGetBestMove(GameBoard *game, char depth, char maxDepth, bool 
      */
 
     if(bestMove -> y1 == 9){
+        printf("no possible moves\n");
         bestScore = 0; // tie
         // TODO: no move found
+        if(gameBoardIsCheck(game, game->whiteTurn)){
+            bestScore = game->whiteTurn ? INT_MIN : INT_MAX;
+        }
     }
 
     //printf("%d ", bestScore);

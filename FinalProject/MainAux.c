@@ -85,7 +85,6 @@ void startConsoleMode() {
 bool startGame(GameState* game) {
     Command userCmd;
     Move* userMove = NULL;
-    char* color = game->gameBoard->whiteTurn ? "White" : "Black"; // TODO: update this each move
 
     while (true) {
         // tested move, quit, undo, save, reset. bonus: get_moves
@@ -101,6 +100,23 @@ bool startGame(GameState* game) {
 
             GameStatePerformMove(game, compMove->y1, compMove->x1, compMove->y2, compMove->x2);
             MoveDestroy(compMove);
+
+            if(gameBoardIsStalemate(game->gameBoard)){
+                printf("The game is tied\n");
+                GameStateDestroy(game);
+                MoveDestroy(userMove); // TODO: was this used?
+                return false;
+            }
+            if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
+                printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
+                GameStateDestroy(game);
+                MoveDestroy(userMove); // TODO: was this used?
+                return false;
+            }
+
+            if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
+                printf("Check!");
+            }
             continue; // make sure we check mate etc.
         }
 
