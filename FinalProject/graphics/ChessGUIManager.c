@@ -180,14 +180,34 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
         if(gameBoardIsStalemate(src->gameWin->game->gameBoard)){
             sprintf(msg, "The game is tied\n");
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
-            GameStateDestroy(src->gameWin->game);
-//            MoveDestroy(userMove); // TODO: was this used?
+
+            showMainWindow(src->mainWin);
+            src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+            if (src->settingsWin) {
+                destroySettingsWindow(src->settingsWin);
+                src->settingsWin = NULL;
+            }
+            if (src->gameWin) {
+                destroyGameWindow(src->gameWin);
+                src->gameWin = NULL;
+            }
+            return CHESS_MANAGER_NONE;
         }
         if (gameBoardIsMate(src->gameWin->game->gameBoard, src->gameWin->game->gameBoard->whiteTurn)) {
             sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Mate", msg, NULL);
-            GameStateDestroy(src->gameWin->game);
-//            MoveDestroy(userMove); // TODO: was this used?
+
+            showMainWindow(src->mainWin);
+            src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+            if (src->settingsWin) {
+                destroySettingsWindow(src->settingsWin);
+                src->settingsWin = NULL;
+            }
+            if (src->gameWin) {
+                destroyGameWindow(src->gameWin);
+                src->gameWin = NULL;
+            }
+            return CHESS_MANAGER_NONE;
         }
 
         if (gameBoardIsCheck(src->gameWin->game->gameBoard, src->gameWin->game->gameBoard->whiteTurn)) {

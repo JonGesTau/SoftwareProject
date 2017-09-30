@@ -74,8 +74,6 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
                     return CHESS_CLICKED_MODERATE;
                 case CHESS_BUTTON_HARD:
                     return CHESS_CLICKED_HARD;
-                case CHESS_BUTTON_EXPERT:
-                    return CHESS_CLICKED_EXPERT;
                 case CHESS_BUTTON_WHITE:
                     return CHESS_CLICKED_WHITE;
                 case CHESS_BUTTON_BLACK:

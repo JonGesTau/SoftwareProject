@@ -10,7 +10,7 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
         return NULL ;
     }
 
-    const int numButtons = 11;
+    const int numButtons = 10;
 
     ChessButton** buttons = malloc(numButtons * sizeof(ChessButton*));
     if (buttons == NULL ) {
@@ -24,7 +24,6 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     SDL_Rect easy = { .x = 350, .y = 200, .h = 100, .w = 250 };
     SDL_Rect moderate = { .x = 650, .y = 200, .h = 100, .w = 250 };
     SDL_Rect hard = { .x = 150, .y = 350, .h = 100, .w = 250 };
-    SDL_Rect expert = { .x = 450, .y = 350, .h = 100, .w = 250 };
 
     SDL_Rect white = { .x = 200, .y = 500, .h = 100, .w = 250 };
     SDL_Rect black = { .x = 600, .y = 500, .h = 100, .w = 250 };
@@ -38,11 +37,10 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     buttons[3] = createChessButton(renderer, &easy, "./assets/easy_active.bmp", "./assets/easy_inactive.bmp", CHESS_BUTTON_EASY, false);
     buttons[4] = createChessButton(renderer, &moderate, "./assets/moderate_active.bmp", "./assets/moderate_inactive.bmp", CHESS_BUTTON_MODERATE, false);
     buttons[5] = createChessButton(renderer, &hard, "./assets/hard_active.bmp", "./assets/hard_inactive.bmp", CHESS_BUTTON_HARD, false);
-    buttons[6] = createChessButton(renderer, &expert, "./assets/expert_active.bmp", "./assets/expert_inactive.bmp", CHESS_BUTTON_EXPERT, false);
-    buttons[7] = createChessButton(renderer, &white, "./assets/white_active.bmp", "./assets/white_inactive.bmp", CHESS_BUTTON_WHITE, false);
-    buttons[8] = createChessButton(renderer, &black, "./assets/black_active.bmp", "./assets/black_inactive.bmp", CHESS_BUTTON_BLACK, false);
-    buttons[9] = createChessButton(renderer, &start, "./assets/start_active.bmp", "./assets/start_active.bmp", CHESS_BUTTON_START, true);
-    buttons[10] = createChessButton(renderer, &back, "./assets/back_active.bmp", "./assets/back_active.bmp", CHESS_BUTTON_BACK, true);
+    buttons[6] = createChessButton(renderer, &white, "./assets/white_active.bmp", "./assets/white_inactive.bmp", CHESS_BUTTON_WHITE, false);
+    buttons[7] = createChessButton(renderer, &black, "./assets/black_active.bmp", "./assets/black_inactive.bmp", CHESS_BUTTON_BLACK, false);
+    buttons[8] = createChessButton(renderer, &start, "./assets/start_active.bmp", "./assets/start_active.bmp", CHESS_BUTTON_START, true);
+    buttons[9] = createChessButton(renderer, &back, "./assets/back_active.bmp", "./assets/back_active.bmp", CHESS_BUTTON_BACK, true);
 
     for (int i = 0; i < numButtons ; i++) {
         if (buttons[i] == NULL) {
@@ -65,14 +63,12 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
         buttons[4]->isActive = true;
     } else if (settings->difficulty == 4) {
         buttons[5]->isActive = true;
-    } else if (settings->difficulty == 5) {
-        buttons[6]->isActive = true;
     }
 
     if (settings->userColor) {
-        buttons[7]->isActive = true;
+        buttons[6]->isActive = true;
     } else {
-        buttons[8]->isActive = true;
+        buttons[7]->isActive = true;
     }
 
     return buttons;
@@ -93,7 +89,7 @@ ChessSettingsWindow* createSettingsWindow() {
         return NULL ;
     }
     res->buttons = buttons;
-    res->numOfButtons = 11;
+    res->numOfButtons = 10;
     res->window = window;
     res->windowRenderer = renderer;
     res->settings = settings;
@@ -161,8 +157,7 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 if (src->settings->difficulty != 1) {
                     src->settings->difficulty = 1;
                     printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
+                    for (int j = 2;j<6; j++) {
                         if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
                     }
                     toggleChessButton(button);
@@ -172,8 +167,7 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 if (src->settings->difficulty != 2) {
                     src->settings->difficulty = 2;
                     printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
+                    for (int j = 2;j<6; j++) {
                         if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
                     }
                     toggleChessButton(button);
@@ -183,8 +177,7 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 if (src->settings->difficulty != 3) {
                     src->settings->difficulty = 3;
                     printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
+                    for (int j = 2;j<6; j++) {
                         if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
                     }
                     toggleChessButton(button);
@@ -194,19 +187,7 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 if (src->settings->difficulty != 4) {
                     src->settings->difficulty = 4;
                     printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
-                break;
-            case CHESS_CLICKED_EXPERT:
-                if (src->settings->difficulty != 5) {
-                    src->settings->difficulty = 5;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    int j = 2;
-                    for (;j<7; j++) {
+                    for (int j = 2;j<6; j++) {
                         if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
                     }
                     toggleChessButton(button);
@@ -216,16 +197,16 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
                 if (!src->settings->userColor) {
                     src->settings->userColor = 1;
                     printf("Color is %d\n", src->settings->userColor);
+                    toggleChessButton(src->buttons[6]);
                     toggleChessButton(src->buttons[7]);
-                    toggleChessButton(src->buttons[8]);
                 }
                 break;
             case CHESS_CLICKED_BLACK:
                 if (src->settings->userColor) {
                     src->settings->userColor = 0;
                     printf("Color is %d\n", src->settings->userColor);
+                    toggleChessButton(src->buttons[6]);
                     toggleChessButton(src->buttons[7]);
-                    toggleChessButton(src->buttons[8]);
                 }
                 break;
             case CHESS_CLICKED_START:

@@ -361,7 +361,6 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
             case CHESS_CLICKED_EASY:break;
             case CHESS_CLICKED_MODERATE:break;
             case CHESS_CLICKED_HARD:break;
-            case CHESS_CLICKED_EXPERT:break;
             case CHESS_CLICKED_WHITE:break;
             case CHESS_CLICKED_BLACK:break;
             case CHESS_CLICKED_BACK:break;
