@@ -339,19 +339,15 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(src->buttons[i], event);
         switch (clickEvent) {
             case CHESS_CLICKED_RESTART:
-
-                break;
+                return CHESS_GAME_RESTART;
             case CHESS_CLICKED_SAVE:
-
-                break;
+                return CHESS_GAME_SAVE;
             case CHESS_CLICKED_LOAD:
-
-                break;
+                return CHESS_GAME_LOAD;
             case CHESS_CLICKED_UNDO:
                 return CHESS_GAME_UNDO;
             case CHESS_CLICKED_MAIN_MENU:
-
-                break;
+                return CHESS_GAME_MAIN_MENU;
             case CHESS_CLICKED_QUIT:
                 return CHESS_GAME_EXIT;
         }

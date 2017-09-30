@@ -105,8 +105,7 @@ void destroySettingsWindow(ChessSettingsWindow *src) {
         return;
     }
 
-    int i = 0;
-    for (; i < src->numOfButtons; i++) {
+    for (int i = 0; i < src->numOfButtons; i++) {
         destroyChessButton(src->buttons[i]);
     }
     free(src->buttons);

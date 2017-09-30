@@ -56,7 +56,7 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
         }
 
         if (src->settingsWin != NULL) {
-            hideSettingsWindow(src->settingsWin);
+            showSettingsWindow(src->settingsWin);
         } else {
             src->settingsWin = createSettingsWindow();
         }
@@ -72,13 +72,6 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
 CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_SETTINGS_EVENT event) {
     if (src == NULL ) {
         return CHESS_MANAGER_NONE;
-    }
-    if (event == CHESS_MAIN_START) {
-        if (src->mainWin != NULL) {
-            showMainWindow(src->mainWin);
-        } else {
-            printf("No Main Window To Show");
-        }
     }
 
     if (event == CHESS_SETTINGS_BACK) {
@@ -125,28 +118,54 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
     char msg[1024];
 
     if (event == CHESS_GAME_UNDO) {
-        HistoryMove* hist = GameStateGetLastMove(src->gameWin->game);
-        if(hist == NULL) {
-            return CHESS_MANAGER_NONE;
+        if (src->gameWin->settings->gameMode == 2) {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Undo Unavailable", STR_ERR_UNDO_UNAVAILABLE, NULL);
         } else {
-            printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
-                   (src->gameWin->game->gameBoard->whiteTurn ? "black" : "white"),
-                   (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
-                   (hist->move->x1 + 'A'));
-            GameStateUndoHistoryMove(src->gameWin->game);
-            hist = GameStateGetLastMove(src->gameWin->game);
-            // TODO: make sure hist gets destroyed
-            if(hist != NULL) {
+            HistoryMove* hist = GameStateGetLastMove(src->gameWin->game);
+            if(hist == NULL) {
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Empty History", STR_ERR_EMPTY_HISTORY, NULL);
+            } else {
                 printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
                        (src->gameWin->game->gameBoard->whiteTurn ? "black" : "white"),
                        (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
                        (hist->move->x1 + 'A'));
                 GameStateUndoHistoryMove(src->gameWin->game);
-                // TODO: what happens if player went first and then undos it all?
-            }
+                hist = GameStateGetLastMove(src->gameWin->game);
+                // TODO: make sure hist gets destroyed
+                if(hist != NULL) {
+                    printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
+                           (src->gameWin->game->gameBoard->whiteTurn ? "black" : "white"),
+                           (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
+                           (hist->move->x1 + 'A'));
+                    GameStateUndoHistoryMove(src->gameWin->game);
+                    // TODO: what happens if player went first and then undos it all?
+                }
 
-            drawChessGamePieces(src->gameWin);
+                drawChessGamePieces(src->gameWin);
+            }
         }
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_GAME_MAIN_MENU) {
+        showMainWindow(src->mainWin);
+        src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+        if (src->settingsWin) {
+            destroySettingsWindow(src->settingsWin);
+            src->settingsWin = NULL;
+        }
+        if (src->gameWin) {
+            destroyGameWindow(src->gameWin);
+            src->gameWin = NULL;
+        }
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_GAME_RESTART) {
+        destroyGameWindow(src->gameWin);
+        src->gameWin = createGameWindow(src->settingsWin->settings);
+
+        return CHESS_MANAGER_NONE;
     }
 
     if (src->gameWin->game->mode == 1 && (src->gameWin->game->gameBoard->whiteTurn != src->gameWin->game->isPlayerWhite)) {
@@ -163,7 +182,6 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
             GameStateDestroy(src->gameWin->game);
 //            MoveDestroy(userMove); // TODO: was this used?
-            return false;
         }
         if (gameBoardIsMate(src->gameWin->game->gameBoard, src->gameWin->game->gameBoard->whiteTurn)) {
             sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
