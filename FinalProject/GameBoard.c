@@ -184,7 +184,6 @@ bool gameBoardPerformMove(GameBoard* game, unsigned char y1, unsigned char x1, u
     return true;
 }
 
-// TODO: remember to destory history move after using, possibly in the calling function
 bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
     Move* mv = hist->move;
     game->board[mv->y1][mv->x1] = game->board[mv->y2][mv->x2];
@@ -194,8 +193,7 @@ bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
 }
 
 bool gameBoardIsThreatened(GameBoard *game, unsigned char y1, unsigned char x1){
-    //if(y1 == -1 || x1 == -1) return false;
-    if(game->board[y1][x1] == CH_PIECE_EMPTY) return false; // also ERROR
+    if(game->board[y1][x1] == CH_PIECE_EMPTY) return false;
 
     bool isWhite = isWhite(game->board[y1][x1]);
 
@@ -326,7 +324,7 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite){
 
     if(king_y == -1) return false;
 
-    return gameBoardIsThreatened(game, king_y, king_x);
+    return gameBoardIsThreatened(game, (unsigned char)king_y, (unsigned char)king_x);
 }
 
 bool gameBoardIsMate(GameBoard *game, bool isWhite){
@@ -361,9 +359,6 @@ bool gameBoardIsMate(GameBoard *game, bool isWhite){
     return true;
 }
 
-
-// returns true if the game is a stalemate given whose turn it is to play
-// will return true IFF not in check and no moves to play
 bool gameBoardIsStalemate(GameBoard* game){
     if(gameBoardIsCheck(game, game->whiteTurn)) return false;
     MoveList* moves = gameBoardAllMoves(game, game->whiteTurn);
@@ -424,7 +419,7 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
     return filtered;
 }
 
-// given a board, move list and coords of a pawn, pushes to move list all possible moves for that pawn
+
 void gameBoardMovesPawn(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = sign(game->board[y][x]);
@@ -489,7 +484,6 @@ void gameBoardMovesKnight(GameBoard* game, MoveList* moves, unsigned char y, uns
 }
 
 
-// adds to list possible moves for king at (y,x)
 void gameBoardMovesKing(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
@@ -521,8 +515,6 @@ void gameBoardMovesKing(GameBoard* game, MoveList* moves, unsigned char y, unsig
     }
 }
 
-
-// adds to list possible moves for rook at (y,x)
 void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
@@ -602,7 +594,6 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsig
 }
 
 
-// adds to list possible moves for bishop at (y,x)
 void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);

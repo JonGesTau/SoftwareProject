@@ -11,8 +11,10 @@
 
 #define consolePieceChar(p) (("_mbnrqk"[whichPiece(p)]) + (isBlack(p)?-32:0))
 
-
-
+/**
+ * Prints to the console the string representation of a GameBoard.
+ * @param game - Pointer to the GameBoard* to be printed.
+ */
 void consoleUIPrintBoard(GameBoard* game);
 
 

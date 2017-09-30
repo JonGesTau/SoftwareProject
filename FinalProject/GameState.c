@@ -43,9 +43,8 @@ void GameStateDestroy(GameState* game){
     free(game);
 }
 
-bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
+bool GameStatePerformMove(GameState* game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     HistoryMove* hist = HistoryMoveCreate(y1, x1, y2, x2, game->gameBoard->board[y2][x2]);
-    // TODO: move memory errors into Creators
 
     if(game->history[MAX_UNDO*2-1] != NULL){ // history full
         HistoryMoveDestroy(game->history[0]);
