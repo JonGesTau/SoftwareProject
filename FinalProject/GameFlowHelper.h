@@ -20,7 +20,16 @@
 #define STR_ERR_EMPTY_HISTORY "Empty history, move cannot be undone\n"
 #define STR_ERR_CANT_SAVE "File cannot be created or modified\n"
 #define COLOR(p) (p?"White":"Black")
+#define EXPERT_LEVEL_SUPPORTED false
 
+
+/**
+ * Performs a move for the human player. Makes sure the coordinates are correct and that the move is legal
+ * and does not result in self-check. Calls GameStatePerformMove.
+ * @param game
+ * @param userMove - the move to be played.
+ * @return true if the move was legal and performed successfully.
+ */
 bool handleUserMove(GameState* game, Move* userMove);
 
 #endif //CHESS1_GAMEFLOWHELPER_H

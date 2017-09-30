@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "MainAux.h"
+#include "GameFlowHelper.h"
 
 /**
  * This data structure binds the game settings data during the game setup mode.

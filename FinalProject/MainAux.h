@@ -21,7 +21,6 @@
 #include "graphics/ChessGUIManager.h"
 #include "GameFlowHelper.h"
 
-#define EXPERT_LEVEL_SUPPORTED false
 
 
 
@@ -43,7 +42,7 @@ void startConsoleMode();
 /**
  * Starts GUI mode.
  */
-void startGUIMode();
+int startGUIMode();
 
 /**
  * Handles game mode in the console.
