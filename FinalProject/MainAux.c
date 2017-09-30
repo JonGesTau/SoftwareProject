@@ -118,16 +118,15 @@ bool startGame(GameState* game) {
             userMove = parseMove(userCmd.arg);
             isMoveSuccessful = handleUserMove(game, userMove);
             if (isMoveSuccessful) {
-                if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
-                    printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
+                if(gameBoardIsStalemate(game->gameBoard)){
+                    // TODO: actually thehre is waste because we check for mate twice
+                    printf("The game is tied\n");
                     GameStateDestroy(game);
                     MoveDestroy(userMove); // TODO: was this used?
                     return false;
                 }
-
-                if(gameBoardIsStalemate(game->gameBoard, game->gameBoard->whiteTurn)){
-                    // TODO: actually thehre is waste because we check for mate twice
-                    printf("The game is tied\n");
+                if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
+                    printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
                     GameStateDestroy(game);
                     MoveDestroy(userMove); // TODO: was this used?
                     return false;
