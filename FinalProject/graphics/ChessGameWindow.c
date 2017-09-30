@@ -332,20 +332,15 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
 
                 if(gameBoardIsStalemate(src->game->gameBoard)){
                     // TODO: actually thehre is waste because we check for mate twice
-                    printf("The game is tied\n");
-                    GameStateDestroy(src->game);
                     MoveDestroy(userMove); // TODO: was this used?
                     return CHESS_GAME_STALEMATE;
                 }
                 if (gameBoardIsMate(src->game->gameBoard, src->game->gameBoard->whiteTurn)) {
-                    printf("Checkmate! %s player wins the game\n", COLOR(!src->game->gameBoard->whiteTurn));
-                    GameStateDestroy(src->game);
                     MoveDestroy(userMove); // TODO: was this used?
                     return CHESS_GAME_MATE;
                 }
 
                 if (gameBoardIsCheck(src->game->gameBoard, src->game->gameBoard->whiteTurn)) {
-                    printf("Check: %s King is threatened!\n", COLOR(src->game->gameBoard->whiteTurn));
                     return CHESS_GAME_CHECK;
                 }
 
@@ -503,3 +498,19 @@ void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src) {
     }
 }
 
+void drawChessGamePieces(ChessGameWindow* src) {
+    resetGameWindowChessPieces(src);
+    int numOfPieces = 0;
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            char piece = src->game->gameBoard->board[y][x];
+            if (piece != CH_PIECE_EMPTY) numOfPieces++;
+        }
+    }
+    src->pieces = createGameWindowChessPieces(src->windowRenderer, src->game->gameBoard, numOfPieces);
+    src->numOfPieces = numOfPieces;
+    for (int i = 0; i < src->numOfPieces; i++) {
+        if (src->pieces[i] != NULL) drawChessPiece(src->pieces[i]);
+    }
+}

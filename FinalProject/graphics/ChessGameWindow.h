@@ -16,7 +16,7 @@
 #include "../consoleUI.h"
 
 typedef enum {
-    CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT, CHESS_GAME_NONE, CHESS_GAME_MOVE_FAIL, CHESS_GAME_MOVE_SUCCESS, CHESS_GAME_STALEMATE, CHESS_GAME_MATE, CHESS_GAME_CHECK
+    CHESS_GAME_INVALID, CHESS_GAME_START, CHESS_GAME_BACK, CHESS_GAME_EXIT, CHESS_GAME_NONE, CHESS_GAME_MOVE_FAIL, CHESS_GAME_MOVE_SUCCESS, CHESS_GAME_STALEMATE, CHESS_GAME_MATE, CHESS_GAME_CHECK
 } CHESS_GAME_EVENT;
 
 typedef struct chess_game_window ChessGameWindow;
@@ -40,7 +40,7 @@ void hideGameWindow(ChessGameWindow* src);
 void showGameWindow(ChessGameWindow* src);
 CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event);
 void drawChessBoard(SDL_Renderer *renderer, ChessGameWindow *src);
-void drawPieces(ChessGameWindow* src, SDL_Renderer* renderer);
+void drawChessGamePieces(ChessGameWindow* src);
 ChessPiece **createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard *board, int numOfPieces);
 ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board);
 void resetGameWindowChessPieces(ChessGameWindow* src);

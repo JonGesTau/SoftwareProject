@@ -133,25 +133,35 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
 
 CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event) {
     if (src == NULL) {
-        return CHESS_MAIN_INVALID_ARGUMENT;
+        return CHESS_MANAGER_NONE;
     }
 
-    if (event == CHESS_GAME_MOVE_SUCCESS || event == CHESS_GAME_MOVE_FAIL) {
-        resetGameWindowChessPieces(src->gameWin);
-        int numOfPieces = 0;
+    char msg[1024];
 
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                char piece = src->gameWin->game->gameBoard->board[y][x];
-                if (piece != CH_PIECE_EMPTY) numOfPieces++;
-            }
-        }
-        src->gameWin->pieces = createGameWindowChessPieces(src->gameWin->windowRenderer, src->gameWin->game->gameBoard, numOfPieces);
-        src->gameWin->numOfPieces = numOfPieces;
-        for (int i = 0; i < src->gameWin->numOfPieces; i++) {
-            if (src->gameWin->pieces[i] != NULL) drawChessPiece(src->gameWin->pieces[i]);
-        }
+    switch (event) {
+        case CHESS_GAME_MOVE_SUCCESS:
+        case CHESS_GAME_MOVE_FAIL:
+            drawChessGamePieces(src->gameWin);
+//            free(msg);
+            break;
+        case CHESS_GAME_CHECK:
+            drawChessGamePieces(src->gameWin);
+            sprintf(msg, "Check: %s King is threatened!\n", COLOR(src->gameWin->game->gameBoard->whiteTurn));
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check", msg, NULL);
+            break;
+        case CHESS_GAME_MATE:
+            sprintf(msg, "Checkmate! %s player wins the game\n", COLOR(!src->gameWin->game->gameBoard->whiteTurn));
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Mate", msg, NULL);
+            GameStateDestroy(src->gameWin->game);
+            break;
+        case CHESS_GAME_STALEMATE:
+            sprintf(msg, "The game is tied\n");
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Tie", msg, NULL);
+            GameStateDestroy(src->gameWin->game);
+            break;
     }
+
+    return CHESS_MANAGER_NONE;
 }
 
 CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *event) {
