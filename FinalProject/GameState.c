@@ -44,9 +44,6 @@ void GameStateDestroy(GameState* game){
 }
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
-    //if(!gameBoardIsLegalMove(game->gameBoard, y1, x1, y2, x2)) return false;
-    // so maybe we can skip the legality check and put it in a higher level?
-
     HistoryMove* hist = HistoryMoveCreate(y1, x1, y2, x2, game->gameBoard->board[y2][x2]);
     // TODO: move memory errors into Creators
 

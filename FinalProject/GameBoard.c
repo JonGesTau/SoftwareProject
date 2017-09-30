@@ -5,10 +5,8 @@
 #include <stdio.h>
 #include "GameBoard.h"
 
-bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
-    /*
-     * ? make sure legal board?
-     * V make sure legal coordinates
+bool gameBoardIsLegalMove(GameBoard *game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
+    /* V make sure legal coordinates
      * V make sure src != dest
      * V make sure src is not empty
      * V make sure dest is empty or other color
@@ -75,7 +73,7 @@ bool gameBoardIsLegalMove(GameBoard *game, char y1, char x1, char y2, char x2){
     return true;
 }
 
-bool gameBoardIsLegalRookMove(GameBoard *game, char y1, char x1, char y2, char x2){
+bool gameBoardIsLegalRookMove(GameBoard *game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     if(x1 != x2 && y1 != y2) return false;
 
     if(x1 != x2){ // making sure horizontal movement not blocked
@@ -97,7 +95,7 @@ bool gameBoardIsLegalRookMove(GameBoard *game, char y1, char x1, char y2, char x
     return true;
 }
 
-bool gameBoardIsLegalBishopMove(GameBoard *game, char y1, char x1, char y2, char x2){
+bool gameBoardIsLegalBishopMove(GameBoard *game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     if(abs(x1 - x2) != abs(y1-y2)) return false;
     // does not make sure destination doesn't have friendly piece or is a legal coordinate
 
@@ -178,7 +176,7 @@ void gameBoardDestroy(GameBoard* src){
     free(src);
 }
 
-bool gameBoardPerformMove(GameBoard* game, char y1, char x1, char y2, char x2){
+bool gameBoardPerformMove(GameBoard* game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     if(game == NULL) return false;
     game->board[y2][x2] = game->board[y1][x1];
     game->board[y1][x1] = CH_PIECE_EMPTY;
@@ -195,12 +193,8 @@ bool gameBoardUndoMove(GameBoard* game, HistoryMove* hist){
     return true;
 }
 
-bool gameBoardIsThreatened(GameBoard *game, char y1, char x1){
-    // then we go on all four sides until blocked, seeing if threatened by rook or queen
-    // similarly for bishop or queen; knight; pawn; king
-    // TODO: consider would it be better to keep the location of the kings for time tradeoff
-
-    if(y1 == -1 || x1 == -1) return false; // TODO: big error, but shouldn't happen; atleast print to console
+bool gameBoardIsThreatened(GameBoard *game, unsigned char y1, unsigned char x1){
+    //if(y1 == -1 || x1 == -1) return false;
     if(game->board[y1][x1] == CH_PIECE_EMPTY) return false; // also ERROR
 
     bool isWhite = isWhite(game->board[y1][x1]);
@@ -298,7 +292,7 @@ bool gameBoardIsThreatened(GameBoard *game, char y1, char x1){
     if(isLegalCoordinate(y1-1, x1-2) && game->board[y1-1][x1-2] == enemy*CH_PIECE_KNIGHT) return true;
 
     // ----------------- check for threatening pawns
-    if(isWhite && y1 < 6 || !isWhite && y1 > 1) { // first make sure king isn't past pawn row
+    if((isWhite && y1 < 6) || (!isWhite && y1 > 1)) { // first make sure king isn't past pawn row
         if(x1 > 0 && game->board[y1+(isWhite?1:-1)][x1-1] == enemy*CH_PIECE_PAWN) return true;
         if(x1 < 7 && game->board[y1+(isWhite?1:-1)][x1+1] == enemy*CH_PIECE_PAWN) return true;
     }
@@ -317,8 +311,6 @@ bool gameBoardIsThreatened(GameBoard *game, char y1, char x1){
 }
 
 bool gameBoardIsCheck(GameBoard *game, bool isWhite){
-    // TODO: consider would it be better to keep the location of the kings for time tradeoff
-
     int king_y = -1;
     int king_x = -1;
 
@@ -332,7 +324,7 @@ bool gameBoardIsCheck(GameBoard *game, bool isWhite){
         }
     }
 
-    if(king_y == -1) return false; // TODO: big error, but shouldn't happen; atleast print to console
+    if(king_y == -1) return false;
 
     return gameBoardIsThreatened(game, king_y, king_x);
 }
@@ -433,7 +425,7 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
 }
 
 // given a board, move list and coords of a pawn, pushes to move list all possible moves for that pawn
-void gameBoardMovesPawn(GameBoard* game, MoveList* moves, char y, char x){
+void gameBoardMovesPawn(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = sign(game->board[y][x]);
 
@@ -458,7 +450,7 @@ void gameBoardMovesPawn(GameBoard* game, MoveList* moves, char y, char x){
     }
 }
 
-void gameBoardMovesKnight(GameBoard* game, MoveList* moves, char y, char x){
+void gameBoardMovesKnight(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
@@ -498,7 +490,7 @@ void gameBoardMovesKnight(GameBoard* game, MoveList* moves, char y, char x){
 
 
 // adds to list possible moves for king at (y,x)
-void gameBoardMovesKing(GameBoard* game, MoveList* moves, char y, char x){
+void gameBoardMovesKing(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
@@ -531,12 +523,12 @@ void gameBoardMovesKing(GameBoard* game, MoveList* moves, char y, char x){
 
 
 // adds to list possible moves for rook at (y,x)
-void gameBoardMovesRook(GameBoard* game, MoveList* moves, char y, char x){
+void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
-    char tempY = y + 1;
-    char tempX = x;
+    unsigned char tempY = y + 1;
+    unsigned char tempX = x;
 
     while(isLegalCoordinate(tempY, tempX)){ // move up
         if(isEmpty(game->board[tempY][tempX])){
@@ -611,12 +603,12 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, char y, char x){
 
 
 // adds to list possible moves for bishop at (y,x)
-void gameBoardMovesBishop(GameBoard* game, MoveList* moves, char y, char x){
+void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, unsigned char x){
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
-    char tempY = y + 1;
-    char tempX = x + 1;
+    unsigned char tempY = y + 1;
+    unsigned char tempX = x + 1;
 
     while(isLegalCoordinate(tempY, tempX)){ // move up-right
         if(isEmpty(game->board[tempY][tempX])){

@@ -19,7 +19,7 @@
 
 // Basic data structure to represent move from <y1, x1> to <y2, x2>
 typedef struct move{
-    char y1,x1,y2,x2;
+    unsigned char y1,x1,y2,x2;
 } Move;
 
 // a node containing a move for MoveList
