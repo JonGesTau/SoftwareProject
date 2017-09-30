@@ -13,6 +13,7 @@
 
 #define MAX_UNDO 3
 
+#include <stdio.h>
 #include "GameBoard.h"
 #include "Moves.h"
 

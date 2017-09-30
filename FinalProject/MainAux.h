@@ -34,14 +34,44 @@
 
 #define COLOR(p) (p?"White":"Black")
 
+/**
+ * Parses the user's command.
+ * @return A Command object containing the user's command.
+ */
 Command getUserCommand();
 int arg;
 GameState* game;
 
+/**
+ * Enters console mode. Starts with setup mode and moves to game mode using startGame.
+ */
 void startConsoleMode();
+
+/**
+ * Starts GUI mode.
+ */
 void startGUIMode();
+
+/**
+ * Handles game mode in the console.
+ * @param game
+ * @return true if exited via Reset, false if via Quit.
+ */
 bool startGame(GameState* game);
+
+/**
+ * Prints a prompt for the player to enter their commad during game mode.
+ * @param game
+ */
 void promptUserMove(GameState* game);
+
+/**
+ * Performs a move for the human player. Makes sure the coordinates are correct and that the move is legal
+ * and does not result in self-check. Calls GameStatePerformMove.
+ * @param game
+ * @param userMove - the move to be played.
+ * @return true if the move was legal and performed successfully.
+ */
 bool handleUserMove(GameState* game, Move* userMove);
 
 

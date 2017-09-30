@@ -19,10 +19,10 @@
 bool xmlGameSaveGame(GameState* game, char* filename);
 
 
-bool xmlGameNextRow(FILE* f, char* line, int* start_pos);
+bool xmlGameNextRow(FILE* f, char* line, unsigned int* start_pos);
 
 GameState* xmlGameLoadGame(char* filename);
 
-bool xmlGameParseRow(GameBoard* game, char rowNumber, char* row);
+bool xmlGameParseRow(GameBoard* game, unsigned char rowNumber, char* row);
 
 #endif //CHESS1_XMLGAME_H

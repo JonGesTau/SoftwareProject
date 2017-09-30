@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "Moves.h"
 
@@ -18,13 +19,13 @@
 #define CH_PIECE_QUEEN 5
 #define CH_PIECE_KING 6
 
-#define whichPiece(p) ((char)(abs(p)))
-#define isWhite(p) (p > 0)
-#define isBlack(p) (p < 0)
-#define isEmpty(p) (p == CH_PIECE_EMPTY)
-#define sign(p) (p>0 ? 1 : (p==0 ? 0 : -1))
+#define whichPiece(p) ((unsigned char)(abs(p)))
+#define isWhite(p) ((p) > 0)
+#define isBlack(p) ((p) < 0)
+#define isEmpty(p) ((p) == CH_PIECE_EMPTY)
+#define sign(p) ((p)>0 ? 1 : ((p)==0 ? 0 : -1))
 #define chPieceScore(p) (((int[]){0,1,3,3,5,9,100})[whichPiece(p)])*(isBlack(p)?-1:1)
-#define isLegalCoordinate(y, x) (y<8 && x<8)
+#define isLegalCoordinate(y, x) ((((unsigned char)(y))<8) && (((unsigned char)(x))<8))
 
 /**
  * This data structure represents the game board.

@@ -2,7 +2,6 @@
 // Created by Dror on 2017-08-19.
 //
 
-#include <stdio.h>
 #include "GameState.h"
 
 GameState* GameStateCreate(char difficulty, bool isPlayerWhite, char mode){
@@ -48,12 +47,12 @@ bool GameStatePerformMove(GameState* game, unsigned char y1, unsigned char x1, u
 
     if(game->history[MAX_UNDO*2-1] != NULL){ // history full
         HistoryMoveDestroy(game->history[0]);
-        for(char i = 0; i<(MAX_UNDO*2-1); i++){
+        for(unsigned char i = 0; i<(MAX_UNDO*2-1); i++){
             game->history[i] = game->history[i+1];
         }
         game->history[MAX_UNDO*2-1] = hist;
     } else { // not full, pick first open spot
-        for(char i = 0; i<(MAX_UNDO*2); i++){
+        for(unsigned char i = 0; i<(MAX_UNDO*2); i++){
             if(game->history[i] == NULL){
                 game->history[i] = hist;
                 break;
@@ -69,7 +68,7 @@ bool GameStatePerformMove(GameState* game, unsigned char y1, unsigned char x1, u
 HistoryMove* GameStateGetLastMove(GameState* game){
     HistoryMove* hist = NULL;
 
-    for(char i = MAX_UNDO*2-1; i>-1; i--){
+    for(int i = MAX_UNDO*2-1; i>-1; i--){
         if(game->history[i] != NULL){
             hist = game->history[i];
             break;
@@ -82,7 +81,7 @@ HistoryMove* GameStateGetLastMove(GameState* game){
 void GameStateUndoHistoryMove(GameState* game){
     HistoryMove* hist = NULL;
 
-    for(char i = MAX_UNDO*2-1; i>-1; i--){
+    for(int i = MAX_UNDO*2-1; i>-1; i--){
         if(game->history[i] != NULL){
             hist = game->history[i];
             game->history[i] = NULL;

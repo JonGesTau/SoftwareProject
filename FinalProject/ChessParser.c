@@ -59,6 +59,8 @@ Command parseLine(const char* str) {
         case MOVE:
             command.numArgs = 3;
             break;
+        default:
+            break;
     }
 
     // Get next token

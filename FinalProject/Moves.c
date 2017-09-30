@@ -6,7 +6,7 @@
 
 
 
-Move* MoveCreate(char y1, char x1, char y2, char x2){
+Move* MoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     Move* move = malloc(sizeof(Move));
     if(move == NULL)
         return NULL;
@@ -22,7 +22,7 @@ void MoveDestroy(Move* move){
 }
 
 
-LinkedMove* LinkedMoveCreate(char y1, char x1, char y2, char x2){
+LinkedMove* LinkedMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     LinkedMove* lmove = malloc(sizeof(LinkedMove));
     if(lmove == NULL){
         // ERROR
@@ -54,7 +54,7 @@ MoveList* MoveListCreate(){
     return list;
 }
 
-void MovePush(MoveList* list, char y1, char x1, char y2, char x2){
+void MovePush(MoveList* list, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     LinkedMove* lmove = LinkedMoveCreate(y1, x1, y2, x2);
     if(lmove == NULL){
         // ERROR
@@ -92,7 +92,7 @@ bool isMoveListEmpty(MoveList* list){
 ////////
 
 
-ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score){
+ScoredMove* ScoredMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2, int score){
     ScoredMove* smove = malloc(sizeof(ScoredMove));
     if(smove == NULL){
         /// ERROR
@@ -120,7 +120,7 @@ void ScoredMoveDestroy(ScoredMove* smove){
 
 /////////////////////
 
-HistoryMove* HistoryMoveCreate(char y1, char x1, char y2, char x2, char original){
+HistoryMove* HistoryMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2, char original){
     HistoryMove* hist = malloc(sizeof(HistoryMove));
     if(hist == NULL){
         // ERROR
