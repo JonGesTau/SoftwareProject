@@ -9,7 +9,7 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessButton** buttons = malloc(sizeof(ChessButton*));
+    ChessButton** buttons = malloc(11 * sizeof(ChessButton*));
     if (buttons == NULL ) {
         return NULL ;
     }

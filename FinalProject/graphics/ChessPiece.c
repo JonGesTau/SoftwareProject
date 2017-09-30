@@ -23,6 +23,7 @@ createChessPiece(SDL_Renderer *windowRender, SDL_Rect *location, PieceType type,
     SDL_FreeSurface(loadingSurface); //Surface is not actually needed after texture is created
     res->texture = texture;
     res->location = spCopyRect(location);
+    res->previousLocation = spCopyRect(location);
     res->windowRenderer = windowRender;
     res->type = type;
     res->color = color;
@@ -54,6 +55,7 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
             point.y = event->button.y;
             if (SDL_PointInRect(&point, src->location)) {
                 src->isDragged = true;
+                src->previousLocation = spCopyRect(src->location);
                 return CHESS_DRAG_PIECE;
             }
         }
@@ -72,9 +74,13 @@ PIECE_CLICK_EVENT handleChessPieceEvent(ChessPiece *src, SDL_Event *event) {
             if (src->isDragged) {
                 src->location->x = event->motion.x - src->location->w / 2;
                 src->location->y = event->motion.y - src->location->h / 2;
+                return CHESS_MOTION_PIECE;
             }
         }
     }
+
+    return PIECE_CLICKED_NONE;
+
 }
 
 void drawChessPiece(ChessPiece* src) {

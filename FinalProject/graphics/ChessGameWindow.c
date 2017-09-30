@@ -9,7 +9,7 @@ ChessButton** createGameWindowChessButtons(SDL_Renderer *renderer, GameSettings 
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessButton** buttons = malloc(sizeof(ChessButton*));
+    ChessButton** buttons = malloc(11 * sizeof(ChessButton*));
     if (buttons == NULL ) {
         return NULL ;
     }
@@ -79,7 +79,7 @@ ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* boar
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessPiece** pieces = malloc(sizeof(ChessPiece*));
+    ChessPiece** pieces = malloc(32 * sizeof(ChessPiece*));
     if (pieces == NULL ) {
         return NULL ;
     }
@@ -102,7 +102,7 @@ ChessPiece** createGameWindowChessPieces(SDL_Renderer *renderer, GameBoard* boar
             rect.w = darea.w / 8;
             rect.h = darea.h / 8;
             rect.x = x * rect.w + darea.w * 0.4;
-            rect.y = y * rect.h + darea.w * 0.15;
+            rect.y = (7-y) * rect.h + darea.w * 0.15;
             rectp = &rect;
 
             switch (piece) {
@@ -161,7 +161,7 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessRect** rects = malloc(sizeof(ChessRect*));
+    ChessRect** rects = malloc(64 * sizeof(ChessRect*));
     if (rects == NULL ) {
         return NULL ;
     }
@@ -183,15 +183,15 @@ ChessRect** createGameWindowChessRects(SDL_Renderer *renderer, GameBoard* board)
 
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, 7-y);
                 } else {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, 7-y);
                 }
             } else {
                 if (x % 2 != 0) {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_GREY, NULL, x, 7-y);
                 } else {
-                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, y);
+                    rects[i] = createChessRect(renderer, &rect, CHESS_RECT_COLOR_WHITE, NULL, x, 7-y);
                 }
             }
 
@@ -282,35 +282,42 @@ CHESS_GAME_EVENT handleEventGameWindow(ChessGameWindow *src, SDL_Event *event){
     if(src == NULL || event==NULL){
         return CHESS_GAME_EXIT;
     }
+    ChessPiece* droppedPiece = NULL;
+    ChessRect* droppedRect = NULL;
 
     int i =0;
     for (; i < src->numOfPieces; i++) {
-        ChessPiece* piece = src->pieces[i];
-        PIECE_CLICK_EVENT clickEvent =  handleChessPieceEvent(piece, event);
+        PIECE_CLICK_EVENT clickEvent =  handleChessPieceEvent(src->pieces[i], event);
 
         switch(clickEvent) {
-            case CHESS_DRAG_PIECE:
-//                printf("drag");
-                break;
             case CHESS_DROP_PIECE:
-//                printf("drop");
+                droppedPiece = src->pieces[i];
+                break;
+            case CHESS_DRAG_PIECE:
                 break;
         }
     }
 
     i = 0;
     for (; i < src->numOfPieces; i++) {
-        ChessRect* chessRect = src->rects[i];
-        RECT_CLICK_EVENT clickEvent =  handleChessRectEvent(chessRect, event);
+        RECT_CLICK_EVENT clickEvent =  handleChessRectEvent(src->rects[i], event);
 
         switch(clickEvent) {
-            case CHESS_DRAG_PIECE:
-//                printf("drag");
-                break;
-            case CHESS_DROP_PIECE:
-//                printf("drop");
+            case CHESS_DROP_RECT:
+                droppedRect = src->rects[i];
                 break;
         }
+    }
+
+
+    if (droppedPiece != NULL && droppedRect != NULL) {
+        SDL_Rect rect;
+        if (SDL_IntersectRect(droppedPiece->location, droppedRect->location, &rect)) {
+            droppedPiece->location = spCopyRect(droppedRect->location);
+            droppedPiece->previousLocation = spCopyRect(droppedRect->location);
+        }
+    } else if (droppedPiece != NULL && droppedRect == NULL) {
+        droppedPiece->location = spCopyRect(droppedPiece->previousLocation);
     }
 
 //    for(;i<src->numOfButtons;i++){

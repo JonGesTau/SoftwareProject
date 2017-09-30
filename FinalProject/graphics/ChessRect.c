@@ -42,7 +42,9 @@ RECT_CLICK_EVENT handleChessRectEvent(ChessRect *src, SDL_Event *event) {
         point.x = event->button.x;
         point.y = event->button.y;
         if (SDL_PointInRect(&point, src->location)) {
-            printf("wow");
+            return CHESS_DROP_RECT;
+        } else {
+            return RECT_CLICKED_NONE;
         }
     }
 }

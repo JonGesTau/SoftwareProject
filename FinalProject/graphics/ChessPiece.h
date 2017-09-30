@@ -33,7 +33,7 @@ typedef enum {
 } PieceColor;
 
 typedef enum {
-    CHESS_DRAG_PIECE, CHESS_DROP_PIECE, PIECE_CLICKED_NONE
+    CHESS_DRAG_PIECE, CHESS_DROP_PIECE, PIECE_CLICKED_NONE, CHESS_MOTION_PIECE
 } PIECE_CLICK_EVENT;
 
 typedef struct chess_piece {
@@ -46,6 +46,7 @@ typedef struct chess_piece {
     bool isDragged;
     int x;
     int y;
+    SDL_Rect *previousLocation;
 } ChessPiece;
 
 //You need a create function:

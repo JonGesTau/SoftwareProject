@@ -9,7 +9,7 @@ ChessButton** createMainWindowChessButtons(SDL_Renderer *renderer) {
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessButton** buttons = malloc(sizeof(ChessButton*));
+    ChessButton** buttons = malloc(3 * sizeof(ChessButton*));
     if (buttons == NULL ) {
         return NULL ;
     }
@@ -33,12 +33,10 @@ ChessButton** createMainWindowChessButtons(SDL_Renderer *renderer) {
 }
 ChessMainWindow * createMainWindow() {
     ChessMainWindow* res = malloc(sizeof(ChessMainWindow));
-//    ChessMainWindow* data = malloc(sizeof(ChessMainWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     ChessButton** buttons = createMainWindowChessButtons(renderer);
-    if (res == NULL || window == NULL || renderer == NULL
-        || buttons == NULL ) {
+    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
         free(res);
         free(buttons);
         //We first destroy the renderer

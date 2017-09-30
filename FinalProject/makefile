@@ -20,9 +20,9 @@ GameBoard.o: GameBoard.c GameBoard.h Moves.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 GameSettings.o: GameSettings.c GameSettings.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
-GameState.o: GameState.c GameState.h GameBoard.h
+GameState.o: GameState.c GameState.h GameBoard.h Moves.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
-MiniMax.o: MiniMax.c MiniMax.h GameBoard.h Moves.h
+MiniMax.o: MiniMax.c MiniMax.h GameBoard.h Moves.h GameState.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 Moves.o: Moves.c Moves.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
