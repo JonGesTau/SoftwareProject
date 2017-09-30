@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <SDL.h>
 
 #include "ChessParser.h"
 #include "GameSettings.h"
@@ -15,9 +16,9 @@
 #include "consoleUI.h"
 #include "GameBoard.h"
 #include "Moves.h"
-//#include "SDL.h"
 #include "xmlGame.h"
 #include "MiniMax.h"
+#include "graphics/ChessGUIManager.h"
 
 #define EXPERT_LEVEL_SUPPORTED false
 
@@ -39,7 +40,7 @@ int arg;
 GameState* game;
 
 void startConsoleMode();
-void startGUIMode();
+int startGUIMode();
 bool startGame(GameState* game);
 void promptUserMove(GameState* game);
 bool handleUserMove(GameState* game, Move* userMove);
