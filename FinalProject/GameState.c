@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "GameState.h"
 
-GameState* GameStateCreate(char difficulty, bool isPlayerWhite, bool mode){
+GameState* GameStateCreate(char difficulty, bool isPlayerWhite, char mode){
     GameState* game = malloc(sizeof(GameState));
     if(game == NULL){
         printf("ERROR");
@@ -45,7 +45,6 @@ void GameStateDestroy(GameState* game){
 
 bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     //if(!gameBoardIsLegalMove(game->gameBoard, y1, x1, y2, x2)) return false;
-    // TODO: since we need to remember computer moves as well, the AI result also should come here
     // so maybe we can skip the legality check and put it in a higher level?
 
     HistoryMove* hist = HistoryMoveCreate(y1, x1, y2, x2, game->gameBoard->board[y2][x2]);
@@ -67,42 +66,34 @@ bool GameStatePerformMove(GameState* game, char y1, char x1, char y2, char x2){
     }
 
     gameBoardPerformMove(game->gameBoard, y1, x1, y2, x2);
-    game->current_move ++;
 
     return true;
 }
-
-/*bool GameStateUndoMove(GameState* game){ // TODO: deprecated
-    HistoryMove* hist;
-
-    for(char i = MAX_UNDO*2-1; i>-1; i++){
-        if(game->history[i] != NULL){
-            hist = game->history[i];
-            break;
-        }
-    }
-
-    if(hist == NULL) return false;
-
-    gameBoardUndoMove(game->gameBoard, hist);
-    game->current_move--;
-
-    return true;
-}*/
 
 HistoryMove* GameStateGetLastMove(GameState* game){
     HistoryMove* hist = NULL;
 
-    for(char i = MAX_UNDO*2-1; i>-1; i++){
+    for(char i = MAX_UNDO*2-1; i>-1; i--){
         if(game->history[i] != NULL){
             hist = game->history[i];
             break;
         }
     }
+
+    return hist;
 }
 
-void GameStateUndoHistoryMove(GameState* game, HistoryMove* hist){
+void GameStateUndoHistoryMove(GameState* game){
+    HistoryMove* hist = NULL;
+
+    for(char i = MAX_UNDO*2-1; i>-1; i--){
+        if(game->history[i] != NULL){
+            hist = game->history[i];
+            game->history[i] = NULL;
+            break;
+        }
+    }
+
     gameBoardUndoMove(game->gameBoard, hist);
     HistoryMoveDestroy(hist);
-    game->current_move--; // TODO: no need for this
 }

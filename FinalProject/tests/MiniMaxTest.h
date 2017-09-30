@@ -12,5 +12,6 @@
 int MiniMaxTestScore();
 int MiniMaxTestDepth1();
 int MiniMaxTestDeep();
+int StrangeMateTest();
 
 #endif //CHESS1_MINIMAXTEST_H

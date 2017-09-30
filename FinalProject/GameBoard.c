@@ -372,9 +372,9 @@ bool gameBoardIsMate(GameBoard *game, bool isWhite){
 
 // returns true if the game is a stalemate given whose turn it is to play
 // will return true IFF not in check and no moves to play
-bool gameBoardIsStalemate(GameBoard* game, bool isWhite){
-    if(gameBoardIsCheck(game, isWhite)) return false;
-    MoveList* moves = gameBoardAllMoves(game, isWhite);
+bool gameBoardIsStalemate(GameBoard* game){
+    if(gameBoardIsCheck(game, game->whiteTurn)) return false;
+    MoveList* moves = gameBoardAllMoves(game, game->whiteTurn);
     bool ret = isMoveListEmpty(moves);
     MoveListDestroy(moves);
     return ret;
@@ -408,7 +408,28 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
             }
         }
     }
-    return moveList;
+    // screen all moves with check
+
+    MoveList* filtered = MoveListCreate();
+
+    LinkedMove* lmove = MovePop(moveList);
+    if(lmove == NULL) return NULL;
+    Move* move;
+
+    while(lmove != NULL){
+        move = lmove->move;
+        GameBoard* test = gameBoardCopy(game);
+        gameBoardPerformMove(test, move->y1, move->x1, move->y2, move->x2);
+        if(!gameBoardIsCheck(test, game->whiteTurn)){
+            MovePush(filtered, move->y1, move->x1, move->y2, move->x2);
+        }
+        LinkedMoveDestroy(lmove);
+        lmove = MovePop(moveList);
+    }
+
+    MoveListDestroy(moveList);
+
+    return filtered;
 }
 
 // given a board, move list and coords of a pawn, pushes to move list all possible moves for that pawn

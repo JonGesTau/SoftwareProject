@@ -6,7 +6,6 @@
 #include "xmlGame.h"
 
 bool xmlGameSaveGame(GameState* game, char* filename){
-    // TODO: "file names can be either relative or absolute"
     // TODO: "validate filename as if it's user input"
     FILE * f = fopen(filename, "w"); // happily overwrite
 
@@ -14,7 +13,7 @@ bool xmlGameSaveGame(GameState* game, char* filename){
 
     fprintf(f, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     fprintf(f, "<game>\n");
-    fprintf(f, "\t<current_turn>%d</current_turn>\n",(game->current_move%2==0)); // TODO: need to keep next turn instead! also load it!
+    fprintf(f, "\t<current_turn>%d</current_turn>\n",(game->gameBoard->whiteTurn?1:0));
     fprintf(f, "\t<game_mode>%d</game_mode>\n", game->mode);
     fprintf(f, "\t<difficulty>%d</difficulty>\n", game->difficulty);
     fprintf(f, "\t<user_color>%d</user_color>\n", (game->isPlayerWhite?1:0));
@@ -45,19 +44,22 @@ bool xmlGameNextRow(FILE *f, char *line, int *start_pos) {
             return false;
         } // file over or something else
     }while(strlen(line) == 0);
-    while(*start_pos < sizeof(line) && isspace(line[*start_pos])){ (*start_pos) ++; }
+    while(*start_pos < strlen(line) && isspace(line[*start_pos])){ (*start_pos) ++; }
 
-    if(*start_pos >= sizeof(line)) return false; // if the line is only whitespaces
+    if(*start_pos >= strlen(line)){ return false; }// if the line is only whitespaces
 
     return true;
 }
 
 GameState* xmlGameLoadGame(char* filename){
+    //printf("%s\n", filename);
     //TODO: throw errors to console
     // this works like a state machine
     FILE* f = fopen(filename, "r");
 
     if(f == NULL){
+        //printf("empty f\n");
+        return NULL;
         // ERROR
     }
     char line[XML_GAME_MAX_LINE_LENGTH];
@@ -69,68 +71,125 @@ GameState* xmlGameLoadGame(char* filename){
     char user_color = 1; // player is white by default
 
     // stage <? .... ?>
-    if(!xmlGameNextRow(f, line, &start_pos)) return NULL; // ERRORS TODO: first close file and clear Gameboard etc.
-
-    if((start_pos > sizeof(line) - 2) || line[start_pos] != '<' || line[start_pos+1]!='?'){
-        return NULL; //first non-empty line must start "<?", can have leading whitespace
+    if(!xmlGameNextRow(f, line, &start_pos)){
+        fclose(f);
+        return NULL; // ERRORS
     }
 
+    if((start_pos > sizeof(line) - 2) || line[start_pos] != '<' || line[start_pos+1]!='?'){
+        fclose(f);
+        return NULL; //first non-empty line must start "<?", can have leading whitespace
+    }
     // stage <game>
-    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
-    if(strncmp(line+start_pos, "<game", 5) != 0) return NULL;
+    if(!xmlGameNextRow(f, line, &start_pos)){
+        fclose(f);
+        return NULL;
+    }
+    if(strncmp(line+start_pos, "<game", 5) != 0){
+        fclose(f);
+        return NULL;
+    }
 
     // <current_turn>
-    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
-    if(strncmp(line+start_pos, "<current_turn>", 14) != 0) return NULL;
+    if(!xmlGameNextRow(f, line, &start_pos)){
+        fclose(f);
+        return NULL;
+    }
+    if(strncmp(line+start_pos, "<current_turn>", 14) != 0){
+        fclose(f);
+        return NULL;
+    }
 
-    while(line[start_pos+14] >= '0' && line[start_pos+14] <= '9'){
-        current_turn = current_turn*10 + (line[start_pos+14] - '0');
-        start_pos ++;
-    } // parsing variable-size integer
+    current_turn = line[start_pos+14]-'0';
 
     // <game_mode>
-    if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
-    if(strncmp(line+start_pos, "<game_mode>", 11) != 0) return NULL;
+    if(!xmlGameNextRow(f, line, &start_pos)){
+        fclose(f);
+        return NULL;
+    }
+    if(strncmp(line+start_pos, "<game_mode>", 11) != 0){
+        fclose(f);
+        return NULL;
+    }
     game_mode = line[start_pos+11];
-    if(game_mode != '1' && game_mode != '2') return NULL; // illegal game_mode
+    if(game_mode != '1' && game_mode != '2'){
+        fclose(f);
+        return NULL;
+    } // illegal game_mode
     game_mode -= '0';
 
-    if(game_mode != 1 && game_mode != 2) return NULL; // ERROR: illegal game_mode
+    if(game_mode != 1 && game_mode != 2){
+        fclose(f);
+        return NULL; // ERROR: illegal game_mode
+    }
 
     if(game_mode == 1){
         // <difficulty>
-        if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
-        if(strncmp(line+start_pos, "<difficulty>", 12) != 0) return NULL;
+        if(!xmlGameNextRow(f, line, &start_pos)){
+            fclose(f);
+            return NULL;
+        }
+        if(strncmp(line+start_pos, "<difficulty>", 12) != 0){
+            fclose(f);
+            return NULL;
+        }
         // 49 = '1', 50 = '2'
         difficulty = line[start_pos+12];
-        if(difficulty < '1' || difficulty > '5') return NULL; // illegal difficulty; assumes expert is possible
+        if(difficulty < '1' || difficulty > '4'){
+            fclose(f);
+            return NULL;
+            // illegal difficulty; assumes expert is not supported
+        }
         difficulty -= '0';
 
         // <user_color>
-        if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
-        if(strncmp(line+start_pos, "<user_color>", 12) != 0) return NULL;
+        if(!xmlGameNextRow(f, line, &start_pos)){
+            fclose(f);
+            return NULL;
+        }
+        if(strncmp(line+start_pos, "<user_color>", 12) != 0){
+            fclose(f);
+            return NULL;
+        }
 
         user_color = line[start_pos+12];
-        if(user_color != '1' && user_color != '2') return NULL; // illegal user_color
+        if(user_color != '1' && user_color != '0'){
+            fclose(f);
+            return NULL;
+            // illegal user_color
+        }
         user_color -= '0';
 
-        if(!xmlGameNextRow(f, line, &start_pos)) return NULL; // now should be board
-        if(strncmp(line+start_pos, "<board>", 7) != 0) return NULL;
+        if(!xmlGameNextRow(f, line, &start_pos)) {
+            fclose(f);
+            return NULL;
+            // now should be board
+        }
+        if(strncmp(line+start_pos, "<board>", 7) != 0){
+            fclose(f);
+            return NULL;
+        }
     } else {
         do{
-            if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
+            if(!xmlGameNextRow(f, line, &start_pos)){
+                fclose(f);
+                return NULL;
+            }
         }while((strncmp(line+start_pos, "<board>", 7) != 0));
     }
 
     // <rows>
     GameBoard* board = gameBoardCreate();
+    board->whiteTurn = current_turn == 1;
 
     for(char row = 7; row > -1; row--){
         if(!xmlGameNextRow(f, line, &start_pos)){
+            fclose(f);
             gameBoardDestroy(board);
             return NULL;
         }
         if(!xmlGameParseRow(board, row, line+start_pos+7)){
+            fclose(f);
             gameBoardDestroy(board);
             return NULL; // can unite into one if
         }
@@ -146,7 +205,6 @@ GameState* xmlGameLoadGame(char* filename){
     GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode);
     gameBoardDestroy(state->gameBoard); // pretty stupid actually
     state->gameBoard = board;
-    state->current_move = current_turn;
 
     fclose(f);
     return state;
