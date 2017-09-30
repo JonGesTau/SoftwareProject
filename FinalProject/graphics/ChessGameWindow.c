@@ -27,10 +27,10 @@ ChessButton **createGameWindowChessButtons(SDL_Renderer *renderer, int gameMode)
 
     buttons[0] = createChessButton(renderer, &restart, "./assets/restart_active.bmp", "./assets/restart_active.bmp", CHESS_BUTTON_RESTART, true);
     buttons[1] = createChessButton(renderer, &save, "./assets/save_active.bmp", "./assets/save_active.bmp", CHESS_BUTTON_SAVE, true);
-    buttons[2] = createChessButton(renderer, &load, "./assets/load.bmp", "./assets/load.bmp", CHESS_BUTTON_LOAD, true);
+    buttons[2] = createChessButton(renderer, &load, "./assets/load_active.bmp", "./assets/load_active.bmp", CHESS_BUTTON_LOAD, true);
     buttons[3] = createChessButton(renderer, &undo, "./assets/undo_active.bmp", "./assets/undo_inactive.bmp", CHESS_BUTTON_UNDO, false);
     buttons[4] = createChessButton(renderer, &mainmenu, "./assets/mainmenu_active.bmp", "./assets/mainmenu_active.bmp", CHESS_BUTTON_MAIN_MENU, true);
-    buttons[5] = createChessButton(renderer, &quit, "./assets/quit.bmp", "./assets/quit.bmp", CHESS_BUTTON_QUIT, true);
+    buttons[5] = createChessButton(renderer, &quit, "./assets/quit_active.bmp", "./assets/quit_active.bmp", CHESS_BUTTON_QUIT, true);
 
 
     for (int i = 0; i < numOfButtons ; i++) {
@@ -181,17 +181,24 @@ ChessRect **createGameWindowChessRects(SDL_Renderer *renderer) {
     return rects;
 }
 
-ChessGameWindow *createGameWindow(GameSettings *settings) {
+ChessGameWindow *createGameWindow(GameSettings *settings, GameState *loadGame) {
     if (settings == NULL) return NULL;
 
     const int numOfButtons = 6;
     const int numOfRects = 64;
     const int numOfPieces = 32;
 
+    GameState* game = NULL;
+
+    if (loadGame != NULL) {
+        game = loadGame;
+    } else {
+        game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
+    }
+
     ChessGameWindow* res = malloc(sizeof(ChessGameWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    GameState* game = GameStateCreate(settings->difficulty, settings->userColor, settings->gameMode);
     ChessRect** rects = createGameWindowChessRects(renderer);
     ChessPiece** pieces = createGameWindowChessPieces(renderer, game->gameBoard, numOfPieces);
     ChessButton** buttons = createGameWindowChessButtons(renderer, settings->gameMode);

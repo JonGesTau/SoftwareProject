@@ -6,6 +6,7 @@
 #define CHESS1_CHESSLOADWINDOW_H
 
 #include "ChessButton.h"
+#include "../xmlGame.h"
 
 typedef enum {
     CHESS_LOAD_1, CHESS_LOAD_2, CHESS_LOAD_3, CHESS_LOAD_4, CHESS_LOAD_5, CHESS_LOAD_BACK, CHESS_LOAD_INVALID_ARGUMENT, CHESS_LOAD_APPLY, CHESS_LOAD_NONE, CHESS_LOAD_EXIT
@@ -28,5 +29,6 @@ void hideLoadWindow(ChessLoadWindow* src);
 void showLoadWindow(ChessLoadWindow* src);
 CHESS_LOAD_EVENT handleEventLoadWindow(ChessLoadWindow *src, SDL_Event *event);
 void destroyLoadWindow(ChessLoadWindow *src);
+void toggleSlotButton(int selectedSlotNumber, ChessLoadWindow* src, ChessButton* button);
 
 #endif //CHESS1_CHESSLOADWINDOW_H

@@ -34,7 +34,7 @@ struct chess_game_window {
     int numOfRects;
 };
 
-ChessGameWindow *createGameWindow(GameSettings *settings);
+ChessGameWindow *createGameWindow(GameSettings *settings, GameState *loadGame);
 void destroyGameWindow(ChessGameWindow *src);
 void drawGameWindow(ChessGameWindow *src);
 void hideGameWindow(ChessGameWindow* src);

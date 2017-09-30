@@ -121,7 +121,7 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
         if (src->gameWin!= NULL) {
             hideSettingsWindow(src->settingsWin);
         } else {
-            src->gameWin = createGameWindow(src->settingsWin->settings);
+            src->gameWin = createGameWindow(src->settingsWin->settings, NULL);
         }
         src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
@@ -150,6 +150,28 @@ CHESS_MANAGER_EVENT handleManagerDueToLoadEvent(ChessGuiManager* src, CHESS_LOAD
             printf("No Main Window To Show");
         }
         src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+    }
+
+    if (event == CHESS_LOAD_APPLY) {
+        GameState* loadGame = xmlGameLoadGame(src->loadWin->loadPath);
+        if (loadGame == NULL) return CHESS_MANAGER_NONE;
+
+        GameSettings* settings = GameSettingsCreate();
+        setGameMode(settings, loadGame->mode);
+        setDifficulty(settings, loadGame->difficulty);
+        setUserColor(settings, loadGame->isPlayerWhite);
+
+        hideLoadWindow(src->loadWin);
+
+        if (src->gameWin != NULL) {
+            destroyGameWindow(src->gameWin);
+        }
+
+        src->gameWin = NULL;
+        src->gameWin = createGameWindow(settings, loadGame);
+        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
+
+        return CHESS_MANAGER_NONE;
     }
 
     if (event == CHESS_LOAD_EXIT) {
@@ -211,7 +233,7 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
 
     if (event == CHESS_GAME_RESTART) {
         destroyGameWindow(src->gameWin);
-        src->gameWin = createGameWindow(src->settingsWin->settings);
+        src->gameWin = createGameWindow(src->settingsWin->settings, NULL);
 
         return CHESS_MANAGER_NONE;
     }
@@ -318,7 +340,7 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
         CHESS_SETTINGS_EVENT settingsEvent = handleEventSettingsWindow(src->settingsWin, event);
         return handleManagerDueToSettingsEvent(src, settingsEvent);
     } else if (src->activeWin == CHESS_LOAD_WINDOW_ACTIVE) {
-        CHESS_LOAD_EVENT loadEvent = handleEventSettingsWindow(src->settingsWin, event);
+        CHESS_LOAD_EVENT loadEvent = handleEventLoadWindow(src->loadWin, event);
         return handleManagerDueToLoadEvent(src, loadEvent);
     }
     return CHESS_MANAGER_NONE;
