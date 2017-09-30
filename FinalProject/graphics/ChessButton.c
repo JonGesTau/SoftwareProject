@@ -84,6 +84,14 @@ BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event) {
                     return CHESS_CLICKED_BACK;
                 case CHESS_BUTTON_START:
                     return CHESS_CLICKED_START;
+                case CHESS_BUTTON_RESTART:
+                    return CHESS_CLICKED_RESTART;
+                case CHESS_BUTTON_SAVE:
+                    return CHESS_CLICKED_SAVE;
+                case CHESS_BUTTON_UNDO:
+                    return CHESS_CLICKED_UNDO;
+                case CHESS_BUTTON_MAIN_MENU:
+                    return CHESS_CLICKED_MAIN_MENU;
                 default:
                     return CHESS_CLICKED_NONE;
             }

@@ -9,7 +9,10 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     if (renderer == NULL ) {
         return NULL ;
     }
-    ChessButton** buttons = malloc(11 * sizeof(ChessButton*));
+
+    const int numButtons = 11;
+
+    ChessButton** buttons = malloc(numButtons * sizeof(ChessButton*));
     if (buttons == NULL ) {
         return NULL ;
     }
@@ -41,11 +44,11 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
     buttons[9] = createChessButton(renderer, &start, "./assets/start_active.bmp", "./assets/start_active.bmp", CHESS_BUTTON_START, true);
     buttons[10] = createChessButton(renderer, &back, "./assets/back_active.bmp", "./assets/back_active.bmp", CHESS_BUTTON_BACK, true);
 
-    if (buttons[0] == NULL || buttons[1] == NULL) {
-        destroyChessButton(buttons[0]); //NULL SAFE
-        destroyChessButton(buttons[1]); //NULL SAFE
-        free(buttons);
-        return NULL ;
+    for (int i = 0; i < numButtons ; i++) {
+        if (buttons[i] == NULL) {
+            destroySettingsWindowButtons(buttons, numButtons);
+            return NULL;
+        }
     }
 
     if (settings->gameMode == 1) {
@@ -80,9 +83,10 @@ ChessSettingsWindow* createSettingsWindow() {
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     GameSettings* settings = GameSettingsCreate();
     ChessButton** buttons = createSettingsWindowChessButtons(renderer, settings);
-    if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
+    if (res == NULL || window == NULL || renderer == NULL || settings == NULL || buttons == NULL ) {
         free(res);
         free(buttons);
+        GameSettingsDestroy(settings);
         //We first destroy the renderer
         SDL_DestroyRenderer(renderer); //NULL safe
         SDL_DestroyWindow(window); //NULL safe
@@ -106,7 +110,7 @@ void destroySettingsWindow(ChessSettingsWindow *src) {
         destroyChessButton(src->buttons[i]);
     }
     free(src->buttons);
-    free(src->settings);
+    GameSettingsDestroy(src->settings);
     SDL_DestroyRenderer(src->windowRenderer);
     SDL_DestroyWindow(src->window);
 
@@ -244,4 +248,12 @@ void hideSettingsWindow(ChessSettingsWindow* src) {
 
 void showSettingsWindow(ChessSettingsWindow* src) {
     SDL_ShowWindow(src->window);
+}
+
+void destroySettingsWindowButtons(ChessButton** buttons, int numOfButtons) {
+    for (int i = 0; i < numOfButtons; i++) {
+        destroyChessButton(buttons[i]);
+    }
+
+    free(buttons);
 }

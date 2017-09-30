@@ -28,5 +28,6 @@ void hideSettingsWindow(ChessSettingsWindow* src);
 void showSettingsWindow(ChessSettingsWindow* src);
 CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Event *event);
 ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSettings *settings);
+void destroySettingsWindowButtons(ChessButton** buttons, int numOfButtons);
 
 #endif //CHESS1_CHESSSETTINGSWINDOW_H

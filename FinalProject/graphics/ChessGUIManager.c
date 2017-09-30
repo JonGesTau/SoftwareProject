@@ -25,16 +25,11 @@ void chessManagerDestroy(ChessGuiManager *src) {
     if (!src) {
         return;
     }
-    if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-        destroyGameWindow(src->gameWin);
-    }
-    if (src->activeWin == CHESS_SETTINGS_WINDOW_ACTIVE) {
-        destroySettingsWindow(src->settingsWin);
-    }
-    if (src->activeWin == CHESS_GAME_WINDOW_ACTIVE) {
-        destroyGameWindow(src->gameWin);
-    }
-    destroyMainWindow(src->mainWin);
+
+    if (src->mainWin != NULL) destroyMainWindow(src->mainWin);
+    if (src->settingsWin != NULL) destroySettingsWindow(src->settingsWin);
+    if (src->gameWin != NULL) destroyGameWindow(src->gameWin);
+
     free(src);
 }
 void chessManagerDraw(ChessGuiManager *src) {
@@ -67,12 +62,6 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
         }
 
         src->activeWin = CHESS_SETTINGS_WINDOW_ACTIVE;
-//        src->gameWin = spGameWindowCreate();
-//        if (src->gameWin == NULL ) {
-//            printf("Couldn't create game window\n");
-//            return CHESS_MANAGER_QUTT;
-//        }
-//        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
     if (event == CHESS_MAIN_EXIT) {
         return CHESS_MANAGER_QUTT;
@@ -90,13 +79,8 @@ CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_
         } else {
             printf("No Main Window To Show");
         }
-//        src->gameWin = spGameWindowCreate();
-//        if (src->gameWin == NULL ) {
-//            printf("Couldn't create game window\n");
-//            return CHESS_MANAGER_QUTT;
-//        }
-//        src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
     }
+
     if (event == CHESS_SETTINGS_BACK) {
         if (src->settingsWin != NULL) {
             hideSettingsWindow(src->settingsWin);
@@ -139,6 +123,31 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
     }
 
     char msg[1024];
+
+    if (event == CHESS_GAME_UNDO) {
+        HistoryMove* hist = GameStateGetLastMove(src->gameWin->game);
+        if(hist == NULL) {
+            return CHESS_MANAGER_NONE;
+        } else {
+            printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
+                   (src->gameWin->game->gameBoard->whiteTurn ? "black" : "white"),
+                   (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
+                   (hist->move->x1 + 'A'));
+            GameStateUndoHistoryMove(src->gameWin->game);
+            hist = GameStateGetLastMove(src->gameWin->game);
+            // TODO: make sure hist gets destroyed
+            if(hist != NULL) {
+                printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
+                       (src->gameWin->game->gameBoard->whiteTurn ? "black" : "white"),
+                       (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
+                       (hist->move->x1 + 'A'));
+                GameStateUndoHistoryMove(src->gameWin->game);
+                // TODO: what happens if player went first and then undos it all?
+            }
+
+            drawChessGamePieces(src->gameWin);
+        }
+    }
 
     if (src->gameWin->game->mode == 1 && (src->gameWin->game->gameBoard->whiteTurn != src->gameWin->game->isPlayerWhite)) {
         Move* compMove = miniMaxGetComputerMove(src->gameWin->game);
@@ -193,6 +202,8 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
                 break;
         }
     }
+
+    if (event == CHESS_GAME_EXIT) return CHESS_MANAGER_QUTT;
 
     return CHESS_MANAGER_NONE;
 }
