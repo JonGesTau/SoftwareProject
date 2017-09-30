@@ -2,7 +2,6 @@
 // Created by Dror on 2017-08-18.
 //
 
-#include <stdio.h>
 #include "GameBoard.h"
 
 bool gameBoardIsLegalMove(GameBoard *game, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
@@ -61,6 +60,8 @@ bool gameBoardIsLegalMove(GameBoard *game, unsigned char y1, unsigned char x1, u
                 if(game -> board[y_mid][x1] != 0) return false;
                 // making sure middle square is empty
             }
+            break;
+        default:
             break;
     }
 
@@ -371,8 +372,8 @@ MoveList* gameBoardAllMoves(GameBoard* game, bool isWhite){
     MoveList* moveList = MoveListCreate();
     int piece;
 
-    for (int y = 0; y < 8; ++y) {
-        for (int x = 0; x < 8; ++x) {
+    for (unsigned char y = 0; y < 8; ++y) {
+        for (unsigned char x = 0; x < 8; ++x) {
             if(game->board[y][x] == CH_PIECE_EMPTY || (isWhite(game->board[y][x]) != isWhite)){
                 continue;
             }
@@ -426,22 +427,22 @@ void gameBoardMovesPawn(GameBoard* game, MoveList* moves, unsigned char y, unsig
 
     if(isLegalCoordinate(y+sign, x-1) && !isEmpty(game->board[y+sign][x-1]) &&
             sign(game->board[y+sign][x-1]) != sign){ // capture left
-        MovePush(moves, y, x, (char)(y+sign), x-1);
+        MovePush(moves, y, x, (unsigned char)(y+sign), (unsigned char)(x-1));
     }
 
     if(isLegalCoordinate(y+sign, x+1) && !isEmpty(game->board[y+sign][x+1]) &&
             sign(game->board[y+sign][x+1]) != sign){ // capture right
-        MovePush(moves, y, x, (char)(y+sign), x+1);
+        MovePush(moves, y, x, (unsigned char)(y+sign), (unsigned char)(x+1));
     }
 
     if(isLegalCoordinate(y+sign,x) && isEmpty(game->board[y+sign][x])){
-        MovePush(moves, y, x, (char)(y+sign), x); // one step forward
+        MovePush(moves, y, x, (unsigned char)(y+sign), x); // one step forward
     } else {
         return; // no need to check 2 steps forward
     }
 
-    if(y == (isWhite?1:6) && isEmpty(game->board[y+2*sign][x])){
-        MovePush(moves, y, x, (char)(y+2*sign), x); // two steps forward
+    if((y == (isWhite?1:6)) && isEmpty(game->board[y+2*sign][x])){
+        MovePush(moves, y, x, (unsigned char)(y+2*sign), x); // two steps forward
     }
 }
 
@@ -450,36 +451,36 @@ void gameBoardMovesKnight(GameBoard* game, MoveList* moves, unsigned char y, uns
     int sign = (isWhite ? 1 : -1);
 
     if(isLegalCoordinate(y+2, x+1) && sign(game->board[y+2][x+1]) != sign){
-        MovePush(moves, y, x, y+2, x+1);
+        MovePush(moves, y, x, (unsigned char)(y+2), (unsigned char)(x+1));
     }
 
     if(isLegalCoordinate(y+2, x-1) && sign(game->board[y+2][x-1]) != sign){
-        MovePush(moves, y, x, y+2, x-1);
+        MovePush(moves, y, x, (unsigned char)(y+2), (unsigned char)(x-1));
     }
 
     if(isLegalCoordinate(y-2, x+1) && sign(game->board[y-2][x+1]) != sign){
-        MovePush(moves, y, x, y-2, x+1);
+        MovePush(moves, y, x, (unsigned char)(y-2), (unsigned char)(x+1));
     }
 
     if(isLegalCoordinate(y-2, x-1) && sign(game->board[y-2][x-1]) != sign){
-        MovePush(moves, y, x, y-2, x-1);
+        MovePush(moves, y, x, (unsigned char)(y-2), (unsigned char)(x-1));
     }
 
     //
     if(isLegalCoordinate(y+1, x+2) && sign(game->board[y+1][x+2]) != sign){
-        MovePush(moves, y, x, y+1, x+2);
+        MovePush(moves, y, x, (unsigned char)(y+1), (unsigned char)(x+2));
     }
 
     if(isLegalCoordinate(y+1, x-2) && sign(game->board[y+1][x-2]) != sign){
-        MovePush(moves, y, x, y+1, x-2);
+        MovePush(moves, y, x, (unsigned char)(y+1), (unsigned char)(x-2));
     }
 
     if(isLegalCoordinate(y-1, x+2) && sign(game->board[y-1][x+2]) != sign){
-        MovePush(moves, y, x, y-1, x+2);
+        MovePush(moves, y, x, (unsigned char)(y-1), (unsigned char)(x+2));
     }
 
     if(isLegalCoordinate(y-1, x-2) && sign(game->board[y-1][x-2]) != sign){
-        MovePush(moves, y, x, y-1, x-2);
+        MovePush(moves, y, x, (unsigned char)(y-1), (unsigned char)(x-2));
     }
 }
 
@@ -489,29 +490,29 @@ void gameBoardMovesKing(GameBoard* game, MoveList* moves, unsigned char y, unsig
     int sign = (isWhite ? 1 : -1);
 
     if(isLegalCoordinate(y+1, x) && sign(game->board[y+1][x]) != sign){
-        MovePush(moves, y, x, y+1, x);
+        MovePush(moves, y, x, (unsigned char)(y+1), x);
     }
     if(isLegalCoordinate(y-1, x) && sign(game->board[y-1][x]) != sign){
-        MovePush(moves, y, x, y-1, x);
+        MovePush(moves, y, x, (unsigned char)(y-1), x);
     }
     if(isLegalCoordinate(y, x+1) && sign(game->board[y][x+1]) != sign){
-        MovePush(moves, y, x, y, x+1);
+        MovePush(moves, y, x, y, (unsigned char)(x+1));
     }
     if(isLegalCoordinate(y, x-1) && sign(game->board[y][x-1]) != sign){
-        MovePush(moves, y, x, y, x-1);
+        MovePush(moves, y, x, y, (unsigned char)(x-1));
     }
     // diagonals
     if(isLegalCoordinate(y+1, x+1) && sign(game->board[y+1][x+1]) != sign){
-        MovePush(moves, y, x, y+1, x+1);
+        MovePush(moves, y, x, (unsigned char)(y+1), (unsigned char)(x+1));
     }
     if(isLegalCoordinate(y+1, x-1) && sign(game->board[y+1][x-1]) != sign){
-        MovePush(moves, y, x, y+1, x-1);
+        MovePush(moves, y, x, (unsigned char)(y+1), (unsigned char)(x-1));
     }
     if(isLegalCoordinate(y-1, x+1) && sign(game->board[y-1][x+1]) != sign){
-        MovePush(moves, y, x, y-1, x+1);
+        MovePush(moves, y, x, (unsigned char)(y-1), (unsigned char)(x+1));
     }
     if(isLegalCoordinate(y-1, x-1) && sign(game->board[y-1][x-1]) != sign){
-        MovePush(moves, y, x, y-1, x-1);
+        MovePush(moves, y, x, (unsigned char)(y-1), (unsigned char)(x-1));
     }
 }
 
@@ -519,7 +520,7 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsig
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
-    unsigned char tempY = y + 1;
+    unsigned char tempY = (unsigned char)(y + 1);
     unsigned char tempX = x;
 
     while(isLegalCoordinate(tempY, tempX)){ // move up
@@ -537,7 +538,7 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsig
         break;
     }
 
-    tempY = y - 1;
+    tempY = (unsigned char)(y - 1);
     tempX = x;
 
     while(isLegalCoordinate(tempY, tempX)){ // move down
@@ -556,7 +557,7 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsig
     }
 
     tempY = y;
-    tempX = x + 1;
+    tempX = (unsigned char)(x + 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move right
         if(isEmpty(game->board[tempY][tempX])){
@@ -575,7 +576,7 @@ void gameBoardMovesRook(GameBoard* game, MoveList* moves, unsigned char y, unsig
 
 
     tempY = y;
-    tempX = x - 1;
+    tempX = (unsigned char)(x - 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move right
         if(isEmpty(game->board[tempY][tempX])){
@@ -598,8 +599,8 @@ void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, uns
     bool isWhite = isWhite(game->board[y][x]);
     int sign = (isWhite ? 1 : -1);
 
-    unsigned char tempY = y + 1;
-    unsigned char tempX = x + 1;
+    unsigned char tempY = (unsigned char)(y + 1);
+    unsigned char tempX = (unsigned char)(x + 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move up-right
         if(isEmpty(game->board[tempY][tempX])){
@@ -617,8 +618,8 @@ void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, uns
     }
 
 
-    tempY = y + 1;
-    tempX = x - 1;
+    tempY = (unsigned char)(y + 1);
+    tempX = (unsigned char)(x - 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move up-right
         if(isEmpty(game->board[tempY][tempX])){
@@ -635,8 +636,8 @@ void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, uns
         break;
     }
 
-    tempY = y - 1;
-    tempX = x + 1;
+    tempY = (unsigned char)(y - 1);
+    tempX = (unsigned char)(x + 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move up-right
         if(isEmpty(game->board[tempY][tempX])){
@@ -653,8 +654,8 @@ void gameBoardMovesBishop(GameBoard* game, MoveList* moves, unsigned char y, uns
         break;
     }
 
-    tempY = y - 1;
-    tempX = x - 1;
+    tempY = (unsigned char)(y - 1);
+    tempX = (unsigned char)(x - 1);
 
     while(isLegalCoordinate(tempY, tempX)){ // move up-right
         if(isEmpty(game->board[tempY][tempX])){

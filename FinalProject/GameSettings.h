@@ -5,6 +5,10 @@
 #ifndef CHESS1_GAMESETTINGS_H
 #define CHESS1_GAMESETTINGS_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include "MainAux.h"
+
 /**
  * This data structure binds the game settings data during the game setup mode.
  * gameMode - 1 or 2 for 1- or 2- player mode.

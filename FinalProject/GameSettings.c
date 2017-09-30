@@ -2,10 +2,7 @@
 // Created by Jonathan Gescheit on 9/1/17.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "GameSettings.h"
-#include "MainAux.h"
 
 GameSettings* GameSettingsCreate(){
     GameSettings* settings = malloc(sizeof(GameSettings));

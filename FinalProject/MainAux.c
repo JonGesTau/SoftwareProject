@@ -5,7 +5,6 @@
 #include "MainAux.h"
 #include "GameFlowHelper.h"
 
-
 const char* const PIECE_NAMES[] = {"pawn","bishop","knight","rook","queen","king"};
 
 void startConsoleMode() {
@@ -13,7 +12,6 @@ void startConsoleMode() {
     GameSettings* settings = NULL;
     GameState* game = NULL;
     bool is_reset = true;
-    // also never checked for memory errors - are we supposed to anyway?
 
     do {
         if(is_reset){
@@ -38,9 +36,7 @@ void startConsoleMode() {
             arg = strtoumax(userCmd.arg, NULL, 10);
             setUserColor(settings, arg);
         } else if (userCmd.cmd == LOAD) {
-            //arg = strtoumax(userCmd.arg, NULL, 10); // TODO: what does this mean? 10 ?
             game = xmlGameLoadGame(userCmd.arg);
-            // TODO: Make sure no errors - should be here or in xml?
             if(game != NULL){
                 GameSettingsDestroy(settings);
                 settings = NULL;
@@ -53,7 +49,7 @@ void startConsoleMode() {
                 printf(STR_ERR_FILE);
             }
         } else if (userCmd.cmd == DEFAULT) {
-            setDefaultSettings(settings); // TODO: This is never freed
+            setDefaultSettings(settings);
         } else if (userCmd.cmd == PRINT_SETTING) {
             printSettings(settings);
         } else if (userCmd.cmd == QUIT) {
@@ -61,9 +57,6 @@ void startConsoleMode() {
 
             GameSettingsDestroy(settings);
             return;
-            // Quit
-            // free settings and command(does it need freeing?)
-            // then break
         } else if (userCmd.cmd == START){
             if(game == NULL){
                 game = GameStateCreate(settings->difficulty, settings->userColor==1, settings->gameMode);
@@ -78,11 +71,10 @@ void startConsoleMode() {
             }
         }
     } while (userCmd.cmd != QUIT);
-    // also handle load
+
     GameSettingsDestroy(settings);
 }
 
-// returns true if restart command, false if quit
 bool startGame(GameState* game) {
     Command userCmd;
     Move* userMove = NULL;
@@ -101,27 +93,25 @@ bool startGame(GameState* game) {
             if(gameBoardIsStalemate(game->gameBoard)){
                 printf("The game is tied\n");
                 GameStateDestroy(game);
-                MoveDestroy(userMove); // TODO: was this used?
+                MoveDestroy(userMove);
                 return false;
             }
             if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
                 printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
                 GameStateDestroy(game);
-                MoveDestroy(userMove); // TODO: was this used?
+                MoveDestroy(userMove);
                 return false;
             }
 
             if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
                 printf("Check!");
             }
-            continue; // make sure we check mate etc.
+            continue;
         }
 
         // on user move:
         consoleUIPrintBoard(game->gameBoard);
 
-        // TODO: here we should check for mate and print accordingly
-        // If no mate/check, ask for player turn.
         promptUserMove(game);
         userCmd = getUserCommand();
 
@@ -132,16 +122,15 @@ bool startGame(GameState* game) {
             isMoveSuccessful = handleUserMove(game, userMove);
             if (isMoveSuccessful) {
                 if(gameBoardIsStalemate(game->gameBoard)){
-                    // TODO: actually thehre is waste because we check for mate twice
                     printf("The game is tied\n");
                     GameStateDestroy(game);
-                    MoveDestroy(userMove); // TODO: was this used?
+                    MoveDestroy(userMove);
                     return false;
                 }
                 if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
                     printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
                     GameStateDestroy(game);
-                    MoveDestroy(userMove); // TODO: was this used?
+                    MoveDestroy(userMove);
                     return false;
                 }
 
@@ -166,26 +155,25 @@ bool startGame(GameState* game) {
                            (hist->move->x1 + 'A'));
                     GameStateUndoHistoryMove(game);
                     hist = GameStateGetLastMove(game);
-                    // TODO: make sure hist gets destroyed
+
                     if(hist != NULL) {
                         printf("Undo move for player %s : <%c,%c> -> <%c,%c>\n",
                                (game->gameBoard->whiteTurn ? "black" : "white"),
                                (hist->move->y2 + '1'), (hist->move->x2 + 'A'), (hist->move->y1 + '1'),
                                (hist->move->x1 + 'A'));
                         GameStateUndoHistoryMove(game);
-                        // TODO: what happens if player went first and then undos it all?
                     }
                 }
             }
         } else if (userCmd.cmd == RESET) {
             printf(STR_RESTARTING);
             GameStateDestroy(game);
-            MoveDestroy(userMove); // TODO: was this used?
+            MoveDestroy(userMove);
             return true;
         } else if (userCmd.cmd == QUIT) {
             printf(STR_EXITING);
             GameStateDestroy(game);
-            MoveDestroy(userMove); // TODO: was this used?
+            MoveDestroy(userMove);
             return false;
         }
     }

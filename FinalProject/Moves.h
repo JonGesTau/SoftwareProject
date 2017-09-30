@@ -46,18 +46,18 @@ typedef struct history_move{
 } HistoryMove;
 
 //////
-Move* MoveCreate(char y1, char x1, char y2, char x2);
+Move* MoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2);
 void MoveDestroy(Move* move);
 
 // a node in the move linked list
-LinkedMove* LinkedMoveCreate(char y1, char x1, char y2, char x2);
+LinkedMove* LinkedMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2);
 void LinkedMoveDestroy(LinkedMove* lmove);
 
 //// MoveList is a linked list of moves for variable-size lists of moves
 // used in minimax and all possible moves to keep all possibilites in memory
 MoveList* MoveListCreate();
 
-void MovePush(MoveList* list, char y1, char x1, char y2, char x2);
+void MovePush(MoveList* list, unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2);
 
 LinkedMove* MovePop(MoveList* list);
 
@@ -66,11 +66,11 @@ void MoveListDestroy(MoveList* list);
 bool isMoveListEmpty(MoveList* list);
 
 /// for minimax algorihm, we use this data sructure to return a certain move with a score
-ScoredMove* ScoredMoveCreate(char y1, char x1, char y2, char x2, int score);
+ScoredMove* ScoredMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2, int score);
 void ScoredMoveDestroy(ScoredMove* move);
 
 ////
-HistoryMove* HistoryMoveCreate(char y1, char x1, char y2, char x2, char original);
+HistoryMove* HistoryMoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2, char original);
 void HistoryMoveDestroy(HistoryMove* hist);
 
 

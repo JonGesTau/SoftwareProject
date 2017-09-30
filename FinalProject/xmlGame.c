@@ -35,7 +35,7 @@ bool xmlGameSaveGame(GameState* game, char* filename){
     return true;
 }
 
-bool xmlGameNextRow(FILE *f, char *line, int *start_pos) {
+bool xmlGameNextRow(FILE *f, char *line, unsigned int *start_pos) {
     // advances pointers and buffers to the start of the next
     // non-empty line, and also skips leading whitespace
     (*start_pos) = 0;
@@ -52,18 +52,14 @@ bool xmlGameNextRow(FILE *f, char *line, int *start_pos) {
 }
 
 GameState* xmlGameLoadGame(char* filename){
-    //printf("%s\n", filename);
-    //TODO: throw errors to console
-    // this works like a state machine
     FILE* f = fopen(filename, "r");
 
     if(f == NULL){
-        //printf("empty f\n");
         return NULL;
         // ERROR
     }
     char line[XML_GAME_MAX_LINE_LENGTH];
-    int start_pos = 0;
+    unsigned int start_pos = 0;
 
     int current_turn = 0;
     char game_mode; // TODO: clean here
@@ -182,13 +178,13 @@ GameState* xmlGameLoadGame(char* filename){
     GameBoard* board = gameBoardCreate();
     board->whiteTurn = current_turn == 1;
 
-    for(char row = 7; row > -1; row--){
+    for(int row = 7; row > -1; row--){
         if(!xmlGameNextRow(f, line, &start_pos)){
             fclose(f);
             gameBoardDestroy(board);
             return NULL;
         }
-        if(!xmlGameParseRow(board, row, line+start_pos+7)){
+        if(!xmlGameParseRow(board, (unsigned char)row, line+start_pos+7)){
             fclose(f);
             gameBoardDestroy(board);
             return NULL; // can unite into one if
@@ -210,11 +206,11 @@ GameState* xmlGameLoadGame(char* filename){
     return state;
 }
 
-bool xmlGameParseRow(GameBoard* game, char rowNumber, char* row){
+bool xmlGameParseRow(GameBoard* game, unsigned char rowNumber, char* row){
     // parses a single row string into the GameBoard object
 
     if(strlen(row) < 8) return false;
-    if(rowNumber < 0 || rowNumber > 7) return false;
+    if(rowNumber > 7) return false;
     if(game == NULL) return false;
 
     char* pieces = "_mbnrqk";
