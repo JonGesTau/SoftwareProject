@@ -9,7 +9,7 @@ const char* const PIECE_NAMES[] = {"pawn","bishop","knight","rook","queen","king
 
 void startConsoleMode() {
     Command userCmd;
-    GameSettings* settings;
+    GameSettings* settings = NULL;
     GameState* game = NULL;
     bool is_reset = true;
     // also never checked for memory errors - are we supposed to anyway?
@@ -79,18 +79,15 @@ void startConsoleMode() {
     } while (userCmd.cmd != QUIT);
     // also handle load
     GameSettingsDestroy(settings);
-    return;
 }
 
 // returns true if restart command, false if quit
 bool startGame(GameState* game) {
     Command userCmd;
-    Move* userMove;
-    bool isLegalMove = false;
+    Move* userMove = NULL;
     char* color = game->gameBoard->whiteTurn ? "White" : "Black"; // TODO: update this each move
-    int winner = '\0';
-    // in mode 1 - 1 player mode, we have to take care of computer move and also notice the color of player
-    while (winner == '\0') {
+
+    while (true) {
         // tested move, quit, undo, save, reset. bonus: get_moves
         // TODO: handle check/mate/stalemate
         // take care of what happens when the player makes a bad command so nothing actually changed.
@@ -122,12 +119,23 @@ bool startGame(GameState* game) {
             isMoveSuccessful = handleUserMove(game, userMove);
             if (isMoveSuccessful) {
                 if (gameBoardIsMate(game->gameBoard, game->gameBoard->whiteTurn)) {
-                    printf("Checkmate! %s player wins the game\n", color);
-                    winner = game->isPlayerWhite;
-                } else if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
-                    printf("Check: %s King is threatened!\n", color);
+                    printf("Checkmate! %s player wins the game\n", COLOR(!game->gameBoard->whiteTurn));
+                    GameStateDestroy(game);
+                    MoveDestroy(userMove); // TODO: was this used?
+                    return false;
                 }
-                // need to handel stalemate
+
+                if(gameBoardIsStalemate(game->gameBoard, game->gameBoard->whiteTurn)){
+                    // TODO: actually thehre is waste because we check for mate twice
+                    printf("The game is tied\n");
+                    GameStateDestroy(game);
+                    MoveDestroy(userMove); // TODO: was this used?
+                    return false;
+                }
+
+                if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
+                    printf("Check: %s King is threatened!\n", COLOR(game->gameBoard->whiteTurn));
+                }
             }
         } else if (userCmd.cmd == SAVE) {
             if(!xmlGameSaveGame(game, userCmd.arg))

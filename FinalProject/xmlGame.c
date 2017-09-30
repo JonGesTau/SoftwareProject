@@ -45,19 +45,22 @@ bool xmlGameNextRow(FILE *f, char *line, int *start_pos) {
             return false;
         } // file over or something else
     }while(strlen(line) == 0);
-    while(*start_pos < sizeof(line) && isspace(line[*start_pos])){ (*start_pos) ++; }
+    while(*start_pos < strlen(line) && isspace(line[*start_pos])){ (*start_pos) ++; }
 
-    if(*start_pos >= sizeof(line)) return false; // if the line is only whitespaces
+    if(*start_pos >= strlen(line)){ return false; }// if the line is only whitespaces
 
     return true;
 }
 
 GameState* xmlGameLoadGame(char* filename){
+    printf("%s\n", filename);
     //TODO: throw errors to console
     // this works like a state machine
     FILE* f = fopen(filename, "r");
 
     if(f == NULL){
+        //printf("empty f\n");
+        return NULL;
         // ERROR
     }
     char line[XML_GAME_MAX_LINE_LENGTH];
@@ -74,7 +77,6 @@ GameState* xmlGameLoadGame(char* filename){
     if((start_pos > sizeof(line) - 2) || line[start_pos] != '<' || line[start_pos+1]!='?'){
         return NULL; //first non-empty line must start "<?", can have leading whitespace
     }
-
     // stage <game>
     if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
     if(strncmp(line+start_pos, "<game", 5) != 0) return NULL;
@@ -83,10 +85,7 @@ GameState* xmlGameLoadGame(char* filename){
     if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
     if(strncmp(line+start_pos, "<current_turn>", 14) != 0) return NULL;
 
-    while(line[start_pos+14] >= '0' && line[start_pos+14] <= '9'){
-        current_turn = current_turn*10 + (line[start_pos+14] - '0');
-        start_pos ++;
-    } // parsing variable-size integer
+    current_turn = line[start_pos+14]-'0';
 
     // <game_mode>
     if(!xmlGameNextRow(f, line, &start_pos)) return NULL;
@@ -111,7 +110,7 @@ GameState* xmlGameLoadGame(char* filename){
         if(strncmp(line+start_pos, "<user_color>", 12) != 0) return NULL;
 
         user_color = line[start_pos+12];
-        if(user_color != '1' && user_color != '2') return NULL; // illegal user_color
+        if(user_color != '1' && user_color != '0') return NULL; // illegal user_color
         user_color -= '0';
 
         if(!xmlGameNextRow(f, line, &start_pos)) return NULL; // now should be board
@@ -124,6 +123,7 @@ GameState* xmlGameLoadGame(char* filename){
 
     // <rows>
     GameBoard* board = gameBoardCreate();
+    board->whiteTurn = current_turn == 1;
 
     for(char row = 7; row > -1; row--){
         if(!xmlGameNextRow(f, line, &start_pos)){
@@ -146,7 +146,7 @@ GameState* xmlGameLoadGame(char* filename){
     GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode);
     gameBoardDestroy(state->gameBoard); // pretty stupid actually
     state->gameBoard = board;
-    state->current_move = current_turn;
+    //state->current_move = current_turn;
 
     fclose(f);
     return state;

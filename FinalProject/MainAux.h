@@ -32,6 +32,8 @@
 #define STR_ERR_WRONG_COLOR "The specified position does not contain your piece\n"
 #define STR_ERR_ILLEGAL_MOVE "Illegal move\n"
 
+#define COLOR(p) (p?"White":"Black")
+
 Command getUserCommand();
 int arg;
 GameState* game;
