@@ -1,7 +1,7 @@
 CC = gcc
 OBJS = main.o GameBoard.o consoleUI.o GameState.o MiniMax.o Moves.o ChessParser.o MainAux.o GameSettings.o xmlGame.o ChessButton.o ChessGUICommon.o ChessGUIManager.o ChessMainWindow.o ChessSettingsWindow.o ChessGameWindow.o ChessPiece.o ChessRect.o GameFlowHelper.o ChessLoadWindow.o ChessSaveWindow.o
  
-EXEC = prog
+EXEC = chessprog
 COMP_FLAG = -std=c99 -Wall -Wextra \
 -Werror -pedantic-errors
 
