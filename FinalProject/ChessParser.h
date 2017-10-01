@@ -2,6 +2,8 @@
 // Created by Jonathan Gescheit on 8/25/17.
 //
 
+// Parse user commands
+
 #ifndef FINALPROJECT_CHESSPARSER_H
 #define FINALPROJECT_CHESSPARSER_H
 
@@ -41,14 +43,6 @@ typedef struct command_t {
     char* arg;
 } Command;
 
-/**
- * Checks if a specified string represents a valid integer. It is recommended
- * to use this function prior to calling the standard library function atoi.
- *
- * @return
- * true if the string represents a valid integer, and false otherwise.
- */
-bool isInt(const char* str);
 
 /**
  * Parses a specified line. If the line is a command which has an integer
@@ -73,7 +67,19 @@ Command parseLine(const char* str);
  */
 COMMAND getCommand(char* str);
 
+/**
+ * Parse a move given by the user
+ * @param str
+ * @return the parsed move struct
+ */
 Move* parseMove(char* str);
+
+/**
+ * Copy a char from a string from a specific index from src to dest
+ * @param dest
+ * @param src
+ * @param index
+ */
 void copyCharByIndex(char* dest, char* src, int index);
 
 #endif //FINALPROJECT_CHESSPARSER_H

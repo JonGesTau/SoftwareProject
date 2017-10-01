@@ -2,6 +2,8 @@
 // Created by jonathangescheit on 9/30/17.
 //
 
+// Helper functions and values for the game flow
+
 #ifndef CHESS1_GAMEFLOWHELPER_H
 #define CHESS1_GAMEFLOWHELPER_H
 

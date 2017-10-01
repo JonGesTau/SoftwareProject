@@ -2,6 +2,8 @@
 // Created by Jonathan Gescheit on 9/22/17.
 //
 
+// The button used in the GUI
+
 #ifndef CHESS1_CHESSBUTTON_H
 #define CHESS1_CHESSBUTTON_H
 
@@ -10,6 +12,9 @@
 #include <SDL_video.h>
 #include "ChessGUICommon.h"
 
+/**
+ * A type used to represent the button's type
+ */
 typedef enum {
     CHESS_BUTTON_NEW_GAME, CHESS_BUTTON_LOAD, CHESS_BUTTON_QUIT,
     CHESS_BUTTON_1PLAYER, CHESS_BUTTON_2PLAYER,
@@ -20,6 +25,9 @@ typedef enum {
     CHESS_BUTTON_SLOT_1, CHESS_BUTTON_SLOT_2, CHESS_BUTTON_SLOT_3, CHESS_BUTTON_SLOT_4, CHESS_BUTTON_SLOT_5
 } ButtonType;
 
+/**
+ * A type used to represent the button was clicked
+ */
 typedef enum {
     CHESS_CLICKED_NEW_GAME, CHESS_CLICKED_LOAD, CHESS_CLICKED_QUIT, CHESS_CLICKED_NONE,
     CHESS_CLICKED_1PLAYER, CHESS_CLICKED_2PLAYER,
@@ -30,6 +38,9 @@ typedef enum {
     CHESS_CLICKED_SLOT_1, CHESS_CLICKED_SLOT_2, CHESS_CLICKED_SLOT_3, CHESS_CLICKED_SLOT_4, CHESS_CLICKED_SLOT_5
 } BUTTON_CLICK_EVENT;
 
+/**
+ * A type used to represent the button
+ */
 typedef struct chess_button{
     SDL_Texture* activeTexture;
     SDL_Texture* inactiveTexture;
@@ -39,16 +50,48 @@ typedef struct chess_button{
     ButtonType type;
 } ChessButton;
 
-//You need a create function:
+/**
+ * Create button
+ * @param windowRender
+ * @param location
+ * @param activeImage
+ * @param inactiveImage
+ * @param type
+ * @param isActive
+ * @return the button
+ */
 ChessButton* createChessButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* activeImage, const char* inactiveImage, ButtonType type, bool isActive);
 
-//You need this function in order to destroy all data Associate with a button:
+/**
+ * Destroy button
+ */
 void destroyChessButton(ChessButton*);
 
+/**
+ * Handle a button event
+ * @param src
+ * @param event
+ * @return which click event occured
+ */
 BUTTON_CLICK_EVENT handleChessButtonEvent(ChessButton *src, SDL_Event *event);
 
+/**
+ * Draw button on screen
+ * @param src
+ */
 void drawChessButton(ChessButton* src);
+
+/**
+ * Toggle button
+ * @param src
+ */
 void toggleChessButton(ChessButton* src);
+
+/**
+ * Toggle a difficutly button
+ * @param src
+ * @param difficulty
+ */
 void toggleDifficultyButton(ChessButton* src, int difficulty);
 
 #endif //CHESS1_CHESSBUTTON_H
