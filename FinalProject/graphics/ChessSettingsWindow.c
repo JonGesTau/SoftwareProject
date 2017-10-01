@@ -17,16 +17,16 @@ ChessButton** createSettingsWindowChessButtons(SDL_Renderer *renderer, GameSetti
         return NULL ;
     }
 
-    SDL_Rect onePlayer = { .x = 200, .y = 50, .h = 100, .w = 250 };
-    SDL_Rect twoPlayer = { .x = 600, .y = 50, .h = 100, .w = 250 };
+    SDL_Rect onePlayer = { .x = 250, .y = 50, .h = 100, .w = 250 };
+    SDL_Rect twoPlayer = { .x = 550, .y = 50, .h = 100, .w = 250 };
 
-    SDL_Rect noob = { .x = 50, .y = 200, .h = 100, .w = 250 };
-    SDL_Rect easy = { .x = 350, .y = 200, .h = 100, .w = 250 };
-    SDL_Rect moderate = { .x = 650, .y = 200, .h = 100, .w = 250 };
-    SDL_Rect hard = { .x = 150, .y = 350, .h = 100, .w = 250 };
+    SDL_Rect noob = { .x = 250, .y = 200, .h = 100, .w = 250 };
+    SDL_Rect easy = { .x = 550, .y = 200, .h = 100, .w = 250 };
+    SDL_Rect moderate = { .x = 250, .y = 350, .h = 100, .w = 250 };
+    SDL_Rect hard = { .x = 550, .y = 350, .h = 100, .w = 250 };
 
-    SDL_Rect white = { .x = 200, .y = 500, .h = 100, .w = 250 };
-    SDL_Rect black = { .x = 600, .y = 500, .h = 100, .w = 250 };
+    SDL_Rect white = { .x = 250, .y = 500, .h = 100, .w = 250 };
+    SDL_Rect black = { .x = 550, .y = 500, .h = 100, .w = 250 };
 
     SDL_Rect start = { .x = 200, .y = 650, .h = 100, .w = 250 };
     SDL_Rect back = { .x = 600, .y = 650, .h = 100, .w = 250 };
@@ -90,6 +90,9 @@ ChessSettingsWindow* createSettingsWindow() {
     }
     res->buttons = buttons;
     res->numOfButtons = 10;
+    res->numDifficulties = 4;
+    res->numColors = 2;
+    res->numModes = 2;
     res->window = window;
     res->windowRenderer = renderer;
     res->settings = settings;
@@ -116,6 +119,11 @@ void drawSettingsWindow(ChessSettingsWindow *src) {
         return;
     }
 
+    SDL_Rect difficultyTitle = { .x = 10, .y = 50, .h = 100, .w = 250};
+    SDL_Rect modeTitle = { .x = 10, .y = 200, .h = 100, .w = 250};
+    SDL_Rect colorTitle = { .x = 10, .y = 500, .h = 100, .w = 250};
+
+
     //Draw window
     SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 255);
     SDL_RenderClear(src->windowRenderer);
@@ -123,6 +131,11 @@ void drawSettingsWindow(ChessSettingsWindow *src) {
     for (; i < src->numOfButtons; i++) {
         drawChessButton(src->buttons[i]);
     }
+
+    drawTitle(src->windowRenderer, &difficultyTitle, "./assets/difficulty_title.bmp");
+    drawTitle(src->windowRenderer, &modeTitle, "./assets/mode_title.bmp");
+    drawTitle(src->windowRenderer, &colorTitle, "./assets/color_title.bmp");
+
     SDL_RenderPresent(src->windowRenderer);
 }
 
@@ -131,83 +144,35 @@ CHESS_SETTINGS_EVENT handleEventSettingsWindow(ChessSettingsWindow *src, SDL_Eve
         return CHESS_SETTINGS_EXIT;
     }
 
-    int i =0;
-    for(;i<src->numOfButtons;i++){
+    for(int i = 0;i<src->numOfButtons;i++){
         ChessButton* button = src->buttons[i];
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(button, event);
         // TODO: Refactor handling functions
         switch (clickEvent) {
             case CHESS_CLICKED_1PLAYER:
-                if (src->settings->gameMode != 1) {
-                    src->settings->gameMode = 1;
-                    printf("Mode is %d\n", src->settings->gameMode);
-                    toggleChessButton(src->buttons[0]);
-                    toggleChessButton(src->buttons[1]);
-                }
+                toggleModeButton(ONEPLAYER_NUMBER, src, src->buttons[i], MODE_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_2PLAYER:
-                if (src->settings->gameMode != 2) {
-                    src->settings->gameMode = 2;
-                    printf("Mode is %d\n", src->settings->gameMode);
-                    toggleChessButton(src->buttons[0]);
-                    toggleChessButton(src->buttons[1]);
-                }
+                toggleModeButton(TWOPLAYER_NUMBER, src, src->buttons[i], MODE_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_NOOB:
-                if (src->settings->difficulty != 1) {
-                    src->settings->difficulty = 1;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    for (int j = 2;j<6; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
+                toggleDifficultyButton(NOOB_NUMBER, src, src->buttons[i], DIFFICULTY_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_EASY:
-                if (src->settings->difficulty != 2) {
-                    src->settings->difficulty = 2;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    for (int j = 2;j<6; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
+                toggleDifficultyButton(EASY_NUMBER, src, src->buttons[i], DIFFICULTY_SETTING_START_INDEX);
+
                 break;
             case CHESS_CLICKED_MODERATE:
-                if (src->settings->difficulty != 3) {
-                    src->settings->difficulty = 3;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    for (int j = 2;j<6; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
+                toggleDifficultyButton(MODERATE_NUMBER, src, src->buttons[i], DIFFICULTY_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_HARD:
-                if (src->settings->difficulty != 4) {
-                    src->settings->difficulty = 4;
-                    printf("Difficulty is %d\n", src->settings->difficulty);
-                    for (int j = 2;j<6; j++) {
-                        if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
-                    }
-                    toggleChessButton(button);
-                }
+                toggleDifficultyButton(HARD_NUMBER, src, src->buttons[i], DIFFICULTY_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_WHITE:
-                if (!src->settings->userColor) {
-                    src->settings->userColor = 1;
-                    printf("Color is %d\n", src->settings->userColor);
-                    toggleChessButton(src->buttons[6]);
-                    toggleChessButton(src->buttons[7]);
-                }
+                toggleColorButton(WHITE_NUMBER, src, src->buttons[i], COLOR_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_BLACK:
-                if (src->settings->userColor) {
-                    src->settings->userColor = 0;
-                    printf("Color is %d\n", src->settings->userColor);
-                    toggleChessButton(src->buttons[6]);
-                    toggleChessButton(src->buttons[7]);
-                }
+                toggleColorButton(BLACK_NUMBER, src, src->buttons[i], COLOR_SETTING_START_INDEX);
                 break;
             case CHESS_CLICKED_START:
                 return CHESS_SETTINGS_START;
@@ -249,4 +214,50 @@ void destroySettingsWindowButtons(ChessButton** buttons, int numOfButtons) {
     }
 
     free(buttons);
+}
+
+void toggleDifficultyButton(int selectedDifficulty, ChessSettingsWindow* src, ChessButton* button, int startIndex) {
+    if (src->settings->difficulty != selectedDifficulty) {
+        setDifficulty(src->settings, selectedDifficulty);
+
+        for (int j = startIndex;j < (startIndex + src->numDifficulties); j++) {
+            if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+        }
+        toggleChessButton(button);
+    }
+}
+
+void toggleColorButton(int selectedColor, ChessSettingsWindow* src, ChessButton* button, int startIndex) {
+    if (src->settings->userColor != selectedColor) {
+        setUserColor(src->settings, selectedColor);
+
+        for (int j = startIndex;j < (startIndex + src->numColors); j++) {
+            if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+        }
+        toggleChessButton(button);
+    }
+}
+
+void toggleModeButton(int selectedMode, ChessSettingsWindow* src, ChessButton* button, int startIndex) {
+    if (src->settings->gameMode != selectedMode) {
+        setGameMode(src->settings, selectedMode);
+
+        for (int j = startIndex;j < (startIndex + src->numModes); j++) {
+            if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
+        }
+        toggleChessButton(button);
+    }
+}
+
+void drawTitle(SDL_Renderer* renderer, SDL_Rect* location, const char* image) {
+    SDL_Surface* loadingSurface = SDL_LoadBMP(image);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, loadingSurface);
+
+    if (loadingSurface == NULL || texture == NULL) {
+        SDL_FreeSurface(loadingSurface); //It is safe to pass NULL
+        SDL_DestroyTexture(texture); //It is safe to pass NULL
+    }
+
+    SDL_FreeSurface(loadingSurface);
+    SDL_RenderCopy(renderer, texture, NULL, location);
 }

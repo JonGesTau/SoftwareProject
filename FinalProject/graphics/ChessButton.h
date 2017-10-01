@@ -87,11 +87,4 @@ void drawChessButton(ChessButton* src);
  */
 void toggleChessButton(ChessButton* src);
 
-/**
- * Toggle a difficutly button
- * @param src
- * @param difficulty
- */
-void toggleDifficultyButton(ChessButton* src, int difficulty);
-
 #endif //CHESS1_CHESSBUTTON_H
