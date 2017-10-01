@@ -217,6 +217,11 @@ void destroySettingsWindowButtons(ChessButton** buttons, int numOfButtons) {
 }
 
 void toggleDifficultyButton(int selectedDifficulty, ChessSettingsWindow* src, ChessButton* button, int startIndex) {
+    if (src->settings->gameMode == 2) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Difficulty Selection Unavailable", "You cannot select difficulty in 2 players mode", NULL);
+        return;
+    }
+
     if (src->settings->difficulty != selectedDifficulty) {
         setDifficulty(src->settings, selectedDifficulty);
 
@@ -228,6 +233,11 @@ void toggleDifficultyButton(int selectedDifficulty, ChessSettingsWindow* src, Ch
 }
 
 void toggleColorButton(int selectedColor, ChessSettingsWindow* src, ChessButton* button, int startIndex) {
+    if (src->settings->gameMode == 2) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Color Selection Unavailable", "You cannot select color in 2 players mode", NULL);
+        return;
+    }
+
     if (src->settings->userColor != selectedColor) {
         setUserColor(src->settings, selectedColor);
 
@@ -246,6 +256,32 @@ void toggleModeButton(int selectedMode, ChessSettingsWindow* src, ChessButton* b
             if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
         }
         toggleChessButton(button);
+
+        if (selectedMode == 2) {
+            for (int i = COLOR_SETTING_START_INDEX; i<COLOR_SETTING_START_INDEX + src->numColors; i++) {
+                if (src->buttons[i]->isActive) toggleChessButton(src->buttons[i]);
+            }
+
+            for (int i = DIFFICULTY_SETTING_START_INDEX; i<DIFFICULTY_SETTING_START_INDEX + src->numDifficulties; i++) {
+                if (src->buttons[i]->isActive) toggleChessButton(src->buttons[i]);
+            }
+        } else {
+            if (src->settings->difficulty == 1) {
+                src->buttons[2]->isActive = true;
+            } else if (src->settings->difficulty == 2) {
+                src->buttons[3]->isActive = true;
+            } else if (src->settings->difficulty == 3) {
+                src->buttons[4]->isActive = true;
+            } else if (src->settings->difficulty == 4) {
+                src->buttons[5]->isActive = true;
+            }
+
+            if (src->settings->userColor) {
+                src->buttons[6]->isActive = true;
+            } else {
+                src->buttons[7]->isActive = true;
+            }
+        }
     }
 }
 
