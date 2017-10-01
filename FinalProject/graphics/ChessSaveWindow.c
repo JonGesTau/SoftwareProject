@@ -2,15 +2,15 @@
 // Created by jonathangescheit on 9/30/17.
 //
 
-#include "ChessLoadWindow.h"
-const int numOfLoadButtons = 7;
+#include "ChessSaveWindow.h"
+const int numOfSaveButtons = 7;
 
-ChessButton** createLoadWindowChessButtons(SDL_Renderer *renderer) {
+ChessButton** createSaveWindowChessButtons(SDL_Renderer *renderer) {
     if (renderer == NULL ) {
         return NULL ;
     }
 
-    ChessButton** buttons = malloc(numOfLoadButtons * sizeof(ChessButton*));
+    ChessButton** buttons = malloc(numOfSaveButtons * sizeof(ChessButton*));
     if (buttons == NULL ) {
         return NULL ;
     }
@@ -20,7 +20,7 @@ ChessButton** createLoadWindowChessButtons(SDL_Renderer *renderer) {
     SDL_Rect slot3 = { .x = 387, .y = 230, .h = 100, .w = 250 };
     SDL_Rect slot4 = { .x = 387, .y = 340, .h = 100, .w = 250 };
     SDL_Rect slot5 = { .x = 387, .y = 450, .h = 100, .w = 250 };
-    SDL_Rect load = { .x = 200, .y = 650, .h = 100, .w = 250 };
+    SDL_Rect save = { .x = 200, .y = 650, .h = 100, .w = 250 };
     SDL_Rect back = { .x = 600, .y = 650, .h = 100, .w = 250 };
 
 
@@ -29,24 +29,24 @@ ChessButton** createLoadWindowChessButtons(SDL_Renderer *renderer) {
     buttons[2] = createChessButton(renderer, &slot3, "./assets/slot_3.bmp", "./assets/slot_3_inactive.bmp", CHESS_BUTTON_SLOT_3, false);
     buttons[3] = createChessButton(renderer, &slot4, "./assets/slot_4.bmp", "./assets/slot_4_inactive.bmp", CHESS_BUTTON_SLOT_4, false);
     buttons[4] = createChessButton(renderer, &slot5, "./assets/slot_5.bmp", "./assets/slot_5_inactive.bmp", CHESS_BUTTON_SLOT_5, false);
-    buttons[5] = createChessButton(renderer, &load, "./assets/load_active.bmp", "./assets/load_active.bmp", CHESS_BUTTON_LOAD, false);
+    buttons[5] = createChessButton(renderer, &save, "./assets/save_active.bmp", "./assets/save_active.bmp", CHESS_BUTTON_SAVE, false);
     buttons[6] = createChessButton(renderer, &back, "./assets/back_active.bmp", "./assets/back_active.bmp", CHESS_BUTTON_BACK, true);
 
 
-    for (int i = 0; i < numOfLoadButtons ; i++) {
+    for (int i = 0; i < numOfSaveButtons ; i++) {
         if (buttons[i] == NULL) {
-            destroyLoadWindowButtons(buttons, numOfLoadButtons);
+            destroySaveWindowButtons(buttons, numOfSaveButtons);
             return NULL;
         }
     }
 
     return buttons;
 }
-ChessLoadWindow * createLoadWindow() {
-    ChessLoadWindow* res = malloc(sizeof(ChessLoadWindow));
+ChessSaveWindow * createSaveWindow() {
+    ChessSaveWindow* res = malloc(sizeof(ChessSaveWindow));
     SDL_Window* window = SDL_CreateWindow("Tests", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_OPENGL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    ChessButton** buttons = createLoadWindowChessButtons(renderer);
+    ChessButton** buttons = createSaveWindowChessButtons(renderer);
     if (res == NULL || window == NULL || renderer == NULL || buttons == NULL ) {
         free(res);
         free(buttons);
@@ -56,17 +56,17 @@ ChessLoadWindow * createLoadWindow() {
         return NULL ;
     }
     res->buttons = buttons;
-    res->numOfButtons = numOfLoadButtons;
+    res->numOfButtons = numOfSaveButtons;
     res->numSlots = 5;
-    res->loadPath = NULL;
-    res->loadSlot = 0;
+    res->savePath = NULL;
+    res->saveSlot = 0;
     res->window = window;
     res->windowRenderer = renderer;
 
     return res;
 }
 
-void destroyLoadWindowButtons(ChessButton** buttons, int numOfButtons) {
+void destroySaveWindowButtons(ChessButton** buttons, int numOfButtons) {
     for (int i = 0; i < numOfButtons; i++) {
         destroyChessButton(buttons[i]);
     }
@@ -74,7 +74,7 @@ void destroyLoadWindowButtons(ChessButton** buttons, int numOfButtons) {
     free(buttons);
 }
 
-void drawLoadWindow(ChessLoadWindow *src) {
+void drawSaveWindow(ChessSaveWindow *src) {
     if (src == NULL ) {
         return;
     }
@@ -89,33 +89,33 @@ void drawLoadWindow(ChessLoadWindow *src) {
     SDL_RenderPresent(src->windowRenderer);
 }
 
-CHESS_LOAD_EVENT handleEventLoadWindow(ChessLoadWindow *src, SDL_Event *event){
+CHESS_SAVE_EVENT handleEventSaveWindow(ChessSaveWindow *src, SDL_Event *event){
     if(src == NULL || event==NULL){
-        return CHESS_LOAD_INVALID_ARGUMENT;
+        return CHESS_SAVE_INVALID_ARGUMENT;
     }
 
     for(int i = 0;i<src->numOfButtons;i++){
         BUTTON_CLICK_EVENT clickEvent = handleChessButtonEvent(src->buttons[i], event);
         switch (clickEvent) {
             case CHESS_CLICKED_SLOT_1:
-                toggleSlotButton(1, src, src->buttons[i]);
-                return CHESS_LOAD_1;
+                toggleSaveSlotButton(1, src, src->buttons[i]);
+                return CHESS_SAVE_1;
             case CHESS_CLICKED_SLOT_2:
-                toggleSlotButton(2, src, src->buttons[i]);
-                return CHESS_LOAD_2;
+                toggleSaveSlotButton(2, src, src->buttons[i]);
+                return CHESS_SAVE_2;
             case CHESS_CLICKED_SLOT_3:
-                toggleSlotButton(3, src, src->buttons[i]);
-                return CHESS_LOAD_3;
+                toggleSaveSlotButton(3, src, src->buttons[i]);
+                return CHESS_SAVE_3;
             case CHESS_CLICKED_SLOT_4:
-                toggleSlotButton(4, src, src->buttons[i]);
-                return CHESS_LOAD_4;
+                toggleSaveSlotButton(4, src, src->buttons[i]);
+                return CHESS_SAVE_4;
             case CHESS_CLICKED_SLOT_5:
-                toggleSlotButton(5, src, src->buttons[i]);
-                return CHESS_LOAD_5;
+                toggleSaveSlotButton(5, src, src->buttons[i]);
+                return CHESS_SAVE_5;
             case CHESS_CLICKED_BACK:
-                return CHESS_LOAD_BACK;
-            case CHESS_CLICKED_LOAD:
-                return CHESS_LOAD_APPLY;
+                return CHESS_SAVE_BACK;
+            case CHESS_CLICKED_SAVE:
+                return CHESS_SAVE_APPLY;
             case CHESS_CLICKED_NEW_GAME:break;
             case CHESS_CLICKED_QUIT:break;
             case CHESS_CLICKED_NONE:break;
@@ -129,26 +129,26 @@ CHESS_LOAD_EVENT handleEventLoadWindow(ChessLoadWindow *src, SDL_Event *event){
             case CHESS_CLICKED_BLACK:break;
             case CHESS_CLICKED_START:break;
             case CHESS_CLICKED_RESTART:break;
-            case CHESS_CLICKED_SAVE:break;
+            case CHESS_CLICKED_LOAD:break;
             case CHESS_CLICKED_MAIN_MENU:break;
             case CHESS_CLICKED_UNDO:break;
         }
     }
 
-    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_LOAD_EXIT;
+    if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_CLOSE) return CHESS_SAVE_EXIT;
 
-    return CHESS_LOAD_NONE;
+    return CHESS_SAVE_NONE;
 }
 
-void hideLoadWindow(ChessLoadWindow* src) {
+void hideSaveWindow(ChessSaveWindow* src) {
     SDL_HideWindow(src->window);
 }
 
-void showLoadWindow(ChessLoadWindow* src) {
+void showSaveWindow(ChessSaveWindow* src) {
     SDL_ShowWindow(src->window);
 }
 
-void destroyLoadWindow(ChessLoadWindow *src) {
+void destroySaveWindow(ChessSaveWindow *src) {
     if (src == NULL ) {
         return;
     }
@@ -163,30 +163,30 @@ void destroyLoadWindow(ChessLoadWindow *src) {
     free(src);
 }
 
-void toggleSlotButton(int selectedSlotNumber, ChessLoadWindow* src, ChessButton* button) {
+void toggleSaveSlotButton(int selectedSlotNumber, ChessSaveWindow* src, ChessButton* button) {
     if (selectedSlotNumber > src->numSlots) return;
-    if (src->loadSlot != selectedSlotNumber) {
-        src->loadSlot = selectedSlotNumber;
+    if (src->saveSlot != selectedSlotNumber) {
+        src->saveSlot = selectedSlotNumber;
 //        sprintf(src->loadPath, "slot%d.xml", selectedSlotNumber);
 
         if (selectedSlotNumber == 1) {
-            src->loadPath = "slot1.xml ";
+            src->savePath = "slot1.xml ";
         }
 
         if (selectedSlotNumber == 2) {
-            src->loadPath = "slot2.xml ";
+            src->savePath = "slot2.xml ";
         }
 
         if (selectedSlotNumber == 3) {
-            src->loadPath = "slot3.xml ";
+            src->savePath = "slot3.xml ";
         }
 
         if (selectedSlotNumber == 4) {
-            src->loadPath = "slot4.xml ";
+            src->savePath = "slot4.xml ";
         }
 
         if (selectedSlotNumber == 5) {
-            src->loadPath = "slot5.xml ";
+            src->savePath = "slot5.xml ";
         }
 
         for (int j = 0;j<src->numSlots; j++) {

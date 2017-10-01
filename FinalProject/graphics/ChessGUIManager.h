@@ -10,12 +10,14 @@
 #include "ChessSettingsWindow.h"
 #include "ChessGameWindow.h"
 #include "ChessLoadWindow.h"
+#include "ChessSaveWindow.h"
 
 typedef enum{
     CHESS_MAIN_WINDOW_ACTIVE,
     CHESS_GAME_WINDOW_ACTIVE,
     CHESS_SETTINGS_WINDOW_ACTIVE,
-    CHESS_LOAD_WINDOW_ACTIVE
+    CHESS_LOAD_WINDOW_ACTIVE,
+    CHESS_SAVE_WINDOW_ACTIVE
 }ACTIVE_WINDOW;
 
 typedef enum{
@@ -29,6 +31,7 @@ typedef struct {
     ChessMainWindow* mainWin;
     ChessGameWindow* gameWin;
     ChessLoadWindow* loadWin;
+    ChessSaveWindow* saveWin;
     ACTIVE_WINDOW activeWin;
 } ChessGuiManager;
 
@@ -43,5 +46,6 @@ CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN
 CHESS_MANAGER_EVENT handleManagerDueToSettingsEvent(ChessGuiManager* src, CHESS_SETTINGS_EVENT event);
 CHESS_MANAGER_EVENT handleManagerDueToLoadEvent(ChessGuiManager* src, CHESS_LOAD_EVENT event);
 CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event);
+CHESS_MANAGER_EVENT handleManagerDueToSaveEvent(ChessGuiManager* src, CHESS_SAVE_EVENT event);
 
 #endif //CHESS1_CHESSGUIMANAGER_H

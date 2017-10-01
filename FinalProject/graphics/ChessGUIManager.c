@@ -19,6 +19,7 @@ ChessGuiManager* ChessManagerCreate() {
     res->gameWin = NULL;
     res->settingsWin = NULL;
     res->loadWin = NULL;
+    res->saveWin = NULL;
     res->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
     return res;
 }
@@ -31,6 +32,7 @@ void chessManagerDestroy(ChessGuiManager *src) {
     if (src->settingsWin != NULL) destroySettingsWindow(src->settingsWin);
     if (src->gameWin != NULL) destroyGameWindow(src->gameWin);
     if (src->loadWin != NULL) destroyLoadWindow(src->loadWin);
+    if (src->saveWin != NULL) destroySaveWindow(src->saveWin);
 
 
     free(src);
@@ -47,6 +49,8 @@ void chessManagerDraw(ChessGuiManager *src) {
         drawSettingsWindow(src->settingsWin);
     } else if (src->activeWin == CHESS_LOAD_WINDOW_ACTIVE) {
         drawLoadWindow(src->loadWin);
+    } else if (src->activeWin == CHESS_SAVE_WINDOW_ACTIVE) {
+        drawSaveWindow(src->saveWin);
     }
 }
 CHESS_MANAGER_EVENT handleManagerDueToMainEvent(ChessGuiManager* src, CHESS_MAIN_EVENT event) {
@@ -185,6 +189,42 @@ CHESS_MANAGER_EVENT handleManagerDueToLoadEvent(ChessGuiManager* src, CHESS_LOAD
     return CHESS_MANAGER_NONE;
 }
 
+CHESS_MANAGER_EVENT handleManagerDueToSaveEvent(ChessGuiManager* src, CHESS_SAVE_EVENT event) {
+    if (src == NULL ) {
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_SAVE_BACK) {
+        if (src->saveWin != NULL) {
+            hideSaveWindow(src->saveWin);
+        } else {
+            printf("No Load Win To Hide");
+        }
+
+        if (src->gameWin != NULL) {
+            showGameWindow(src->gameWin);
+            src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
+        }
+
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_SAVE_APPLY) {
+        if (xmlGameSaveGame(src->gameWin->game,src->saveWin->savePath)) {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Saved", "Saved successfully", NULL);
+        } else {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Failed", "Save failed", NULL);
+        }
+
+        return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_SAVE_EXIT) {
+        return CHESS_MANAGER_QUTT;
+    }
+    return CHESS_MANAGER_NONE;
+}
+
 CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME_EVENT event) {
     if (src == NULL) {
         return CHESS_MANAGER_NONE;
@@ -252,6 +292,17 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
         }
 
         src->activeWin = CHESS_LOAD_WINDOW_ACTIVE;
+    }
+
+    if (event == CHESS_GAME_SAVE) {
+        hideGameWindow(src->gameWin);
+        if (src->saveWin == NULL) {
+            src->saveWin = createSaveWindow();
+        } else {
+            showSaveWindow(src->saveWin);
+        }
+
+        src->activeWin = CHESS_SAVE_WINDOW_ACTIVE;
     }
 
     if (src->gameWin->game->mode == 1 && (src->gameWin->game->gameBoard->whiteTurn != src->gameWin->game->isPlayerWhite)) {
@@ -358,6 +409,9 @@ CHESS_MANAGER_EVENT chessManagerHandleEvent(ChessGuiManager *src, SDL_Event *eve
     } else if (src->activeWin == CHESS_LOAD_WINDOW_ACTIVE) {
         CHESS_LOAD_EVENT loadEvent = handleEventLoadWindow(src->loadWin, event);
         return handleManagerDueToLoadEvent(src, loadEvent);
+    } else if (src->activeWin == CHESS_SAVE_WINDOW_ACTIVE) {
+        CHESS_SAVE_EVENT saveEvent = handleEventSaveWindow(src->saveWin, event);
+        return handleManagerDueToSaveEvent(src, saveEvent);
     }
     return CHESS_MANAGER_NONE;
 }
