@@ -57,6 +57,7 @@ ChessLoadWindow * createLoadWindow() {
     }
     res->buttons = buttons;
     res->numOfButtons = numOfButtons;
+    res->numSlots = 5;
     res->loadPath = NULL;
     res->loadSlot = 0;
     res->window = window;
@@ -171,7 +172,23 @@ void toggleSlotButton(int selectedSlotNumber, ChessLoadWindow* src, ChessButton*
             src->loadPath = "slot1.xml ";
         }
 
-        for (int j = 0;j<5; j++) {
+        if (selectedSlotNumber == 2) {
+            src->loadPath = "slot2.xml ";
+        }
+
+        if (selectedSlotNumber == 3) {
+            src->loadPath = "slot3.xml ";
+        }
+
+        if (selectedSlotNumber == 4) {
+            src->loadPath = "slot4.xml ";
+        }
+
+        if (selectedSlotNumber == 5) {
+            src->loadPath = "slot5.xml ";
+        }
+
+        for (int j = 0;j<src->numSlots; j++) {
             if (src->buttons[j]->isActive) toggleChessButton(src->buttons[j]);
         }
         toggleChessButton(button);

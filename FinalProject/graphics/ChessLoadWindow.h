@@ -20,6 +20,7 @@ struct chess_load_window {
     int numOfButtons;
     char* loadPath;
     int loadSlot;
+    int numSlots;
 };
 
 ChessLoadWindow * createLoadWindow();

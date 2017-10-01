@@ -144,17 +144,22 @@ CHESS_MANAGER_EVENT handleManagerDueToLoadEvent(ChessGuiManager* src, CHESS_LOAD
             printf("No Load Win To Hide");
         }
 
-        if (src->mainWin != NULL) {
+        if (src->gameWin != NULL) {
+            showGameWindow(src->gameWin);
+            src->activeWin = CHESS_GAME_WINDOW_ACTIVE;
+        } else if (src->mainWin != NULL) {
             showMainWindow(src->mainWin);
-        } else {
-            printf("No Main Window To Show");
+            src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
         }
-        src->activeWin = CHESS_MAIN_WINDOW_ACTIVE;
+        return CHESS_MANAGER_NONE;
     }
 
     if (event == CHESS_LOAD_APPLY) {
         GameState* loadGame = xmlGameLoadGame(src->loadWin->loadPath);
-        if (loadGame == NULL) return CHESS_MANAGER_NONE;
+        if (loadGame == NULL) {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "File does not exist", "This file does not exist", NULL);
+            return CHESS_MANAGER_NONE;
+        }
 
         GameSettings* settings = GameSettingsCreate();
         setGameMode(settings, loadGame->mode);
@@ -236,6 +241,17 @@ CHESS_MANAGER_EVENT handleManagerDueToGameEvent(ChessGuiManager* src, CHESS_GAME
         src->gameWin = createGameWindow(src->settingsWin->settings, NULL);
 
         return CHESS_MANAGER_NONE;
+    }
+
+    if (event == CHESS_GAME_LOAD) {
+        hideGameWindow(src->gameWin);
+        if (src->loadWin == NULL) {
+            src->loadWin = createLoadWindow();
+        } else {
+            showLoadWindow(src->loadWin);
+        }
+
+        src->activeWin = CHESS_LOAD_WINDOW_ACTIVE;
     }
 
     if (src->gameWin->game->mode == 1 && (src->gameWin->game->gameBoard->whiteTurn != src->gameWin->game->isPlayerWhite)) {
