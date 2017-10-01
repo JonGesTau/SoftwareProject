@@ -5,7 +5,6 @@
 #include "Moves.h"
 
 
-
 Move* MoveCreate(unsigned char y1, unsigned char x1, unsigned char y2, unsigned char x2){
     Move* move = malloc(sizeof(Move));
     if(move == NULL)
@@ -85,7 +84,7 @@ void MoveListDestroy(MoveList* list){
 
 
 bool isMoveListEmpty(MoveList* list){
-    if(list == NULL){ return true; } // maybe should be false?
+    if(list == NULL){ return true; }
     return list->first == NULL;
 }
 

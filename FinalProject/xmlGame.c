@@ -6,8 +6,7 @@
 #include "xmlGame.h"
 
 bool xmlGameSaveGame(GameState* game, char* filename){
-    // TODO: "validate filename as if it's user input"
-    FILE * f = fopen(filename, "w"); // happily overwrite
+    FILE * f = fopen(filename, "w");
 
     if(f == NULL) return false;
 
@@ -36,8 +35,6 @@ bool xmlGameSaveGame(GameState* game, char* filename){
 }
 
 bool xmlGameNextRow(FILE *f, char *line, unsigned int *start_pos) {
-    // advances pointers and buffers to the start of the next
-    // non-empty line, and also skips leading whitespace
     (*start_pos) = 0;
     do{
         if(!fgets(line, XML_GAME_MAX_LINE_LENGTH, f)){
@@ -62,7 +59,7 @@ GameState* xmlGameLoadGame(char* filename){
     unsigned int start_pos = 0;
 
     int current_turn = 0;
-    char game_mode; // TODO: clean here
+    char game_mode;
     char difficulty = 2;
     char user_color = 1; // player is white by default
 
@@ -187,19 +184,16 @@ GameState* xmlGameLoadGame(char* filename){
         if(!xmlGameParseRow(board, (unsigned char)row, line+start_pos+7)){
             fclose(f);
             gameBoardDestroy(board);
-            return NULL; // can unite into one if
+            return NULL;
         }
     }
 
- //  In "2 players" mode, the tags <difficulty> and <user_color> should not contain any value and
- // can also be discarded from the file. MODE ==2
- // the order is exactly the sam.e there will be no superfluous empty lines.
-
-    //consoleUIPrintBoard(board);
-    //gameBoardDestroy(board);
+    // In "2 players" mode, the tags <difficulty> and <user_color> should not contain any value and
+    // can also be discarded from the file. MODE ==2
+    // the order is exactly the sam.e there will be no superfluous empty lines.
 
     GameState* state = GameStateCreate(difficulty, user_color == 1, game_mode);
-    gameBoardDestroy(state->gameBoard); // pretty stupid actually
+    gameBoardDestroy(state->gameBoard);
     state->gameBoard = board;
 
     fclose(f);
