@@ -88,15 +88,6 @@ void drawChessPiece(ChessPiece* src) {
     SDL_RenderCopy(src->windowRenderer, src->texture, NULL, src->location);
 }
 
-void toggleChessPiece(ChessPiece* src) {
-    if (src == NULL) {
-        return;
-    }
-
-    src->isActive = !src->isActive;
-    drawChessPiece(src);
-}
-
 char* getPieceImg(PieceType type, PieceColor color) {
     if (type == CHESS_PIECE_EMPTY) return whiteRookImg;
     if (color == CHESS_PIECE_COLOR_WHITE) {

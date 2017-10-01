@@ -49,17 +49,3 @@ RECT_CLICK_EVENT handleChessRectEvent(ChessRect *src, SDL_Event *event) {
     }
     return RECT_CLICKED_NONE;
 }
-
-//void drawChessRect(ChessRect* src) {
-//    if (src == NULL ) {
-//        return;
-//    }
-//
-//    if (src->color == CHESS_RECT_COLOR_GREY) {
-//        SDL_SetRenderDrawColor(src->windowRenderer, 128, 128, 128, 0xFF);
-//    } else {
-//        SDL_SetRenderDrawColor(src->windowRenderer, 255, 255, 255, 0xFF);
-//    }
-//
-//    SDL_RenderFillRect(src->windowRenderer, src->location);
-//}
