@@ -78,6 +78,7 @@ void startConsoleMode() {
 bool startGame(GameState* game) {
     Command userCmd;
     Move* userMove = NULL;
+    bool isMoveSuccessful = true;
 
     while (true) {
         if(game->mode == 1 && (game->gameBoard->whiteTurn != game->isPlayerWhite)){
@@ -110,13 +111,13 @@ bool startGame(GameState* game) {
         }
 
         // on user move:
-        consoleUIPrintBoard(game->gameBoard);
+        if (isMoveSuccessful) consoleUIPrintBoard(game->gameBoard);
 
         promptUserMove(game);
         userCmd = getUserCommand();
 
         if (userCmd.cmd == MOVE) {
-            bool isMoveSuccessful = false;
+            isMoveSuccessful = false;
             // loop until successful move
             userMove = parseMove(userCmd.arg);
             isMoveSuccessful = handleUserMove(game, userMove);
@@ -139,6 +140,7 @@ bool startGame(GameState* game) {
                 }
             }
         } else if (userCmd.cmd == SAVE) {
+            isMoveSuccessful = false;
             if(!xmlGameSaveGame(game, userCmd.arg))
                 printf(STR_ERR_CANT_SAVE);
         } else if (userCmd.cmd == UNDO) {
@@ -219,7 +221,7 @@ Command getUserCommand() {
 }
 
 void promptUserMove(GameState* game) {
-    char* color = game->gameBoard->whiteTurn ? "White" : "Black";
+    char* color = game->gameBoard->whiteTurn ? "white" : "black";
     printf("%s player - enter your move:\n", color);
 }
 

@@ -21,7 +21,7 @@
 #define STR_ERR_UNDO_UNAVAILABLE "Undo command not available in 2 players mode\n"
 #define STR_ERR_EMPTY_HISTORY "Empty history, move cannot be undone\n"
 #define STR_ERR_CANT_SAVE "File cannot be created or modified\n"
-#define COLOR(p) (p?"White":"Black")
+#define COLOR(p) (p?"white":"black")
 #define EXPERT_LEVEL_SUPPORTED false
 
 

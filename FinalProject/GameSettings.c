@@ -29,7 +29,7 @@ void setGameMode(GameSettings* settings, int value) {
         printf("Wrong game mode\n");
     } else {
         settings->gameMode = value;
-        printf("Game mode is set to %d players\n", settings->gameMode);
+        printf(settings->gameMode == 1 ? "Game mode is set to %d player\n" : "Game mode is set to %d players\n", settings->gameMode);
     }
 }
 
@@ -60,7 +60,7 @@ void printSettings(GameSettings* settings) {
     printf("GAME_MODE: %d\n", settings->gameMode);
 
     if (settings->gameMode == 1) {
-        printf("DIFFICULTY: %d\n", settings->difficulty);
-        printf("USER_CLR: %d\n", settings->userColor);
+        printf("DIFFICULTY_LVL: %d\n", settings->difficulty);
+        printf("USER_CLR: %s\n", settings->userColor ? "WHITE" : "BLACK");
     }
 }
