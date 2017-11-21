@@ -40,11 +40,11 @@ void startConsoleMode() {
             if(game != NULL){
                 GameSettingsDestroy(settings);
                 settings = NULL;
-                is_reset = startGame(game);
-                game = NULL;
-                if(!is_reset){
-                    break;
-                }
+                //is_reset = startGame(game);
+                //game = NULL;
+                //if(!is_reset){
+                //    break;
+                //}
             } else {
                 printf(STR_ERR_FILE);
             }
