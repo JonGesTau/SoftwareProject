@@ -49,6 +49,10 @@ bool xmlGameNextRow(FILE *f, char *line, unsigned int *start_pos) {
 }
 
 GameState* xmlGameLoadGame(char* filename){
+    if(filename[strlen(filename)-1] == ' '){
+        filename[strlen(filename)-1] = 0;
+    }
+    
     FILE* f = fopen(filename, "r");
 
     if(f == NULL){
