@@ -6,12 +6,12 @@ COMP_FLAG = -std=c99 -Wall -Wextra \
 -Werror -pedantic-errors
 
 #Local
-SDL_COMP_FLAG = -I/usr/include/SDL2 -D_REENTRANT
-SDL_LIB = -L/usr/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
+#SDL_COMP_FLAG = -I/usr/include/SDL2 -D_REENTRANT
+#SDL_LIB = -L/usr/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
 
 #Nova
-#SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
-#SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
+SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
+SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
 
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) $(SDL_LIB) -o $@

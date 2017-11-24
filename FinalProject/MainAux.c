@@ -105,7 +105,7 @@ bool startGame(GameState* game) {
             }
 
             if (gameBoardIsCheck(game->gameBoard, game->gameBoard->whiteTurn)) {
-                printf("Check!");
+                printf("Check!\n");
             }
             continue;
         }
